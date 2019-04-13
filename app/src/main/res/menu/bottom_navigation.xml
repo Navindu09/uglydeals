@@ -11,7 +11,7 @@
     <item
         android:id="@+id/bottomNavigationNotification"
         android:icon="@mipmap/baseline_notifications_black_24"
-        android:title="Notification" />
+        android:title="Notifications" />
     <item
         android:icon="@mipmap/baseline_person_black_24"
         android:title="Profile" />
