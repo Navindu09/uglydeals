@@ -8,10 +8,10 @@
     tools:context=".MainActivity" >
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottomNavigationMenu"
+        android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="@color/typeFontColor"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_navigation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

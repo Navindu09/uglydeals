@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationMenu;
+    private BottomNavigationView bottomNavigation;
 
 
     @Override
@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationMenu = findViewById(R.id.bottomNavigationMenu);
+        bottomNavigation = findViewById(R.id.bottomNavigation);
 
 
 
