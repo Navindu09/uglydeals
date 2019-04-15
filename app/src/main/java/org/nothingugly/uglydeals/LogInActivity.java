@@ -73,9 +73,12 @@ public class LogInActivity extends AppCompatActivity {
                                 String error = task.getException().getMessage();
                                 Toast.makeText(LogInActivity.this, error, Toast.LENGTH_LONG).show();
                             }
+                            progressBarLogin.setVisibility(View.INVISIBLE);
+
+
+
                         }
                     });
-
                 }
 
             }
