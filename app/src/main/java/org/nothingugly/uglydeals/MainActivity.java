@@ -5,8 +5,10 @@ import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
+
         //Logout Button pressed
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                 //Retrieves current user and signs out.
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 mAuth.signOut();
-
                 sendToLogin();
             }
         });

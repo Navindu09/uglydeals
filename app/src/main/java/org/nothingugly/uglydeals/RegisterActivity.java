@@ -1,5 +1,6 @@
 package org.nothingugly.uglydeals;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -86,7 +87,32 @@ public class RegisterActivity extends AppCompatActivity {
                                 //If task is complete send the user to their Main Activity
                                 if(task.isSuccessful())
                                 {
-                                    sendToMain();
+
+                                    //If task successfull, send a verification email to email address, and signs the user out. Add an on conplete listener to see if the email was sent successfully
+                                    mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful())
+                                            {
+                                                //If email send=t successfully, send toast message and sign out user. ACCOUNT IS CREATED
+                                                Toast.makeText(RegisterActivity.this, "Please verify your email!", Toast.LENGTH_LONG).show();
+                                                mAuth.signOut();
+                                                sendToMain();
+                                            }
+
+
+                                            else {
+
+                                                //If email not sent =, send toast message and sign user out. ACCOUNT IS CREATED.
+                                                String errorMessage = task.getException().getMessage();
+                                                Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                                mAuth.signOut();
+                                                sendToMain();
+                                            }
+                                        }
+                                    });
+
                                 }
 
                                 //Else give the user the error message
