@@ -13,10 +13,17 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -33,12 +40,15 @@ public class RegisterActivity extends AppCompatActivity {
     //Intiating Firebase Authentication.
     private FirebaseAuth mAuth;
 
+    private FirebaseFirestore mFirestore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
 
         //Mapping components to variables
         editTextRegisterEmail= (EditText) findViewById(R.id.editTextRegisterEmail);
@@ -82,11 +92,23 @@ public class RegisterActivity extends AppCompatActivity {
                         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
                             @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                            public void onComplete(@NonNull final Task<AuthResult> task) {
 
                                 //If task is complete send the user to their Main Activity
                                 if(task.isSuccessful())
                                 {
+
+                                    String userID = mAuth.getUid();
+                                    String userEmail = mAuth.getCurrentUser().getEmail();
+
+                                    Map<String, String> userMap = new HashMap<>();
+
+                                    userMap.put("email", userEmail);
+
+                                    mFirestore.collection("users").document(userID).set(userMap);
+
+
+
 
                                     //If task successfull, send a verification email to email address, and signs the user out. Add an on conplete listener to see if the email was sent successfully
                                     mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -97,8 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             {
                                                 //If email send=t successfully, send toast message and sign out user. ACCOUNT IS CREATED
                                                 Toast.makeText(RegisterActivity.this, "Please verify your email!", Toast.LENGTH_LONG).show();
-                                                mAuth.signOut();
-                                                sendToMain();
+
                                             }
 
 
@@ -107,9 +128,11 @@ public class RegisterActivity extends AppCompatActivity {
                                                 //If email not sent =, send toast message and sign user out. ACCOUNT IS CREATED.
                                                 String errorMessage = task.getException().getMessage();
                                                 Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                                                mAuth.signOut();
-                                                sendToMain();
+
                                             }
+
+                                            mAuth.signOut();
+                                            sendToMain();
                                         }
                                     });
 

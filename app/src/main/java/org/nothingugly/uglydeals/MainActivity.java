@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonLogout;
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore mFirestore;
 
 
     @Override
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         //Initialise Firebase app
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
 
 
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
@@ -64,6 +67,18 @@ public class MainActivity extends AppCompatActivity {
         {
             sendToLogin();
         }
+
+        /*else {
+            if (!currentUser.isEmailVerified())
+            {
+                Toast.makeText(MainActivity.this, "Verify your email and log back in", Toast.LENGTH_LONG).show();
+                mAuth.signOut();
+                sendToLogin();
+
+            }
+        }*/
+
+
     }
 
     //Send to LoginActivity
