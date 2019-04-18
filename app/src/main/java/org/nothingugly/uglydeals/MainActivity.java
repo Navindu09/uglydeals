@@ -1,6 +1,8 @@
 package org.nothingugly.uglydeals;
 
 import android.content.Intent;
+import android.provider.DocumentsContract;
+import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +12,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,14 +54,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //Retrieves current user and signs out.
-                FirebaseUser currentUser = mAuth.getCurrentUser();
+
                 mAuth.signOut();
                 sendToLogin();
             }
         });
     }
 
-    //When ever MainActivity is started
+    //When ever MainActivity is started. Do these Validations : 1. user already logged in?
+                                                            //  2. Email verfied?
+                                                            //  3. Is phone Verified?
+                                                            //  4. Has a subscription?
     @Override
     protected void onStart() {
         super.onStart();
@@ -68,7 +80,10 @@ public class MainActivity extends AppCompatActivity {
             sendToLogin();
         }
 
+        //If a user is logged in
         else {
+
+            //If logged in user is not email verified.
             if (!currentUser.isEmailVerified())
             {
                 Toast.makeText(MainActivity.this, "Verify your email and log back in", Toast.LENGTH_LONG).show();
@@ -76,6 +91,29 @@ public class MainActivity extends AppCompatActivity {
                 sendToLogin();
 
             }
+
+            //Checks if the document exists.
+            DocumentReference docIdRef = mFirestore.collection("customers").document(currentUser.getUid());
+            //Getting that document and addOnCompleteListener
+            docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                //When complete recieves a DocumentSnapShot as the result
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    //If task is successful
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+
+                            if (document.get("isPhoneVerified").equals(false)) {
+                               mAuth.signOut();
+                               sendToPhoneSetup();
+
+                            }
+                        }
+                    }
+                }
+            });
         }
 
 
@@ -84,8 +122,16 @@ public class MainActivity extends AppCompatActivity {
     //Send to LoginActivity
     private void sendToLogin()
     {
-        Intent loginintent = new Intent(this ,LogInActivity.class);
+        Intent loginintent= new Intent(this ,LogInActivity.class);
         startActivity(loginintent);
+        finish();
+    }
+
+    //Send to LoginActivity
+    private void sendToPhoneSetup()
+    {
+        Intent phoneSetupIntent = new Intent(this , PhoneSetupActivity.class);
+        startActivity(phoneSetupIntent);
         finish();
     }
 

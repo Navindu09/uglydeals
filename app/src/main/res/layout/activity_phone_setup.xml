@@ -2,13 +2,14 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/textViewInstruction"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     tools:context=".PhoneSetupActivity">
 
     <EditText
-        android:id="@+id/editTextPhoneSetupPhoneNumber"
+        android:id="@+id/editTextPhoneSetupPhoneCode"
         android:layout_width="335dp"
         android:layout_height="54dp"
         android:layout_marginStart="8dp"
@@ -23,10 +24,10 @@
         android:textColorHighlight="#FFBC0A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPhoneSetupCode" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPhoneSetupPhone" />
 
     <EditText
-        android:id="@+id/editTextPhoneSetupCode"
+        android:id="@+id/editTextPhoneSetupPhone"
         android:layout_width="335dp"
         android:layout_height="54dp"
         android:layout_marginStart="8dp"
@@ -48,13 +49,50 @@
         android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/button_round"
         android:text="Get Code"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPhoneSetupPhoneNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPhoneSetupPhoneCode" />
+
+    <Button
+        android:id="@+id/buttongPhoneLogout"
+        android:layout_width="145dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/button_round"
+        android:text="Log Out"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPhoneSetupGetCode" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPhoneSetupGetCode" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="40dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="12dp"
+        android:indeterminateDrawable="@drawable/progress_bar"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPhoneSetupPhone"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPhoneSetupPhone"
+        app:layout_constraintTop_toTopOf="@+id/editTextPhoneSetupPhone"
+        tools:visibility="invisible" />
 
 </android.support.constraint.ConstraintLayout>

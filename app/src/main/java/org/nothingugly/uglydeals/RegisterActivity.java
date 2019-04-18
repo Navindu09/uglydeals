@@ -26,12 +26,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class RegisterActivity extends AppCompatActivity {
 
     //Initiating variables
     private EditText editTextRegisterEmail;
     private EditText editTextRegisterPassword;
     private EditText editTextRegisterConfirmPassword;
+
 
     private Button buttonRegisterRegister;
     private Button getButtonRegisterLogin;
@@ -47,6 +51,12 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        //Getting the current date/Time
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date ();
+        final String currentTime = sdf.format(date);
+
 
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
@@ -106,18 +116,25 @@ public class RegisterActivity extends AppCompatActivity {
                                     String userID = mAuth.getUid();
                                     String userEmail = mAuth.getCurrentUser().getEmail();
 
-                                    Map<String, String> userMap = new HashMap<>();
+                                    Map<String, Object> userMap = new HashMap<>();
 
                                     userMap.put("email", userEmail);
+                                    userMap.put("isPhoneVerified", false);
+                                    userMap.put("DateOfRegistration", currentTime);
+                                    userMap.put("isFreeTrailUsed", false);
 
 
                                     //Create the document for the user. Added set on complete listener to wait for writing document.
-                                    mFirestore.collection("users").document(userID).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+
+                                    mFirestore.collection("customers").document(userID).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
 
 
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
+
+
 
                                                 //If document written successfully, send a verification email to email address, and signs the user out. Add an on conplete listener to see if the email was sent successfully
                                                 mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {

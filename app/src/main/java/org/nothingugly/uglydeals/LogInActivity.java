@@ -56,11 +56,15 @@ public class LogInActivity extends AppCompatActivity {
                 String email = editTextLoginEmail.getText().toString();
                 String password = editTextLoginPassword.getText().toString();
 
+                //If the bars are filled
                 if((!TextUtils.isEmpty(email)) && !TextUtils.isEmpty(password))
                 {
                     progressBarLogin.setVisibility(View.VISIBLE);
 
+                    //Firebase Authentication in progress
                     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                        //When the user is signed in.
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful())
@@ -68,14 +72,14 @@ public class LogInActivity extends AppCompatActivity {
                                 sendToMain();
                             }
 
+                            //If user is not authenitcated
                             else
                             {
                                 String error = task.getException().getMessage();
                                 Toast.makeText(LogInActivity.this, error, Toast.LENGTH_LONG).show();
                             }
+
                             progressBarLogin.setVisibility(View.INVISIBLE);
-
-
 
                         }
                     });
@@ -92,11 +96,8 @@ public class LogInActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(LogInActivity.this, RegisterActivity.class);
                 startActivity(intent);
-
             }
         });
-
-
 
     }
 
