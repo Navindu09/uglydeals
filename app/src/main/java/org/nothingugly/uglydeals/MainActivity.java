@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             sendToLogin();
         }
 
-        /*else {
+        else {
             if (!currentUser.isEmailVerified())
             {
                 Toast.makeText(MainActivity.this, "Verify your email and log back in", Toast.LENGTH_LONG).show();
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 sendToLogin();
 
             }
-        }*/
+        }
 
 
     }

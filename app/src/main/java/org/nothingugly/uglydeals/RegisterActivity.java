@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -83,20 +84,24 @@ public class RegisterActivity extends AppCompatActivity {
                 if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(confirmPassword))
                 {
                     //Are the passwords matching?
-                    if(confirmPassword.equals(password))
-                    {
+                    if(confirmPassword.equals(password)) {
+
                         //Show the progressbar
                         progressBarRegister.setVisibility(View.VISIBLE);
 
+                        //Set buttons in invisible
+                        buttonRegisterRegister.setVisibility(View.INVISIBLE);
+                        getButtonRegisterLogin.setVisibility(View.INVISIBLE);
+
                         //Execute firebase creat user with retrieved email and password. Setting on complete listener to see if registration is complete
-                        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
                             @Override
                             public void onComplete(@NonNull final Task<AuthResult> task) {
 
-                                //If task is complete send the user to their Main Activity
-                                if(task.isSuccessful())
-                                {
+                                //If task is complete, Make the Document
+                                if (task.isSuccessful()) {
+
 
                                     String userID = mAuth.getUid();
                                     String userEmail = mAuth.getCurrentUser().getEmail();
@@ -105,71 +110,84 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     userMap.put("email", userEmail);
 
-                                    mFirestore.collection("users").document(userID).set(userMap);
 
+                                    //Create the document for the user. Added set on complete listener to wait for writing document.
+                                    mFirestore.collection("users").document(userID).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
 
-
-
-                                    //If task successfull, send a verification email to email address, and signs the user out. Add an on conplete listener to see if the email was sent successfully
-                                    mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
 
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful())
-                                            {
-                                                //If email send=t successfully, send toast message and sign out user. ACCOUNT IS CREATED
-                                                Toast.makeText(RegisterActivity.this, "Please verify your email!", Toast.LENGTH_LONG).show();
+                                            if (task.isSuccessful()) {
+
+                                                //If document written successfully, send a verification email to email address, and signs the user out. Add an on conplete listener to see if the email was sent successfully
+                                                mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                                        //If Email sent successfully, log out and send to main. Make toast to verify email.
+                                                        if (task.isSuccessful()) {
+                                                            //If email sent successfully, send toast message and sign out user. ACCOUNT IS CREATED
+                                                            Toast.makeText(RegisterActivity.this, "Account created. Please verify your email and log in!", Toast.LENGTH_LONG).show();
+                                                            mAuth.signOut();
+                                                            sendToMain();
+                                                        }
+                                                    }
+                                                });
+
+                                            } else {
+
+                                                //Delete the user, since the account was created but then document wasnt
+                                                mAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (!task.isSuccessful()) {
+                                                            Toast.makeText(RegisterActivity.this, "OOPS! Something went wrong please try again", Toast.LENGTH_LONG).show();
+                                                            sendToMain();
+                                                        }
+                                                    }
+                                                });
 
                                             }
-
-
-                                            else {
-
-                                                //If email not sent =, send toast message and sign user out. ACCOUNT IS CREATED.
-                                                String errorMessage = task.getException().getMessage();
-                                                Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-
-                                            }
-
-                                            mAuth.signOut();
-                                            sendToMain();
                                         }
                                     });
 
+
                                 }
+
+
+
 
                                 //Else give the user the error message
-                                else
-                                {
+                                else {
                                     String errorMessage = task.getException().getMessage();
                                     Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                    editTextRegisterEmail.setText("");
+                                    editTextRegisterPassword.setText("");
+                                    editTextRegisterConfirmPassword.setText("");
+
+                                    //Make the progress bar invisible
+                                    progressBarRegister.setVisibility(View.INVISIBLE);
+                                    //Set buttons in to visible
+                                    buttonRegisterRegister.setVisibility(View.VISIBLE);
+                                    getButtonRegisterLogin.setVisibility(View.VISIBLE);
                                 }
 
-                                //Make the progress bar invisible
-                                progressBarRegister.setVisibility(View.INVISIBLE);
 
                             }
+
                         });
-
-
-
-
                     }
 
                     //If Password and ConfirmPassword dont match, let the user know
                     else
                     {
-
                         Toast.makeText(RegisterActivity.this, "Password and Confirm Password should match",Toast.LENGTH_LONG).show();
                     }
                 }
             }
         });
 
-
-
-        //Setting transition animation.
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
 
@@ -203,13 +221,4 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-    //When back button is pressed
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        sendToLogin();
-
-
-    }
 }
