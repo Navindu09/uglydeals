@@ -5,9 +5,12 @@ import android.provider.DocumentsContract;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -32,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
 
+    private HomeFragment homeFragment;
+    private SearchFragment searchFragment;
+    private NotificationsFragment notificationsFragment;
+    private AccountFragment accountFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +51,54 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
 
+        // Setting up Fragments
+        homeFragment = new HomeFragment();
+        searchFragment = new SearchFragment();
+        notificationsFragment = new NotificationsFragment();
+        accountFragment = new AccountFragment();
 
+
+        //Setting up navigation.
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         bottomNavigation = findViewById(R.id.bottomNavigation);
+
+
+        //When the bottom navigation buttons are clicked
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+
+                switch (menuItem.getItemId()){
+
+                    //if home button clicked, replace fragment with home
+                    case (R.id.bottomNavigationHome) :
+
+                        replaceFragment(homeFragment);
+                        return true;
+                    //if Search button clicked, replace fragment with search
+                    case (R.id.bottomNavigationSearch) :
+
+                        replaceFragment(searchFragment);
+                        return true;
+                    //if notification button clicked, replace fragment with Notification
+                    case (R.id.bottomNavigationNotification) :
+
+                        replaceFragment(notificationsFragment);
+                        return true;
+
+                    //if account button clicked, replace fragment with account
+                    case (R.id.bottomNavigationAccount) :
+
+                        replaceFragment(accountFragment);
+                        return true;
+
+                    default:
+                        return false;
+
+                }
+            }
+        });
 
 
         //Logout Button pressed
@@ -59,7 +112,10 @@ public class MainActivity extends AppCompatActivity {
                 sendToLogin();
             }
         });
+
+
     }
+
 
     //When ever MainActivity is started. Do these Validations : 1. user already logged in?
                                                             //  2. Email verfied?
@@ -133,6 +189,15 @@ public class MainActivity extends AppCompatActivity {
         Intent phoneSetupIntent = new Intent(this , PhoneSetupActivity.class);
         startActivity(phoneSetupIntent);
         finish();
+    }
+
+
+    //Replacing fragment
+    private void replaceFragment(Fragment fragment){
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.mainContainer,fragment);
+        fragmentTransaction.commit();
     }
 
 

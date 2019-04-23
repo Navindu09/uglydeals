@@ -119,9 +119,11 @@ public class RegisterActivity extends AppCompatActivity {
                                     Map<String, Object> userMap = new HashMap<>();
 
                                     userMap.put("email", userEmail);
-                                    userMap.put("isPhoneVerified", false);
+                                    userMap.put("isPhoneVerified", true);
                                     userMap.put("DateOfRegistration", currentTime);
                                     userMap.put("isFreeTrailUsed", false);
+
+
 
 
                                     //Create the document for the user. Added set on complete listener to wait for writing document.
