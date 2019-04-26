@@ -52,11 +52,13 @@ public class HomeFragment extends Fragment {
         dealList = new ArrayList<>();
 
         //Mapping the layout component
-        recyclerView = getActivity().findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
         dealRecyclerAdapter = new DealRecyclerAdapter(dealList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(dealRecyclerAdapter);
 
 

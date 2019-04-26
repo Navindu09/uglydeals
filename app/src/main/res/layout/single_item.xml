@@ -24,6 +24,8 @@
                 android:id="@+id/dealName"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@color/colorPrimaryDark"
                 android:text="Add Here"
                 android:textAlignment="center"
@@ -33,14 +35,18 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/itemPhoto" />
+                app:layout_constraintTop_toBottomOf="@+id/itemImage" />
 
             <ImageView
-                android:id="@+id/itemPhoto"
+                android:id="@+id/itemImage"
                 android:layout_width="0dp"
                 android:layout_height="247dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="Image"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@android:color/darker_gray" />
@@ -49,6 +55,8 @@
                 android:id="@+id/restaurantName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/colorPrimaryDark"
                 android:text="TextView"
                 android:textAppearance="@android:style/TextAppearance.Holo.SearchResult.Title"
@@ -56,8 +64,8 @@
                 android:textColorLink="@color/colorPrimary"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/itemImage"
+                app:layout_constraintTop_toTopOf="@+id/itemImage"
                 tools:text="NAME " />
         </android.support.constraint.ConstraintLayout>
 

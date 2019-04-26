@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
+        //When main activity starts, the home fragment is shown
+        replaceFragment(homeFragment);
+
 
         //When the bottom navigation buttons are clicked
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

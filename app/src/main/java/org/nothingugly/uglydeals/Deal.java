@@ -13,16 +13,16 @@ public class Deal {
         this.name = name;
         this.partnerID = partnerID;
         this.termsOfUse = termsOfUse;
-        this.dealPhoto = dealPhoto;
-        this.validFrom = validFrom;
-        this.validTill = validTill;
+        this.dealImage = dealPhoto;
+        //this.validFrom = validFrom;
+      //  this.validTill = validTill;
     }
 
     //Declarng the variables
 
-    public String name, partnerID, termsOfUse, dealPhoto;
-    public Timestamp validFrom;
-    public Timestamp validTill;
+    public String name, partnerID, termsOfUse, dealImage;
+    //public Timestamp validFrom;
+    //public Timestamp validTill;
 
     //Getters and Setters
 
@@ -51,14 +51,14 @@ public class Deal {
     }
 
     public String getDealPhoto() {
-        return dealPhoto;
+        return dealImage;
     }
 
     public void setDealPhoto(String dealPhoto) {
-        this.dealPhoto = dealPhoto;
+        this.dealImage = dealPhoto;
     }
 
-    public Timestamp getValidFrom() {
+    /*public Timestamp getValidFrom() {
         return validFrom;
     }
 
@@ -72,6 +72,6 @@ public class Deal {
 
     public void setValidTill(Timestamp validTill) {
         this.validTill = validTill;
-    }
+    }*/
 
 }
