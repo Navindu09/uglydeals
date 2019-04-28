@@ -10,10 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -45,23 +41,24 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull final DealRecyclerAdapter.ViewHolder viewHolder, int i) {
 
-        //Retrieve name of the deal
+       /* //Retrieve name of the deal
         String  name = dealList.get(i).getName();
         //Set the name of the deal to the viewholder
-        viewHolder.setName(name);
+        viewHolder.setName(name);*/
 
         //Retrieve the image URL of the current deal at index
         String imageURL = dealList.get(i).getDealPhoto();
         //Set the URL to the viewHolder
         viewHolder.setImage(imageURL);
 
-        //Taking the restaurant ID from the deal
-        String restaurantId = dealList.get(i).getPartnerID();
+     /*   //Taking the restaurant ID from the deal
+        final String restaurantId = dealList.get(i).getPartnerID();
+
 
         //Getting the corresponding document for the partner ID
         DocumentReference temp = mFirestore.collection("partners").document(restaurantId);
 
-        //Get Document Snapshot
+       //Get Document Snapshot
         temp.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -79,7 +76,7 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
                 }
             }
         });
-
+*/
 
 
     }
@@ -108,20 +105,21 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
             mView = itemView;
         }
 
-        public void setName(String nametext){
+
+       /* public void setName(String nametext){
 
             name = mView.findViewById(R.id.dealName);
             name.setText(nametext);
-        }
+        }*/
 
         public void setImage(String imageURL) {
             image = mView.findViewById(R.id.itemImage);
             Glide.with(context).load(imageURL).into(image);
         }
-
+/*
         public void setRestaurantName(String restName){
             restaurantName = mView.findViewById(R.id.restaurantName);
             restaurantName.setText(restName);
-        }
+        }*/
     }
 }

@@ -27,12 +27,18 @@ import javax.annotation.Nullable;
 public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    private RecyclerView recyclerView1;
+    private RecyclerView recyclerView2;
+
     private List<Deal> dealList;
+    private List<Deal> dealList1;
+    private List<Deal> dealList2;
 
     private FirebaseFirestore mFirestore;
 
     private DealRecyclerAdapter dealRecyclerAdapter;
-
+    private DealRecyclerAdapter dealRecyclerAdapter1;
+    private DealRecyclerAdapter dealRecyclerAdapter2;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -48,18 +54,38 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+
         //Initialising the list of deals
         dealList = new ArrayList<>();
+        dealList1 = new ArrayList<>();
+        dealList2 = new ArrayList<>();
+
 
         //Mapping the layout component
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView1 = (RecyclerView) view.findViewById(R.id.recyclerView1);
+        recyclerView2 = (RecyclerView) view.findViewById(R.id.recyclerView2);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager1
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager2
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
         dealRecyclerAdapter = new DealRecyclerAdapter(dealList);
+        dealRecyclerAdapter1 = new DealRecyclerAdapter(dealList1);
+        dealRecyclerAdapter2 = new DealRecyclerAdapter(dealList2);
+
+
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView1.setLayoutManager(layoutManager1);
+        recyclerView2.setLayoutManager(layoutManager2);
+
         recyclerView.setAdapter(dealRecyclerAdapter);
+        recyclerView1.setAdapter(dealRecyclerAdapter1);
+        recyclerView2.setAdapter(dealRecyclerAdapter2);
+
 
 
         //Initialising the list of deals
@@ -74,8 +100,16 @@ public class HomeFragment extends Fragment {
                     {
                         Deal deal = doc.getDocument().toObject(Deal.class);
                         dealList.add(deal);
+                        dealList1.add(deal);
+                        dealList2.add(deal);
 
                         dealRecyclerAdapter.notifyDataSetChanged();
+                        dealRecyclerAdapter1.notifyDataSetChanged();
+                        dealRecyclerAdapter2.notifyDataSetChanged();
+
+
+
+
                     }
                 }
 
