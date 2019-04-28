@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
 
     private FirebaseFirestore mFirestore;
 
-    private DealRecyclerAdapter dealRecyclerAdapter;
+    private FeaturedDealRecyclerAdapter dealRecyclerAdapter;
     private DealRecyclerAdapter dealRecyclerAdapter1;
     private DealRecyclerAdapter dealRecyclerAdapter2;
 
@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager2
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-        dealRecyclerAdapter = new DealRecyclerAdapter(dealList);
+        dealRecyclerAdapter = new FeaturedDealRecyclerAdapter(dealList);
         dealRecyclerAdapter1 = new DealRecyclerAdapter(dealList1);
         dealRecyclerAdapter2 = new DealRecyclerAdapter(dealList2);
 
