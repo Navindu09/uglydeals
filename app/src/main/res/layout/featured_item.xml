@@ -7,8 +7,8 @@
     android:padding="6dp">
 
     <android.support.v7.widget.CardView
-        android:layout_width="371dp"
-        android:layout_height="260dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,8 +19,8 @@
 
             <ImageView
                 android:id="@+id/featuredImageView"
-                android:layout_width="372dp"
-                android:layout_height="180dp"
+                android:layout_width="386dp"
+                android:layout_height="175dp"
                 android:contentDescription="TODO"
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
@@ -33,22 +33,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppins"
+                android:textColor="#130000"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/featuredImageView" />
-
-            <TextView
-                android:id="@+id/textViewFeaturedRestaurantName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewFeaturedName" />
 
             <TextView
                 android:id="@+id/textViewFeaturedLocation"
@@ -57,10 +47,27 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:textSize="18sp"
+                android:fontFamily="@font/poppins"
+                android:textColor="#130000"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textViewFeaturedRestaurantName"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewFeaturedName" />
+
+            <ImageView
+                android:id="@+id/restaurantImage"
+                android:layout_width="56dp"
+                android:layout_height="53dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/featuredImageView"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@android:color/darker_gray" />
         </android.support.constraint.ConstraintLayout>
+
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

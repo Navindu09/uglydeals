@@ -19,7 +19,7 @@
             android:type="sweep"
             android:useLevel="false"
             android:startColor="@color/colorPrimaryDark"
-            android:endColor="@color/buttonColor"
+            android:endColor="@color/colorAccent"
             android:angle="0"/>
 
     </shape>

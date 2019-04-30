@@ -56,7 +56,7 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
 
 
         //Taking the restaurant ID from the deal
-        final String restaurantId = dealList.get(i).getPartnerID();
+        String restaurantId = dealList.get(i).getPartnerID();
 
 
         //Getting the corresponding document for the partner ID
@@ -74,17 +74,18 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
                         String restaurantName = restaurantDocument.get("name").toString();
 
                         //Set the name on the view holder
-                        viewHolder.setRestaurantName(restaurantName);
+                       // viewHolder.setRestaurantName(restaurantName);
+
+                       String restaurantLogo = (String) restaurantDocument.get("restaurantLogo").toString();
+                        viewHolder.setRestaurantImage(restaurantLogo);
+
                     }
 
                 }
             }
         });
 
-
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -100,6 +101,7 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
 
         private TextView name;
         private ImageView image;
+        private ImageView restImage;
         private TextView restaurantName;
 
         public ViewHolder(@NonNull View itemView) {
@@ -118,11 +120,18 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
         public void setImage(String imageURL) {
             image = mView.findViewById(R.id.featuredImageView);
             Glide.with(context).load(imageURL).into(image);
+
         }
 
-        public void setRestaurantName(String restName){
+        public void setRestaurantImage(String restaurantImageURL) {
+            restImage = mView.findViewById(R.id.restaurantImage);
+            Glide.with(context).load(restaurantImageURL).into(restImage);
+
+        }
+
+      /*  public void setRestaurantName(String restName){
             restaurantName = mView.findViewById(R.id.textViewFeaturedRestaurantName);
             restaurantName.setText(restName);
-        }
+        }*/
     }
 }

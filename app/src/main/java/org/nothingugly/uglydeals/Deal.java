@@ -1,6 +1,5 @@
 package org.nothingugly.uglydeals;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
 public class Deal {
@@ -9,7 +8,7 @@ public class Deal {
     public Deal(){}
 
     //Constructor
-    public Deal(String name, String partnerID, String termsOfUse, String dealPhoto, Timestamp validFrom, Timestamp validTill) {
+    public Deal(String name, String partnerID, String termsOfUse, String dealPhoto, Timestamp validFrom, Timestamp validTill,Boolean mainAd) {
         this.name = name;
         this.partnerID = partnerID;
         this.termsOfUse = termsOfUse;
@@ -21,6 +20,7 @@ public class Deal {
     //Declarng the variables
 
     public String name, partnerID, termsOfUse, dealImage;
+    public Boolean mainAd;
     //public Timestamp validFrom;
     //public Timestamp validTill;
 
@@ -57,6 +57,16 @@ public class Deal {
     public void setDealPhoto(String dealPhoto) {
         this.dealImage = dealPhoto;
     }
+
+
+    public Boolean getMainAd() {
+        return mainAd;
+    }
+
+    public void setMainAd(Boolean mainAd) {
+        this.mainAd = mainAd;
+    }
+
 
     /*public Timestamp getValidFrom() {
         return validFrom;

@@ -14,6 +14,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +27,17 @@ import javax.annotation.Nullable;
  */
 public class HomeFragment extends Fragment {
 
-    private RecyclerView recyclerView;
+    private DiscreteScrollView featuredRecyclerView;
     private RecyclerView recyclerView1;
     private RecyclerView recyclerView2;
 
-    private List<Deal> dealList;
+    private List<Deal> featuredList;
     private List<Deal> dealList1;
     private List<Deal> dealList2;
 
     private FirebaseFirestore mFirestore;
 
-    private FeaturedDealRecyclerAdapter dealRecyclerAdapter;
+    private FeaturedDealRecyclerAdapter featuredDealRecyclerAdapter;
     private DealRecyclerAdapter dealRecyclerAdapter1;
     private DealRecyclerAdapter dealRecyclerAdapter2;
 
@@ -56,13 +57,13 @@ public class HomeFragment extends Fragment {
 
 
         //Initialising the list of deals
-        dealList = new ArrayList<>();
+        featuredList = new ArrayList<>();
         dealList1 = new ArrayList<>();
         dealList2 = new ArrayList<>();
 
 
         //Mapping the layout component
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        featuredRecyclerView =  view.findViewById(R.id.featuredRecyclerView);
         recyclerView1 = (RecyclerView) view.findViewById(R.id.recyclerView1);
         recyclerView2 = (RecyclerView) view.findViewById(R.id.recyclerView2);
 
@@ -73,18 +74,19 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager2
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-        dealRecyclerAdapter = new FeaturedDealRecyclerAdapter(dealList);
+        featuredDealRecyclerAdapter = new FeaturedDealRecyclerAdapter(featuredList);
         dealRecyclerAdapter1 = new DealRecyclerAdapter(dealList1);
         dealRecyclerAdapter2 = new DealRecyclerAdapter(dealList2);
 
 
-        recyclerView.setLayoutManager(layoutManager);
+        //featuredRecyclerView.setLayoutManager(layoutManager);
         recyclerView1.setLayoutManager(layoutManager1);
         recyclerView2.setLayoutManager(layoutManager2);
 
-        recyclerView.setAdapter(dealRecyclerAdapter);
+        featuredRecyclerView.setAdapter(featuredDealRecyclerAdapter);
         recyclerView1.setAdapter(dealRecyclerAdapter1);
         recyclerView2.setAdapter(dealRecyclerAdapter2);
+
 
 
 
@@ -95,21 +97,30 @@ public class HomeFragment extends Fragment {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
                 for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges())
+
                 {
-                    if (doc.getType() == DocumentChange.Type.ADDED)
+                    Deal deal = doc.getDocument().toObject(Deal.class);
+
+                    if (doc.getType() == DocumentChange.Type.ADDED )
                     {
-                        Deal deal = doc.getDocument().toObject(Deal.class);
-                        dealList.add(deal);
+
+
+                        if(deal.getMainAd())
+                        {
+                            featuredList.add(deal);
+                            featuredDealRecyclerAdapter.notifyDataSetChanged();
+
+                        }
+
+
+
+
                         dealList1.add(deal);
                         dealList2.add(deal);
 
-                        dealRecyclerAdapter.notifyDataSetChanged();
+
                         dealRecyclerAdapter1.notifyDataSetChanged();
                         dealRecyclerAdapter2.notifyDataSetChanged();
-
-
-
-
                     }
                 }
 

@@ -26,13 +26,17 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigation;
     private Button buttonLogout;
 
+    private static final String TAG = "MainActivity";
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
+
 
     private HomeFragment homeFragment;
     private SearchFragment searchFragment;
     private NotificationsFragment notificationsFragment;
     private AccountFragment accountFragment;
+    //private FusedLocationProviderClient locationProviderClient;
 
 
     @Override
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
+
 
         // Setting up Fragments
         homeFragment = new HomeFragment();
@@ -66,26 +71,26 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
 
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
 
                     //if home button clicked, replace fragment with home
-                    case (R.id.bottomNavigationHome) :
+                    case (R.id.bottomNavigationHome):
 
                         replaceFragment(homeFragment);
                         return true;
                     //if Search button clicked, replace fragment with search
-                    case (R.id.bottomNavigationSearch) :
+                    case (R.id.bottomNavigationSearch):
 
                         replaceFragment(searchFragment);
                         return true;
                     //if notification button clicked, replace fragment with Notification
-                    case (R.id.bottomNavigationNotification) :
+                    case (R.id.bottomNavigationNotification):
 
                         replaceFragment(notificationsFragment);
                         return true;
 
                     //if account button clicked, replace fragment with account
-                    case (R.id.bottomNavigationAccount) :
+                    case (R.id.bottomNavigationAccount):
 
                         replaceFragment(accountFragment);
                         return true;
@@ -104,19 +109,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //Retrieves current user and signs out.
-
                 mAuth.signOut();
                 sendToLogin();
             }
         });
 
     }
-
-
     //When ever MainActivity is started. Do these Validations : 1. user already logged in?
-                                                            //  2. Email verfied?
-                                                            //  3. Is phone Verified?
-                                                            //  4. Has a subscription?
+    //  2. Email verfied?
+    //  3. Is phone Verified?
+    //  4. Has a subscription?
     @Override
     protected void onStart() {
         super.onStart();
@@ -125,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //If not user is logged in
-        if(currentUser == null)
+        if (currentUser == null)
 
         //Open loginActivity to login
         {
@@ -134,14 +136,11 @@ public class MainActivity extends AppCompatActivity {
 
         //If a user is logged in
         else {
-
             //If logged in user is not email verified.
-            if (!currentUser.isEmailVerified())
-            {
+            if (!currentUser.isEmailVerified()) {
                 Toast.makeText(MainActivity.this, "Verify your email and log back in", Toast.LENGTH_LONG).show();
                 mAuth.signOut();
                 sendToLogin();
-
             }
 
             //Checks if the document exists.
@@ -158,9 +157,8 @@ public class MainActivity extends AppCompatActivity {
                         if (document.exists()) {
 
                             if (document.get("isPhoneVerified").equals(false)) {
-                               mAuth.signOut();
-                               sendToPhoneSetup();
-
+                                mAuth.signOut();
+                                sendToPhoneSetup();
                             }
                         }
                     }
@@ -168,33 +166,33 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-
     }
 
     //Send to LoginActivity
-    private void sendToLogin()
-    {
-        Intent loginintent= new Intent(this ,LogInActivity.class);
+    private void sendToLogin() {
+        Intent loginintent = new Intent(this, LogInActivity.class);
         startActivity(loginintent);
         finish();
     }
 
     //Send to LoginActivity
-    private void sendToPhoneSetup()
-    {
-        Intent phoneSetupIntent = new Intent(this , PhoneSetupActivity.class);
+    private void sendToPhoneSetup() {
+        Intent phoneSetupIntent = new Intent(this, PhoneSetupActivity.class);
         startActivity(phoneSetupIntent);
         finish();
     }
 
 
     //Replacing fragment
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.mainContainer,fragment);
+        fragmentTransaction.replace(R.id.mainContainer, fragment);
         fragmentTransaction.commit();
     }
+
+
+
 
 
 }
