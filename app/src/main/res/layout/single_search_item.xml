@@ -3,19 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="10dp">
 
     <android.support.v7.widget.CardView
         android:id="@+id/searchItemCard"
-        android:layout_width="387dp"
-        android:layout_height="100dp"
+        android:layout_width="363dp"
+        android:layout_height="97dp"
         app:cardCornerRadius="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/buttonColor">
 
             <TextView
@@ -26,7 +27,7 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/poppins"
                 android:textColor="#000000"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/imageViewSearchItem"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,28 +60,15 @@
             <ImageView
                 android:id="@+id/imageViewSearchItem"
                 android:layout_width="127dp"
-                android:layout_height="100dp"
+                android:layout_height="0dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="TODO"
-                android:scaleType="centerInside"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@android:color/darker_gray" />
 
-            <ImageView
-                android:id="@+id/imageViewRestaurantLogo"
-                android:layout_width="48dp"
-                android:layout_height="43dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="28dp"
-                android:adjustViewBounds="true"
-                android:layout_marginBottom="8dp"
-                android:scaleType="fitXY"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:color/darker_gray"
-                android:contentDescription="TODO" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

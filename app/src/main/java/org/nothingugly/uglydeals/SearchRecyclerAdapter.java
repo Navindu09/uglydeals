@@ -73,9 +73,6 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                         //Set the name on the view holder
                         viewHolder.setRestaurantName(restaurantName);
 
-                        String restaurantLogo = (String) restaurantDocument.get("restaurantLogo").toString();
-                        viewHolder.setLogo(restaurantLogo);
-
                     }
 
                 }
@@ -114,11 +111,6 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             image = mView.findViewById(R.id.imageViewSearchItem);
             Glide.with(context).load(imageURL).into(image);
         }
-        public void setLogo(String imageURL) {
-            image = mView.findViewById(R.id.imageViewRestaurantLogo);
-            Glide.with(context).load(imageURL).into(image);
-        }
-
 
         public void setRestaurantName(String restName){
             restaurantName = mView.findViewById(R.id.textViewSearchItemRestaurant);

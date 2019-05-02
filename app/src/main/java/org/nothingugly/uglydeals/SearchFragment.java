@@ -77,6 +77,9 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                searchedDeals.clear();
+                searchRecyclerAdapter.notifyDataSetChanged();
+
                 String searchText = editTextSearchSearch.getText().toString();
 
 
@@ -103,8 +106,6 @@ public class SearchFragment extends Fragment {
                                                 searchedDeals.add(deal);
 
                                                 searchRecyclerAdapter.notifyDataSetChanged();
-
-
                                             }
                                        }
                                    }
@@ -116,10 +117,7 @@ public class SearchFragment extends Fragment {
 
             }
         });
-
-
         return view;
     }
-
 
 }
