@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:id="@+id/accountCategory"
+        android:title="Account" />
+
+        <EditTextPreference
+            android:id="@+id/user_name"
+            android:key="user_name"
+            android:summary="Navindu Dissanayake"
+            android:title="Name" />
+
+
+        <Preference
+            android:id="@+id/account_type"
+            android:key="account_type"
+            android:summary="Student"
+            android:title="Account Type" />
+
+        <Preference
+            android:id="@+id/user_points"
+            android:key="user_points"
+            android:summary="250"
+            android:title="Points" />
+
+        <Preference
+            android:id="@+id/reset_password"
+            android:key="reset_password"
+            android:title="Reset Password" />
+
+        <Preference
+            android:id="@+id/user_logout"
+            android:key="user_logout"
+            android:title="Log out" />
+
+
+
+
+    <PreferenceCategory
+        android:title="Help"/>
+
+
+
+        <Preference
+
+            android:id="@+id/buttonAccountFragmentProfileTAC"
+            android:background="#DAFFFFFF"
+            android:title="Terms and Conditions" />
+
+
+        <Preference
+
+            android:title="About"
+            android:key="about"
+            android:id="@+id/buttonAccountFragmentProfileAbout"/>
+         <Preference
+
+            android:title="Contact us"
+            android:key="contact_us"
+            android:id="@+id/buttonAccountFragmentProfileLogOut"/>
+
+
+
+</PreferenceScreen>

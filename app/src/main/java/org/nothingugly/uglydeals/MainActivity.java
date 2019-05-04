@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Setting up navigation.
-        buttonLogout = (Button) findViewById(R.id.buttonLogout);
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
         //When main activity starts, the home fragment is shown
@@ -103,16 +101,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //Logout Button pressed
-        buttonLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //Retrieves current user and signs out.
-                mAuth.signOut();
-                sendToLogin();
-            }
-        });
 
     }
     //When ever MainActivity is started. Do these Validations : 1. user already logged in?
@@ -189,6 +177,10 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.mainContainer, fragment);
         fragmentTransaction.commit();
+    }
+
+    private FirebaseAuth getFirebaseAuth(){
+        return FirebaseAuth.getInstance();
     }
 
 
