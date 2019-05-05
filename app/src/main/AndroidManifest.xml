@@ -24,6 +24,7 @@
         <activity android:name=".PhoneSetupActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LogInActivity" />
+        <activity android:name=".SelectedItemActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

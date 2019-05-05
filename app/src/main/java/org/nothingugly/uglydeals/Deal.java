@@ -1,6 +1,6 @@
 package org.nothingugly.uglydeals;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class Deal {
 
@@ -8,21 +8,23 @@ public class Deal {
     public Deal(){}
 
     //Constructor
-    public Deal(String name, String partnerID, String termsOfUse, String dealPhoto, Timestamp validFrom, Timestamp validTill,Boolean mainAd) {
+    public Deal(String id, String name, String partnerID, String termsOfUse, String dealPhoto, String description, Date validFrom, Date validTill,Boolean mainAd) {
         this.name = name;
         this.partnerID = partnerID;
         this.termsOfUse = termsOfUse;
         this.dealImage = dealPhoto;
+        this.id = id;
         //this.validFrom = validFrom;
-      //  this.validTill = validTill;
+        //this.validTill = validTill;
+        this.description = description;
     }
 
-    //Declarng the variables
+//Declarng the variables
 
-    public String name, partnerID, termsOfUse, dealImage;
+    public String id, name, partnerID, termsOfUse, dealImage, description;
     public Boolean mainAd;
-    //public Timestamp validFrom;
-    //public Timestamp validTill;
+   // public Date validFrom;
+    //public Date validTill;
 
     //Getters and Setters
 
@@ -68,20 +70,39 @@ public class Deal {
     }
 
 
-    /*public Timestamp getValidFrom() {
-        return validFrom;
+    public String getId() {
+        return id;
     }
 
-    public void setValidFrom(Timestamp validFrom) {
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+ /*  public String getValidFrom() {
+        return  validFrom.toString();
+    }
+
+    public void setValidFrom(Date validFrom) {
         this.validFrom = validFrom;
     }
 
-    public Timestamp getValidTill() {
-        return validTill;
+    public String getValidTill() {
+        return validTill.toString();
+
+    public void setValidTill(Date validTill) {
+    this.validTill = validTill;
+    }
+    }*/
+
+    public String getDescription() {
+        return description;
     }
 
-    public void setValidTill(Timestamp validTill) {
-        this.validTill = validTill;
-    }*/
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
 
 }

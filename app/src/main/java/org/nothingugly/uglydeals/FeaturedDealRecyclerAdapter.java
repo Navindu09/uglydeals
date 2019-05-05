@@ -1,6 +1,7 @@
 package org.nothingugly.uglydeals;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -58,6 +59,8 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
         //Taking the restaurant ID from the deal
         String restaurantId = dealList.get(i).getPartnerID();
 
+        final String dealId = dealList.get(i).getId();
+
 
         //Getting the corresponding document for the partner ID
         DocumentReference temp = mFirestore.collection("partners").document(restaurantId);
@@ -85,6 +88,16 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
             }
         });
 
+        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, SelectedItemActivity.class);
+                intent.putExtra("dealId",dealId);
+                context.startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override
@@ -102,7 +115,7 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
         private TextView name;
         private ImageView image;
         private ImageView restImage;
-        private TextView restaurantName;
+        //private TextView restaurantName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
