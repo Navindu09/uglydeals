@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "org.nothingugly.uglydeals"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
     implementation "com.google.android.gms:play-services-location:15.0.1"
     implementation "com.miguelcatalan:materialsearchview:1.4.0"
+    implementation 'com.google.firebase:firebase-ml-vision:17.0.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

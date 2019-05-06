@@ -1,9 +1,13 @@
 package org.nothingugly.uglydeals;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,6 +29,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class SelectedItemActivity extends AppCompatActivity {
 
     private static final String TAG = "SelectedItemActivity";
+
+    public static final int REQUEST_CODE = 100;
+    public static final int PERMISSION_REQUEST = 200;
 
     private TextView textViewSelectedItemPartnerName;
     private ImageView imageViewSelectedItemImage;
@@ -121,16 +128,17 @@ public class SelectedItemActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
+                                //Save the document instance
                                 DocumentSnapshot partnerDocument = task.getResult();
                                 String partnerName = (String) partnerDocument.get("name");
 
                                 //Set the name of the partner in the layout
                                 textViewSelectedItemPartnerName.setText(partnerName);
-
                             }
                         });
                     }
 
+                    //Set components visible after data retrieval and then set progressbar invisible.
                     textViewSelectedItemPartnerName.setVisibility(View.VISIBLE);
                     imageViewSelectedItemImage.setVisibility(View.VISIBLE);
                     textViewSelectedItemName.setVisibility(View.VISIBLE);
@@ -142,18 +150,27 @@ public class SelectedItemActivity extends AppCompatActivity {
 
                 }
 
-
-
             });
 
+        final String finalDealId = dealId;
 
+        buttonSelectedItemRedeem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    if(ContextCompat.checkSelfPermission(SelectedItemActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                        ActivityCompat.requestPermissions(SelectedItemActivity.this, new String [] {Manifest.permission.CAMERA},PERMISSION_REQUEST);
+                    }
+                    Intent scanIntent = new Intent (SelectedItemActivity.this, ScanActivity.class);
+                    scanIntent.putExtra("dealId", finalDealId);
+                    startActivity(scanIntent);
+                }
+            });
         }
-
+//Checks if there is a user logged in
     @Override
     protected void onStart() {
         super.onStart();
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null){
             sendToLogin();
