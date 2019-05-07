@@ -11,13 +11,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //Initialise Firebase app
         FirebaseApp.initializeApp(this);
@@ -131,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 sendToLogin();
             }
 
-            //Checks if the document exists.
+          /*  //Checks if the document exists.
             DocumentReference docIdRef = mFirestore.collection("customers").document(currentUser.getUid());
             //Getting that document and addOnCompleteListener
             docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -151,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
-            });
+            });*/
         }
 
     }

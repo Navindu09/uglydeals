@@ -33,6 +33,7 @@ public class SelectedItemActivity extends AppCompatActivity {
     public static final int REQUEST_CODE = 100;
     public static final int PERMISSION_REQUEST = 200;
 
+
     private TextView textViewSelectedItemPartnerName;
     private ImageView imageViewSelectedItemImage;
     private TextView textViewSelectedItemName;
@@ -41,6 +42,8 @@ public class SelectedItemActivity extends AppCompatActivity {
     private Button buttonSelectedItemRedeem;
     private TextView textViewSelectedItemTerms;
     private ProgressBar progressBarSelectedItem;
+
+    private String deal;
 
     private FirebaseFirestore mFireStore;
     private FirebaseAuth mAuth;
@@ -65,6 +68,7 @@ public class SelectedItemActivity extends AppCompatActivity {
         }
 
         Log.d(TAG, "onCreate: DealId retrieved : "+ dealId);
+        deal = dealId;
 
         //Setting the layout for the activity
         setContentView(R.layout.activity_selected_item);
@@ -92,7 +96,7 @@ public class SelectedItemActivity extends AppCompatActivity {
         progressBarSelectedItem.setVisibility(View.VISIBLE);
 
             //Checking the deals collection for the
-            mFireStore.collection("deals").document(dealId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            mFireStore.collection("deals").document(deal).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -152,7 +156,6 @@ public class SelectedItemActivity extends AppCompatActivity {
 
             });
 
-        final String finalDealId = dealId;
 
         buttonSelectedItemRedeem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -162,7 +165,7 @@ public class SelectedItemActivity extends AppCompatActivity {
                         ActivityCompat.requestPermissions(SelectedItemActivity.this, new String [] {Manifest.permission.CAMERA},PERMISSION_REQUEST);
                     }
                     Intent scanIntent = new Intent (SelectedItemActivity.this, ScanActivity.class);
-                    scanIntent.putExtra("dealId", finalDealId);
+                    scanIntent.putExtra("dealId", deal);
                     startActivity(scanIntent);
                 }
             });

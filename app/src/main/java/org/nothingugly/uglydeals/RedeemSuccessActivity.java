@@ -30,6 +30,8 @@ public class RedeemSuccessActivity extends AppCompatActivity {
     private ProgressBar progressBarRedeemSuccess;
 
 
+
+
     private FirebaseFirestore mFireStore;
     private FirebaseAuth mAuth;
 
@@ -54,6 +56,8 @@ public class RedeemSuccessActivity extends AppCompatActivity {
         } else {
             dealId = (String) savedInstanceState.getSerializable("dealId");
         }
+
+
 
         setContentView(R.layout.activity_redeem_success);
 
@@ -131,10 +135,17 @@ public class RedeemSuccessActivity extends AppCompatActivity {
         });
 
         buttonRedeemSuccessExit.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
