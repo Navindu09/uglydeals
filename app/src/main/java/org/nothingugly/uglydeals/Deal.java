@@ -1,6 +1,6 @@
 package org.nothingugly.uglydeals;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Deal {
 
@@ -8,23 +8,23 @@ public class Deal {
     public Deal(){}
 
     //Constructor
-    public Deal(String id, String name, String partnerID, String termsOfUse, String dealPhoto, String description, Date validFrom, Date validTill,Boolean mainAd) {
+    public Deal(String id, String name, String partnerID, String termsOfUse, String dealPhoto, String description, Date validFrom, Date validTill, Boolean mainAd) {
         this.name = name;
         this.partnerID = partnerID;
-        this.termsOfUse = termsOfUse;
+        //this.termsOfUse = termsOfUse;
         this.dealImage = dealPhoto;
         this.id = id;
-        //this.validFrom = validFrom;
-        //this.validTill = validTill;
+        this.validFrom = validFrom;
+        this.validTill = validTill;
         this.description = description;
     }
 
-//Declarng the variables
+  //Declarng the variables
 
-    public String id, name, partnerID, termsOfUse, dealImage, description;
-    public Boolean mainAd;
-   // public Date validFrom;
-    //public Date validTill;
+    private String id, name, partnerID, dealImage, description;
+    private Boolean mainAd;
+    private Date validFrom;
+    private Date validTill;
 
     //Getters and Setters
 
@@ -44,13 +44,13 @@ public class Deal {
         this.partnerID = partnerID;
     }
 
-    public String getTermsOfUse() {
+   /* public String getTermsOfUse() {
         return termsOfUse;
     }
 
     public void setTermsOfUse(String termsOfUse) {
         this.termsOfUse = termsOfUse;
-    }
+    }*/
 
     public String getDealPhoto() {
         return dealImage;
@@ -78,22 +78,22 @@ public class Deal {
         this.id = id;
     }
 
-
- /*  public String getValidFrom() {
-        return  validFrom.toString();
+    public Date getValidFrom() {
+        return validFrom;
     }
 
     public void setValidFrom(Date validFrom) {
-        this.validFrom = validFrom;
+        this.validFrom= validFrom;
     }
 
-    public String getValidTill() {
-        return validTill.toString();
+    public Date getValidTill() {
+        return  validTill;
+    }
 
     public void setValidTill(Date validTill) {
     this.validTill = validTill;
     }
-    }*/
+
 
     public String getDescription() {
         return description;

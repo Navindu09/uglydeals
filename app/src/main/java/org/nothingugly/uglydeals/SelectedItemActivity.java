@@ -107,6 +107,7 @@ public class SelectedItemActivity extends AppCompatActivity {
                         //Convert the particular document into a Deal object
                         Deal deal = dealDocument.toObject(Deal.class);
 
+
                         //Set the deal name into the layout
                         String name = deal.getName();
                         textViewSelectedItemName.setText(name);
@@ -120,8 +121,12 @@ public class SelectedItemActivity extends AppCompatActivity {
                         textViewSelectedItemDescription.setText(description);
 
 
+                        System.out.println(deal.getValidFrom());
+                        System.out.println(deal.getValidTill());
+                        //long millisecond = deal.getValidFrom().getTime();
+                       // String validFromString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
 
-                        //String validity = deal.getValidFrom()+ " to " + deal.getValidTill();
+                       // String validity =deal.getValidFrom().toString()+ " to " + deal.getValidTill().toString();
                        // textViewSelectedActivityValidity.setText(validity);
 
                         //Retrieves the partner ID

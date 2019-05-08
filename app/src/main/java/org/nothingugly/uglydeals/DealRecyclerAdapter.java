@@ -57,7 +57,7 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
         //Set the URL to the viewHolder
         viewHolder.setImage(imageURL);
 
-     //Taking the restaurant ID from the deal
+         //Taking the restaurant ID from the deal
         final String restaurantId = dealList.get(i).getPartnerID();
 
         final String dealId = dealList.get(i).getId();

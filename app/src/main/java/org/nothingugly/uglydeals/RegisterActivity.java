@@ -165,16 +165,10 @@ public class RegisterActivity extends AppCompatActivity {
                                                         }
                                                     }
                                                 });
-
                                             }
                                         }
                                     });
-
-
                                 }
-
-
-
 
                                 //Else give the user the error message
                                 else {
