@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,6 +25,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Date;
 
 
 public class SelectedItemActivity extends AppCompatActivity {
@@ -45,6 +48,7 @@ public class SelectedItemActivity extends AppCompatActivity {
 
     private String deal;
 
+
     private FirebaseFirestore mFireStore;
     private FirebaseAuth mAuth;
 
@@ -59,16 +63,18 @@ public class SelectedItemActivity extends AppCompatActivity {
         if(savedInstanceState ==  null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
-                dealId = null;
+
             } else {
                 dealId = (String) extras.get("dealId");
+                deal = dealId;
             }
         }else{
             dealId = (String) savedInstanceState.getSerializable("dealId");
+
         }
 
         Log.d(TAG, "onCreate: DealId retrieved : "+ dealId);
-        deal = dealId;
+
 
         //Setting the layout for the activity
         setContentView(R.layout.activity_selected_item);
@@ -95,6 +101,7 @@ public class SelectedItemActivity extends AppCompatActivity {
         textViewSelectedItemTerms.setVisibility(View.INVISIBLE);
         progressBarSelectedItem.setVisibility(View.VISIBLE);
 
+        if (deal != null) {
             //Checking the deals collection for the
             mFireStore.collection("deals").document(deal).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
@@ -120,14 +127,13 @@ public class SelectedItemActivity extends AppCompatActivity {
                         String description = deal.getDescription();
                         textViewSelectedItemDescription.setText(description);
 
+                        // Coverting firebase timestamp into easy date format
+                        long millisecondValidfrom = deal.getValidFrom().getTime();
+                        String validFromString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidfrom)).toString();
 
-                        System.out.println(deal.getValidFrom());
-                        System.out.println(deal.getValidTill());
-                        //long millisecond = deal.getValidFrom().getTime();
-                       // String validFromString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
-
-                       // String validity =deal.getValidFrom().toString()+ " to " + deal.getValidTill().toString();
-                       // textViewSelectedActivityValidity.setText(validity);
+                        long millisecondValidTill = deal.getValidTill().getTime();
+                        String validTillString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidTill)).toString();
+                        textViewSelectedActivityValidity.setText(validFromString + " to " + validTillString);
 
                         //Retrieves the partner ID
                         final String partnerId = (String) deal.getPartnerID();
@@ -147,12 +153,13 @@ public class SelectedItemActivity extends AppCompatActivity {
                         });
                     }
 
+
                     //Set components visible after data retrieval and then set progressbar invisible.
                     textViewSelectedItemPartnerName.setVisibility(View.VISIBLE);
                     imageViewSelectedItemImage.setVisibility(View.VISIBLE);
                     textViewSelectedItemName.setVisibility(View.VISIBLE);
-                    textViewSelectedActivityValidity .setVisibility(View.VISIBLE);
-                    textViewSelectedItemDescription .setVisibility(View.VISIBLE);
+                    textViewSelectedActivityValidity.setVisibility(View.VISIBLE);
+                    textViewSelectedItemDescription.setVisibility(View.VISIBLE);
                     buttonSelectedItemRedeem.setVisibility(View.VISIBLE);
                     textViewSelectedItemTerms.setVisibility(View.VISIBLE);
                     progressBarSelectedItem.setVisibility(View.INVISIBLE);
@@ -160,6 +167,10 @@ public class SelectedItemActivity extends AppCompatActivity {
                 }
 
             });
+        } else{
+            sendToLogin();
+        }
+
 
 
         buttonSelectedItemRedeem.setOnClickListener(new View.OnClickListener() {
@@ -202,4 +213,10 @@ public class SelectedItemActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+    private void sendToMain() {
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
+    }
+
 }

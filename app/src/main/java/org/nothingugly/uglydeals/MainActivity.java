@@ -7,14 +7,26 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Date;
+
+import javax.annotation.Nullable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
+
+    private Date currentDate;
+
 
 
     private HomeFragment homeFragment;
@@ -38,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        currentDate = new Date();
 
 
         //Initialise Firebase app
@@ -151,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
             });*/
         }
 
+        resumeDeals();
+
     }
 
     //Send to LoginActivity
@@ -174,6 +193,43 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.mainContainer, fragment);
         fragmentTransaction.commit();
+    }
+
+    public void resumeDeals() {
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        final String uId = currentUser.getUid();
+         mFirestore.collection("customers").document(uId).collection("unavailableDeals").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+
+                System.out.println(queryDocumentSnapshots.size());
+                for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
+
+                    if (doc.getType() == DocumentChange.Type.ADDED) {
+                        DocumentSnapshot dealSnapshot = doc.getDocument();
+                        final String dealId = (String) dealSnapshot.get("unavailableDeal");
+                        System.out.println(dealId);
+                        Date resumeDate = (Date) dealSnapshot.get("dealResumeDate");
+
+                        if(currentDate.after(resumeDate)){
+                            mFirestore.collection("customers").document(uId).collection("unavailableDeals").document(dealId).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Log.d(TAG, "onComplete: " + dealId + " Has been resumed");
+                                    }
+                                }
+                            });
+                        } else {
+                            Log.d(TAG, "onEvent: " + dealId + " Can't be resumed");
+                        }
+
+                    }
+                }
+            }
+        });
     }
 
     private FirebaseAuth getFirebaseAuth(){

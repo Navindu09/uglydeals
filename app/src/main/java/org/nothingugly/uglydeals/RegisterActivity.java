@@ -50,8 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Getting the current date/Time
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date ();
-        final String currentTime = sdf.format(date);
+        final Date date = new Date ();
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -119,23 +118,16 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     userMap.put("email", userEmail);
                                     userMap.put("isPhoneVerified", true);
-                                    userMap.put("DateOfRegistration", currentTime);
+                                    userMap.put("DateOfRegistration", date);
                                     userMap.put("isFreeTrailUsed", false);
 
-
-
-
                                     //Create the document for the user. Added set on complete listener to wait for writing document.
-
-
                                     mFirestore.collection("customers").document(userID).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
 
 
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-
-
 
                                                 //If document written successfully, send a verification email to email address, and signs the user out. Add an on conplete listener to see if the email was sent successfully
                                                 mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {

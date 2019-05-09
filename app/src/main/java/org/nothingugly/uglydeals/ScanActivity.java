@@ -26,6 +26,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -133,6 +135,20 @@ public class ScanActivity extends AppCompatActivity {
 
                     if (barcodeValue.equals(finalDealId)){
 
+                        Date date = new Date();
+                        Calendar cal = Calendar.getInstance();
+                        cal.add(Calendar.DAY_OF_YEAR, +1);
+                        cal.set(Calendar.HOUR_OF_DAY,0);
+                        cal.set(Calendar.MINUTE,0);
+                        cal.set(Calendar.SECOND,0);
+                        cal.set(Calendar.MILLISECOND,0);
+
+                        Date resumeDate = cal.getTime();
+
+                        Log.d(TAG, "receiveDetections: " + date.toString() + " " + resumeDate.toString());
+                       // System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
+
+
                         final String userId = mAuth.getUid();
                         String dealId =finalDealId;
 
@@ -141,10 +157,13 @@ public class ScanActivity extends AppCompatActivity {
 
                         redeemedDeal.put("deal", finalDealId);
                         redeemedDeal.put("user", userId);
-                        //redeemedDeal.put("timeOfScan", currentTime);
+                        redeemedDeal.put("timestamp ", date);
+
 
                         unavailableDeal.put("unavailableDeal", finalDealId);
-                        //redeemedDeal.put("timeOfScan", currentTime);
+                        unavailableDeal.put("timestamp", date);
+                        unavailableDeal.put("dealResumeDate", resumeDate);
+
 
                         mFirestore.collection("redeemedDeals").add(redeemedDeal).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
 
@@ -158,10 +177,8 @@ public class ScanActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
                                             Log.d(TAG, "onComplete: unavailable deal added");
-
                                         }
                                     });
-
                                 }
 
                             }
