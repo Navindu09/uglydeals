@@ -135,6 +135,7 @@ public class ScanActivity extends AppCompatActivity {
 
                     if (barcodeValue.equals(finalDealId)){
 
+
                         Date date = new Date();
                         Calendar cal = Calendar.getInstance();
                         cal.add(Calendar.DAY_OF_YEAR, +1);

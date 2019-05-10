@@ -12,8 +12,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -209,19 +209,26 @@ public class MainActivity extends AppCompatActivity {
 
                     if (doc.getType() == DocumentChange.Type.ADDED) {
                         DocumentSnapshot dealSnapshot = doc.getDocument();
-                        final String dealId = (String) dealSnapshot.get("unavailableDeal");
-                        System.out.println(dealId);
+                        final String documentID = dealSnapshot.getId();
+                        final String dealId = (String) dealSnapshot.get("unavailableDeal"); // Not necessary
+                        System.out.println(dealId);// ,,
                         Date resumeDate = (Date) dealSnapshot.get("dealResumeDate");
 
                         if(currentDate.after(resumeDate)){
-                            mFirestore.collection("customers").document(uId).collection("unavailableDeals").document(dealId).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            mFirestore.collection("customers").document(uId).collection("unavailableDeals").document(documentID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        Log.d(TAG, "onComplete: " + dealId + " Has been resumed");
-                                    }
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "onSuccess: " + dealId + " has been resumed and deleted from user");
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error deleting document, has not resumed", e);
                                 }
                             });
+
+
                         } else {
                             Log.d(TAG, "onEvent: " + dealId + " Can't be resumed");
                         }

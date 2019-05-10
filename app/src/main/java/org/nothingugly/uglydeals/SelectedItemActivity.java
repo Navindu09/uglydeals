@@ -24,7 +24,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 
@@ -45,6 +48,7 @@ public class SelectedItemActivity extends AppCompatActivity {
     private Button buttonSelectedItemRedeem;
     private TextView textViewSelectedItemTerms;
     private ProgressBar progressBarSelectedItem;
+    private TextView textViewAlreadyUsed;
 
     private String deal;
 
@@ -90,6 +94,7 @@ public class SelectedItemActivity extends AppCompatActivity {
         textViewSelectedItemDescription = (TextView) findViewById(R.id.textViewSelectedItemDescription);
         buttonSelectedItemRedeem = (Button) findViewById(R.id.buttonSelectedItemRedeem);
         textViewSelectedItemTerms = (TextView) findViewById(R.id.textViewSelectedItemTerms);
+        textViewAlreadyUsed = (TextView) findViewById(R.id.textViewAlreadyUsed);
 
         //set all the
         textViewSelectedItemPartnerName.setVisibility(View.INVISIBLE);
@@ -99,10 +104,12 @@ public class SelectedItemActivity extends AppCompatActivity {
         textViewSelectedItemDescription .setVisibility(View.INVISIBLE);
         buttonSelectedItemRedeem.setVisibility(View.INVISIBLE);
         textViewSelectedItemTerms.setVisibility(View.INVISIBLE);
+        textViewAlreadyUsed.setVisibility(View.INVISIBLE);
         progressBarSelectedItem.setVisibility(View.VISIBLE);
 
         if (deal != null) {
             //Checking the deals collection for the
+            final String finalDealId = dealId;
             mFireStore.collection("deals").document(deal).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
                 @Override
@@ -114,6 +121,7 @@ public class SelectedItemActivity extends AppCompatActivity {
                         //Convert the particular document into a Deal object
                         Deal deal = dealDocument.toObject(Deal.class);
 
+                        isDealAvailable(finalDealId);
 
                         //Set the deal name into the layout
                         String name = deal.getName();
@@ -177,6 +185,8 @@ public class SelectedItemActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+
+
                     if(ContextCompat.checkSelfPermission(SelectedItemActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
                         ActivityCompat.requestPermissions(SelectedItemActivity.this, new String [] {Manifest.permission.CAMERA},PERMISSION_REQUEST);
                     }
@@ -217,6 +227,33 @@ public class SelectedItemActivity extends AppCompatActivity {
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
         finish();
+    }
+
+    //Whenever the deal is openeed
+    private void isDealAvailable(String id)
+    {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String uId = currentUser.getUid();
+
+        try {
+            mFireStore.collection("customers").document(uId).collection("unavailableDeals").whereEqualTo("unavailableDeal", id).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
+
+                    Log.d(TAG, "onEvent: Query recieved SIZE: " + queryDocumentSnapshots.size());
+                    if (queryDocumentSnapshots.size() > 0) {
+                        buttonSelectedItemRedeem.setEnabled(false);
+                        buttonSelectedItemRedeem.setVisibility(View.INVISIBLE);
+                        textViewAlreadyUsed.setVisibility(View.VISIBLE);
+
+
+
+                        Log.d(TAG, "onEvent: Deal is unavaiable");
+                    }
+
+                }
+            });
+        } catch (ArrayIndexOutOfBoundsException e){}
     }
 
 }
