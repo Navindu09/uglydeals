@@ -18,8 +18,8 @@
         <gradient
             android:type="sweep"
             android:useLevel="false"
-            android:startColor="@color/colorPrimaryDark"
-            android:endColor="@color/colorAccent"
+            android:startColor="@color/cardview_dark_background"
+            android:endColor="@color/colorPrimary"
             android:angle="0"/>
 
     </shape>

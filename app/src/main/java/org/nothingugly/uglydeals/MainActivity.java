@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
 
-                System.out.println(queryDocumentSnapshots.size());
+                Log.d(TAG, "onEvent: Number of unavailableDeals: " + queryDocumentSnapshots.size());
                 for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
 
                     if (doc.getType() == DocumentChange.Type.ADDED) {
@@ -242,9 +242,5 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth getFirebaseAuth(){
         return FirebaseAuth.getInstance();
     }
-
-
-
-
 
 }

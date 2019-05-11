@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -41,6 +43,12 @@ public class HomeFragment extends Fragment {
     private DealRecyclerAdapter dealRecyclerAdapter1;
     private DealRecyclerAdapter dealRecyclerAdapter2;
 
+    private TextView textViewHeaderFeatured;
+    private TextView textViewHeaderNearMe;
+    private TextView textViewHeaderAll;
+
+    private ProgressBar progressBarHomeFragment;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -54,13 +62,23 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
+        progressBarHomeFragment = (ProgressBar) view.findViewById(R.id.progressBarHomeFragment);
+        progressBarHomeFragment.setVisibility(View.VISIBLE);
 
         //Initialising the list of deals
         featuredList = new ArrayList<>();
         dealList1 = new ArrayList<>();
         dealList2 = new ArrayList<>();
 
+        textViewHeaderFeatured = (TextView) view.findViewById(R.id.textViewHeaderFeatured);
+        textViewHeaderNearMe = (TextView) view.findViewById(R.id.textViewHeaderNearMe);
+        textViewHeaderAll = (TextView) view.findViewById(R.id.textViewHeaderAll);
+
+
+
+        textViewHeaderAll.setVisibility(View.INVISIBLE);
+        textViewHeaderFeatured.setVisibility(View.INVISIBLE);
+        textViewHeaderNearMe.setVisibility(View.INVISIBLE);
 
         //Mapping the layout component
         featuredRecyclerView =  view.findViewById(R.id.featuredRecyclerView);
@@ -94,7 +112,9 @@ public class HomeFragment extends Fragment {
         mFirestore = FirebaseFirestore.getInstance();
         mFirestore.collection("deals").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
+
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
 
                 for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges())
 
@@ -112,9 +132,6 @@ public class HomeFragment extends Fragment {
 
                         }
 
-
-
-
                         dealList1.add(deal);
                         dealList2.add(deal);
 
@@ -124,9 +141,14 @@ public class HomeFragment extends Fragment {
                     }
                 }
 
+
+                progressBarHomeFragment.setVisibility(View.INVISIBLE);
+                textViewHeaderNearMe.setVisibility(View.VISIBLE);
+                textViewHeaderFeatured.setVisibility(View.VISIBLE);
+                textViewHeaderAll.setVisibility(View.VISIBLE);
+
             }
         });
-
 
 
         //REturning view type object

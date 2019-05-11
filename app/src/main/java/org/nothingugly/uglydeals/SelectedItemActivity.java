@@ -229,7 +229,7 @@ public class SelectedItemActivity extends AppCompatActivity {
         finish();
     }
 
-    //Whenever the deal is openeed
+    //Whenever the deal is opened, check if this deals limit has exceeded for the day.
     private void isDealAvailable(String id)
     {
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -240,20 +240,21 @@ public class SelectedItemActivity extends AppCompatActivity {
                 @Override
                 public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
 
-                    Log.d(TAG, "onEvent: Query recieved SIZE: " + queryDocumentSnapshots.size());
+                    Log.d(TAG, "onEvent: unavailableDeals Query recieved SIZE: " + queryDocumentSnapshots.size());
                     if (queryDocumentSnapshots.size() > 0) {
                         buttonSelectedItemRedeem.setEnabled(false);
                         buttonSelectedItemRedeem.setVisibility(View.INVISIBLE);
                         textViewAlreadyUsed.setVisibility(View.VISIBLE);
 
-
-
                         Log.d(TAG, "onEvent: Deal is unavaiable");
+                    } else {
+                        Log.d(TAG, "onEvent: this deal is available ");
                     }
-
                 }
             });
-        } catch (ArrayIndexOutOfBoundsException e){}
+        } catch (ArrayIndexOutOfBoundsException e){
+            Log.e(TAG, "isDealAvailable: ", e);
+        }
     }
 
 }
