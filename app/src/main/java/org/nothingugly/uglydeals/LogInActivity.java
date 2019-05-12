@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +27,8 @@ public class LogInActivity extends AppCompatActivity {
     //Initiating Button components
     private Button buttonLoginLogin;
     private Button buttonLoginRegister;
+
+    private TextView textViewRegister;
 
     private ProgressBar progressBarLogin;
 
@@ -46,6 +49,8 @@ public class LogInActivity extends AppCompatActivity {
         buttonLoginLogin = (Button) findViewById(R.id.buttonLoginLogin);
         buttonLoginRegister = (Button) findViewById(R.id.buttonLoginRegister);
 
+        textViewRegister = (TextView) findViewById(R.id.textViewRegister);
+
         progressBarLogin  =  (ProgressBar) findViewById(R.id.progressBarLogin);
 
         //When Login button is clicked
@@ -60,6 +65,13 @@ public class LogInActivity extends AppCompatActivity {
                 if((!TextUtils.isEmpty(email)) && !TextUtils.isEmpty(password))
                 {
                     progressBarLogin.setVisibility(View.VISIBLE);
+                    buttonLoginLogin.setEnabled(false);
+                    buttonLoginRegister.setEnabled(false);
+
+                    buttonLoginLogin.setVisibility(View.INVISIBLE);
+                    buttonLoginRegister.setVisibility(View.INVISIBLE);
+
+                    textViewRegister.setVisibility(View.INVISIBLE);
 
                     //Firebase Authentication in progress
                     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -77,9 +89,18 @@ public class LogInActivity extends AppCompatActivity {
                             {
                                 String error = task.getException().getMessage();
                                 Toast.makeText(LogInActivity.this, error, Toast.LENGTH_LONG).show();
+
+                                progressBarLogin.setVisibility(View.INVISIBLE);
+                                buttonLoginLogin.setEnabled(true);
+                                buttonLoginRegister.setEnabled(true);
+
+                                buttonLoginLogin.setVisibility(View.VISIBLE);
+                                buttonLoginRegister.setVisibility(View.VISIBLE);
+
+                                textViewRegister.setVisibility(View.VISIBLE);
                             }
 
-                            progressBarLogin.setVisibility(View.INVISIBLE);
+
 
                         }
                     });

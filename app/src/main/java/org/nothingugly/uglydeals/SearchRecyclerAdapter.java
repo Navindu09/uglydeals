@@ -1,6 +1,7 @@
 package org.nothingugly.uglydeals;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,7 +37,8 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.single_search_item,viewGroup,false);
         mFirestore = FirebaseFirestore.getInstance();
         context = viewGroup.getContext();
-        return new SearchRecyclerAdapter.ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
+       return holder;
     }
 
     @Override
@@ -55,6 +57,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         //Taking the restaurant ID from the deal
         final String restaurantId = dealList.get(i).getPartnerID();
 
+        final String dealID = dealList.get(i).getId();
 
         //Getting the corresponding document for the partner ID
         DocumentReference temp = mFirestore.collection("partners").document(restaurantId);
@@ -78,6 +81,16 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 }
             }
         });
+
+        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context ,SelectedItemActivity.class );
+                intent.putExtra("dealId", dealID);
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override

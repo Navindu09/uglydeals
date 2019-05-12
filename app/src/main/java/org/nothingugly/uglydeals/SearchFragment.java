@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
  */
 public class SearchFragment extends Fragment {
 
+    private static final String TAG = "SearchFragment";
     private EditText editTextSearchSearch;
     private ImageButton imageButtonSearch;
     private RecyclerView recyclerViewSearchResults;
@@ -80,40 +81,44 @@ public class SearchFragment extends Fragment {
                 searchedDeals.clear();
                 searchRecyclerAdapter.notifyDataSetChanged();
 
-                String searchText = editTextSearchSearch.getText().toString();
+
+                final String searchText = editTextSearchSearch.getText().toString().toLowerCase();
 
 
-               mFirestore.collection("partners").whereEqualTo("name",searchText).addSnapshotListener(new EventListener<QuerySnapshot>() {
-                   @Override
-                   public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                    mFirestore.collection("partners").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
-                       for (DocumentChange documentChange: queryDocumentSnapshots.getDocumentChanges())
-                       {
-                           if (documentChange.getType() == DocumentChange.Type.ADDED)
-                           {
-                               DocumentSnapshot doc = documentChange.getDocument();
-                               String id = doc.getId();
+                            for (DocumentChange documentChange: queryDocumentSnapshots.getDocumentChanges())
+                            {
+                                if (documentChange.getType() == DocumentChange.Type.ADDED)
+                                {
+                                    DocumentSnapshot partnerDocument = documentChange.getDocument();
 
-                               mFirestore.collection("deals").whereEqualTo("partnerID",id).addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                   @Override
-                                   public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                    if (partnerDocument.get("name").toString().toLowerCase().contains(searchText)){
 
-                                       for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()){
-                                            if(documentChange.getType() == DocumentChange.Type.ADDED){
+                                        String id = partnerDocument.getId();
 
-                                                Deal deal = documentChange.getDocument().toObject(Deal.class);
+                                        mFirestore.collection("deals").whereEqualTo("partnerID",id).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
-                                                searchedDeals.add(deal);
+                                                for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()){
+                                                    if(documentChange.getType() == DocumentChange.Type.ADDED){
 
-                                                searchRecyclerAdapter.notifyDataSetChanged();
+                                                        Deal deal = documentChange.getDocument().toObject(Deal.class);
+
+                                                        searchedDeals.add(deal);
+
+                                                        searchRecyclerAdapter.notifyDataSetChanged();
+                                                    }
+                                                }
                                             }
-                                       }
-                                   }
-                               });
-                           }
-                       }
-                   }
-               });
+                                        });
+                                    }}
+                            }
+                        }
+                    });
 
             }
         });

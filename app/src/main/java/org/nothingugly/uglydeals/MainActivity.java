@@ -143,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Verify your email and log back in", Toast.LENGTH_LONG).show();
                 mAuth.signOut();
                 sendToLogin();
+            } else {
+                resumeDeals();
+
             }
 
           /*  //Checks if the document exists.
@@ -168,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
             });*/
         }
 
-        resumeDeals();
+
 
     }
 

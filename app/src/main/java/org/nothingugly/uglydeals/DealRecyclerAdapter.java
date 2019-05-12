@@ -65,8 +65,7 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
 
         //Getting the corresponding document for the partner ID
         DocumentReference temp = mFirestore.collection("partners").document(restaurantId);
-
-       //Get Document Snapshot
+        //Get Document Snapshot
         temp.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -93,7 +92,6 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
             }
         });
     }
-
 
     @Override
     public int getItemCount() {

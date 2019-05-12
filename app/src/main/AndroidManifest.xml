@@ -27,14 +27,19 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".PhoneSetupActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LogInActivity" />
+        <activity android:name=".PhoneSetupActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".RegisterActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".LogInActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".SelectedItemActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".ScanActivity" />
-        <activity android:name=".RedeemSuccessActivity" />
+        <activity android:name=".ScanActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".RedeemSuccessActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
