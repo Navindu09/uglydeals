@@ -83,57 +83,61 @@ public class RedeemSuccessActivity extends AppCompatActivity {
         buttonRedeemSuccessExit.setVisibility(View.INVISIBLE);
         progressBarRedeemSuccess.setVisibility(View.VISIBLE);
 
-        mFireStore.collection("deals").document(dealId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        try {
+            mFireStore.collection("deals").document(dealId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "onComplete: deal with id found");
-                    DocumentSnapshot dealDocument = task.getResult();
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "onComplete: deal with id found");
+                        DocumentSnapshot dealDocument = task.getResult();
 
-                    //Convert the particular document into a Deal object
-                    Deal deal = dealDocument.toObject(Deal.class);
+                        //Convert the particular document into a Deal object
+                        Deal deal = dealDocument.toObject(Deal.class);
 
-                    //Set the deal name into the layout
-                    String name = deal.getName();
-                    textViewDeal.setText(name);
-
-
-                    //String validity = deal.getValidFrom()+ " to " + deal.getValidTill();
-                    // textViewSelectedActivityValidity.setText(validity);
-
-                    //Retrieves the partner ID
-                    final String partnerId = (String) deal.getPartnerID();
-
-                    //Checks partners collection for that particular partner
-                    mFireStore.collection("partners").document(partnerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                            //Save the document instance
-                            DocumentSnapshot partnerDocument = task.getResult();
-                            String partnerName = (String) partnerDocument.get("name");
-
-                            //Set the name of the partner in the layout
-                            textViewPartnerName.setText(partnerName);
-                        }
-                    });
+                        //Set the deal name into the layout
+                        String name = deal.getName();
+                        textViewDeal.setText(name);
 
 
+                        //String validity = deal.getValidFrom()+ " to " + deal.getValidTill();
+                        // textViewSelectedActivityValidity.setText(validity);
+
+                        //Retrieves the partner ID
+                        final String partnerId = (String) deal.getPartnerID();
+
+                        //Checks partners collection for that particular partner
+                        mFireStore.collection("partners").document(partnerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                //Save the document instance
+                                DocumentSnapshot partnerDocument = task.getResult();
+                                String partnerName = (String) partnerDocument.get("name");
+
+                                //Set the name of the partner in the layout
+                                textViewPartnerName.setText(partnerName);
+                            }
+                        });
+
+
+                    }
+                    textViewMessage.setVisibility(View.VISIBLE);
+                    textViewDeal.setVisibility(View.VISIBLE);
+                    textViewAt.setVisibility(View.VISIBLE);
+                    textViewPartnerName.setVisibility(View.VISIBLE);
+                    textViewDateTime.setVisibility(View.VISIBLE);
+                    textViewNote.setVisibility(View.VISIBLE);
+                    buttonRedeemSuccessExit.setVisibility(View.VISIBLE);
+                    progressBarRedeemSuccess.setVisibility(View.INVISIBLE);
                 }
-                textViewMessage.setVisibility(View.VISIBLE);
-                textViewDeal.setVisibility(View.VISIBLE);
-                textViewAt.setVisibility(View.VISIBLE);
-                textViewPartnerName.setVisibility(View.VISIBLE);
-                textViewDateTime.setVisibility(View.VISIBLE);
-                textViewNote.setVisibility(View.VISIBLE);
-                buttonRedeemSuccessExit.setVisibility(View.VISIBLE);
-                progressBarRedeemSuccess.setVisibility(View.INVISIBLE);
-            }
 
 
-        });
+            });
 
+        } catch (NullPointerException e){
+            Log.e(TAG, "onCreate: ",e );
+        }
         buttonRedeemSuccessExit.setOnClickListener(new View.OnClickListener() {
 
             @Override

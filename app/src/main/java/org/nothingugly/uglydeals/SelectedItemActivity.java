@@ -106,76 +106,83 @@ public class SelectedItemActivity extends AppCompatActivity {
         textViewAlreadyUsed.setVisibility(View.INVISIBLE);
         progressBarSelectedItem.setVisibility(View.VISIBLE);
 
-        if (deal != null) {
-            //Checking the deals collection for the
-            final String finalDealId = dealId;
-            mFireStore.collection("deals").document(deal).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        try {
+            if (deal != null) {
+                //Checking the deals collection for the
+                final String finalDealId = dealId;
 
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "onComplete: deal with id found");
-                        DocumentSnapshot dealDocument = task.getResult();
+                mFireStore.collection("deals").document(deal).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
-                        //Convert the particular document into a Deal object
-                        Deal deal = dealDocument.toObject(Deal.class);
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: deal with id found");
+                            DocumentSnapshot dealDocument = task.getResult();
 
-                        isDealAvailable(finalDealId);
+                            //Convert the particular document into a Deal object
+                            Deal deal = dealDocument.toObject(Deal.class);
 
-                        //Set the deal name into the layout
-                        String name = deal.getName();
-                        textViewSelectedItemName.setText(name);
+                            isDealAvailable(finalDealId);
 
-                        //Set the photo into the layout
-                        String itemImageUrl = deal.getDealPhoto();
-                        Glide.with(getApplicationContext()).load(itemImageUrl).into(imageViewSelectedItemImage);
+                            //Set the deal name into the layout
+                            String name = deal.getName();
+                            textViewSelectedItemName.setText(name);
 
-                        //Set the description into the layout
-                        String description = deal.getDescription();
-                        textViewSelectedItemDescription.setText(description);
+                            //Set the photo into the layout
+                            String itemImageUrl = deal.getDealPhoto();
+                            Glide.with(getApplicationContext()).load(itemImageUrl).into(imageViewSelectedItemImage);
 
-                        // Coverting firebase timestamp into easy date format
-                        long millisecondValidfrom = deal.getValidFrom().getTime();
-                        String validFromString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidfrom)).toString();
+                            //Set the description into the layout
+                            String description = deal.getDescription();
+                            textViewSelectedItemDescription.setText(description);
 
-                        long millisecondValidTill = deal.getValidTill().getTime();
-                        String validTillString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidTill)).toString();
-                        textViewSelectedActivityValidity.setText(validFromString + " to " + validTillString);
+                            // Coverting firebase timestamp into easy date format
+                            long millisecondValidfrom = deal.getValidFrom().getTime();
+                            String validFromString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidfrom)).toString();
 
-                        //Retrieves the partner ID
-                        final String partnerId = (String) deal.getPartnerID();
+                            long millisecondValidTill = deal.getValidTill().getTime();
+                            String validTillString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidTill)).toString();
+                            textViewSelectedActivityValidity.setText(validFromString + " to " + validTillString);
 
-                        //Checks partners collection for that particular partner
-                        mFireStore.collection("partners").document(partnerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            //Retrieves the partner ID
+                            final String partnerId = (String) deal.getPartnerID();
 
-                                //Save the document instance
-                                DocumentSnapshot partnerDocument = task.getResult();
-                                String partnerName = (String) partnerDocument.get("name");
+                            //Checks partners collection for that particular partner
+                            mFireStore.collection("partners").document(partnerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                                //Set the name of the partner in the layout
-                                textViewSelectedItemPartnerName.setText(partnerName);
-                            }
-                        });
+                                    //Save the document instance
+                                    DocumentSnapshot partnerDocument = task.getResult();
+                                    String partnerName = (String) partnerDocument.get("name");
+
+                                    //Set the name of the partner in the layout
+                                    textViewSelectedItemPartnerName.setText(partnerName);
+                                }
+                            });
+                        }
+
+
+                        //Set components visible after data retrieval and then set progressbar invisible.
+                        textViewSelectedItemPartnerName.setVisibility(View.VISIBLE);
+                        imageViewSelectedItemImage.setVisibility(View.VISIBLE);
+                        textViewSelectedItemName.setVisibility(View.VISIBLE);
+                        textViewSelectedActivityValidity.setVisibility(View.VISIBLE);
+                        textViewSelectedItemDescription.setVisibility(View.VISIBLE);
+                        buttonSelectedItemRedeem.setVisibility(View.VISIBLE);
+                        textViewSelectedItemTerms.setVisibility(View.VISIBLE);
+                        progressBarSelectedItem.setVisibility(View.INVISIBLE);
+
                     }
 
+                });
 
-                    //Set components visible after data retrieval and then set progressbar invisible.
-                    textViewSelectedItemPartnerName.setVisibility(View.VISIBLE);
-                    imageViewSelectedItemImage.setVisibility(View.VISIBLE);
-                    textViewSelectedItemName.setVisibility(View.VISIBLE);
-                    textViewSelectedActivityValidity.setVisibility(View.VISIBLE);
-                    textViewSelectedItemDescription.setVisibility(View.VISIBLE);
-                    buttonSelectedItemRedeem.setVisibility(View.VISIBLE);
-                    textViewSelectedItemTerms.setVisibility(View.VISIBLE);
-                    progressBarSelectedItem.setVisibility(View.INVISIBLE);
-
-                }
-
-            });
-        } else{
-            sendToLogin();
+            } else {
+                sendToMain();
+                finish();
+            }
+        }catch (NullPointerException e){
+            Log.e(TAG, "onCreate: ",e );
         }
 
 
@@ -250,6 +257,9 @@ public class SelectedItemActivity extends AppCompatActivity {
             });
         } catch (ArrayIndexOutOfBoundsException e){
             Log.e(TAG, "isDealAvailable: ", e);
+
+        } catch (NullPointerException e){
+            Log.e(TAG, "isDealAvailable: ", e );
         }
     }
 

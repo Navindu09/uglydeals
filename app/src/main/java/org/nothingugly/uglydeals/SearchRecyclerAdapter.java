@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAdapter.ViewHolder> {
+    private static final String TAG = "SearchRecylcerAdapter";
     public List<Deal> dealList;
     public FirebaseFirestore mFirestore;
 
@@ -60,6 +62,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         final String dealID = dealList.get(i).getId();
 
         //Getting the corresponding document for the partner ID
+        try{
         DocumentReference temp = mFirestore.collection("partners").document(restaurantId);
 
         //Get Document Snapshot
@@ -81,6 +84,9 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 }
             }
         });
+        } catch (NullPointerException e){
+            Log.e(TAG, "onBindViewHolder: ",e );
+        }
 
         viewHolder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

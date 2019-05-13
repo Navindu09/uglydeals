@@ -122,6 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     userMap.put("isFreeTrailUsed", false);
 
                                     //Create the document for the user. Added set on complete listener to wait for writing document.
+
                                     mFirestore.collection("customers").document(userID).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
 
 

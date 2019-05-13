@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
     public List<Deal> dealList;
     public FirebaseFirestore mFirestore;
 
+    private static final String TAG = "FeaturedRecyclerAdapter";
     public Context context;
 
     public FeaturedDealRecyclerAdapter(List<Deal >dealList){
@@ -62,6 +64,7 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
         final String dealId = dealList.get(i).getId();
 
 
+        try{
         //Getting the corresponding document for the partner ID
         DocumentReference temp = mFirestore.collection("partners").document(restaurantId);
 
@@ -88,6 +91,12 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
             }
         });
 
+        } catch (NullPointerException e){
+            Log.e(TAG, "onBindViewHolder: ",e );
+        }
+
+        try {
+
         viewHolder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +105,11 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
                 context.startActivity(intent);
             }
         });
+
+        } catch (NullPointerException e){
+            Log.e(TAG, "onBindViewHolder: ",e );
+        }
+
 
 
     }

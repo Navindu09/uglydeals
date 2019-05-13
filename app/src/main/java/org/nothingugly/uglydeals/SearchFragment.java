@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,7 @@ public class SearchFragment extends Fragment {
 
                 final String searchText = editTextSearchSearch.getText().toString().toLowerCase();
 
-
+                    try {
                     mFirestore.collection("partners").addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -119,6 +120,9 @@ public class SearchFragment extends Fragment {
                             }
                         }
                     });
+                    }catch (NullPointerException e){
+                        Log.e(TAG, "onClick: ", e);
+                    }
 
             }
         });

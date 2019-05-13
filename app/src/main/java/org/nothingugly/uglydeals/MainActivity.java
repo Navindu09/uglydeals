@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private SearchFragment searchFragment;
     private NotificationsFragment notificationsFragment;
     private AccountFragment accountFragment;
-    //private FusedLocationProviderClient locationProviderClient;
 
+    //private FusedLocationProviderClient locationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
         final FirebaseUser currentUser = mAuth.getCurrentUser();
 
         final String uId = currentUser.getUid();
+        try{
          mFirestore.collection("customers").document(uId).collection("unavailableDeals").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -239,7 +240,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-        });
+        }); } catch (NullPointerException e){
+            Log.e(TAG, "resumeDeals: ",e);
+        }
     }
 
     private FirebaseAuth getFirebaseAuth(){

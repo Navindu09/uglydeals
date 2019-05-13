@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
 {
     public List<Deal> dealList;
     public FirebaseFirestore mFirestore;
+
+    private static final String TAG = "DealRecyclerAdapter";
 
     public Context context;
 
@@ -64,24 +67,30 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
 
 
         //Getting the corresponding document for the partner ID
-        DocumentReference temp = mFirestore.collection("partners").document(restaurantId);
-        //Get Document Snapshot
-        temp.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        try {
+            DocumentReference temp = mFirestore.collection("partners").document(restaurantId);
+            //Get Document Snapshot
+            temp.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                //If document snap recieved successfully.
-                if (task.isSuccessful()){
-                    DocumentSnapshot restaurantDocument = task.getResult();
-                    if(restaurantDocument.exists()){
-                       String restaurantName = restaurantDocument.get("name").toString();
+                    //If document snap recieved successfully.
+                    if (task.isSuccessful()){
+                        DocumentSnapshot restaurantDocument = task.getResult();
+                        if(restaurantDocument.exists()){
+                            String restaurantName = restaurantDocument.get("name").toString();
 
-                       //Set the name on the view holder
-                       viewHolder.setRestaurantName(restaurantName);
+                            //Set the name on the view holder
+                            viewHolder.setRestaurantName(restaurantName);
+                        }
                     }
+
                 }
-            }
-        });
+            });
+
+        } catch (NullPointerException e){
+            Log.e(TAG, "onBindViewHolder: ",e );
+        }
 
         viewHolder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +100,9 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
                 context.startActivity(intent);
             }
         });
+
+
+
     }
 
     @Override

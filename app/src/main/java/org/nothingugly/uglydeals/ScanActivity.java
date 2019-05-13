@@ -125,7 +125,7 @@ public class ScanActivity extends AppCompatActivity {
             }
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
-
+                //Checks the barcodes detected.
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size() > 0 ){
 
@@ -135,7 +135,7 @@ public class ScanActivity extends AppCompatActivity {
 
                     if (barcodeValue.equals(finalDealId)){
 
-
+                        //Setting the resumes date to next day, Minus the hours and mins
                         Date date = new Date();
                         Calendar cal = Calendar.getInstance();
                         cal.add(Calendar.DAY_OF_YEAR, +1);
@@ -146,26 +146,29 @@ public class ScanActivity extends AppCompatActivity {
 
                         Date resumeDate = cal.getTime();
 
+
                         Log.d(TAG, "receiveDetections: " + date.toString() + " " + resumeDate.toString());
-                       // System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
+                         // System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
 
 
                         final String userId = mAuth.getUid();
                         String dealId =finalDealId;
 
+                        //Create two hash maps
                         final Map<String, Object> redeemedDeal = new HashMap<>();
                         final Map<String, Object> unavailableDeal = new HashMap<>();
 
+                        //Hashmap for redeemed deals collection
                         redeemedDeal.put("deal", finalDealId);
                         redeemedDeal.put("user", userId);
                         redeemedDeal.put("timestamp ", date);
 
-
+                        //Hashmap for unavailable deal for the user
                         unavailableDeal.put("unavailableDeal", finalDealId);
                         unavailableDeal.put("timestamp", date);
                         unavailableDeal.put("dealResumeDate", resumeDate);
 
-
+                        //adding to redeemed deals
                         mFirestore.collection("redeemedDeals").add(redeemedDeal).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
 
                             @Override
@@ -174,6 +177,7 @@ public class ScanActivity extends AppCompatActivity {
 
                                     Log.d(TAG, "onComplete: redeemedDeals record added");
 
+                                    // Adding to unavailable deals of user
                                     mFirestore.collection("customers").document(userId).collection("unavailableDeals").add(unavailableDeal).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -184,6 +188,8 @@ public class ScanActivity extends AppCompatActivity {
 
                             }
                         });
+
+                        //Open the new intent
                         Intent intent = new Intent(ScanActivity.this, RedeemSuccessActivity.class);
                         intent.putExtra("dealId", barcodeValue);
                         startActivity(intent);
