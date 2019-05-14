@@ -95,6 +95,8 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
         viewHolder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 Intent intent = new Intent(context, SelectedItemActivity.class);
                 intent.putExtra("dealId",dealId);
                 context.startActivity(intent);

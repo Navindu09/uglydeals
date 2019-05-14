@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,8 +33,7 @@ public class RedeemSuccessActivity extends AppCompatActivity {
     private Button buttonRedeemSuccessExit;
     private ProgressBar progressBarRedeemSuccess;
 
-
-
+    private InterstitialAd mInterstitialAd;
 
     private FirebaseFirestore mFireStore;
     private FirebaseAuth mAuth;
@@ -58,6 +61,50 @@ public class RedeemSuccessActivity extends AppCompatActivity {
         }
 
 
+
+        MobileAds.initialize(this,"ca-app-pub-9409818967408705/3461091184");
+
+        mInterstitialAd = new InterstitialAd(this);
+        //replace this with my appcode.
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+
+                // Code to be executed when an ad finishes loading.
+
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                finish();
+
+
+            }
+        });
 
         setContentView(R.layout.activity_redeem_success);
 
@@ -142,8 +189,10 @@ public class RedeemSuccessActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                finish();
-            }
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+
+            }}
         });
     }
 

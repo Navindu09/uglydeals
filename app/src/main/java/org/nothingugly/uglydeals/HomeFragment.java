@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -76,6 +79,16 @@ public class HomeFragment extends Fragment {
         textViewHeaderFeatured = (TextView) view.findViewById(R.id.textViewHeaderFeatured);
         textViewHeaderNearMe = (TextView) view.findViewById(R.id.textViewHeaderNearMe);
         textViewHeaderAll = (TextView) view.findViewById(R.id.textViewHeaderAll);
+
+
+        AdView adView = (AdView) view.findViewById(R.id.adView);
+
+        MobileAds.initialize(getActivity().getBaseContext(),
+                "ca-app-pub-3940256099942544/6300978111");
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
 
 
 

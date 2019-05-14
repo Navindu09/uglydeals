@@ -38,6 +38,8 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:15.0.1"
     implementation "com.miguelcatalan:materialsearchview:1.4.0"
     implementation 'com.google.firebase:firebase-ml-vision:17.0.0'
+    implementation 'com.google.firebase:firebase-messaging:17.0.0'
+    implementation 'com.google.android.gms:play-services-ads:15.0.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

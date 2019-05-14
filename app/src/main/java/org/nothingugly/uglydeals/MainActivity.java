@@ -12,6 +12,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     private HomeFragment homeFragment;
     private SearchFragment searchFragment;
     private NotificationsFragment notificationsFragment;
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         currentDate = new Date();
+
 
 
         //Initialise Firebase app
@@ -72,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Setting up navigation.
         bottomNavigation = findViewById(R.id.bottomNavigation);
+
 
         //When main activity starts, the home fragment is shown
         replaceFragment(homeFragment);

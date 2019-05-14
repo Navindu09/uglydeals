@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +52,7 @@ public class SelectedItemActivity extends AppCompatActivity {
 
     private String deal;
 
+    private InterstitialAd mInterstitialAd;
 
     private FirebaseFirestore mFireStore;
     private FirebaseAuth mAuth;
@@ -75,6 +77,7 @@ public class SelectedItemActivity extends AppCompatActivity {
             dealId = (String) savedInstanceState.getSerializable("dealId");
 
         }
+
 
         Log.d(TAG, "onCreate: DealId retrieved : "+ dealId);
 
@@ -191,14 +194,14 @@ public class SelectedItemActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-
-
                     if(ContextCompat.checkSelfPermission(SelectedItemActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
                         ActivityCompat.requestPermissions(SelectedItemActivity.this, new String [] {Manifest.permission.CAMERA},PERMISSION_REQUEST);
                     }
                     Intent scanIntent = new Intent (SelectedItemActivity.this, ScanActivity.class);
                     scanIntent.putExtra("dealId", deal);
                     startActivity(scanIntent);
+
+
                 }
             });
         }
