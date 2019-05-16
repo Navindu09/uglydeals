@@ -16,6 +16,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_scrollFlags="scroll" />
 
+
+
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -50,6 +52,21 @@
                 android:id="@+id/featuredRecyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="#00523C3C"
+                android:backgroundTint="#003D1E1E"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                ads:layout_constraintBottom_toBottomOf="@+id/mainContainer"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.493"
+                ads:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
 
 
             <TextView

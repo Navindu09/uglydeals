@@ -3,6 +3,7 @@ package org.nothingugly.uglydeals;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,6 +46,8 @@ public class HomeFragment extends Fragment {
 
     private FirebaseFirestore mFirestore;
 
+    private SwipeRefreshLayout swipeRefereshLayout;
+
     private FeaturedDealRecyclerAdapter featuredDealRecyclerAdapter;
     private DealRecyclerAdapter dealRecyclerAdapter1;
     private DealRecyclerAdapter dealRecyclerAdapter2;
@@ -76,6 +79,8 @@ public class HomeFragment extends Fragment {
         dealList1 = new ArrayList<>();
         dealList2 = new ArrayList<>();
 
+        swipeRefereshLayout = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
+
         textViewHeaderFeatured = (TextView) view.findViewById(R.id.textViewHeaderFeatured);
         textViewHeaderNearMe = (TextView) view.findViewById(R.id.textViewHeaderNearMe);
         textViewHeaderAll = (TextView) view.findViewById(R.id.textViewHeaderAll);
@@ -89,7 +94,16 @@ public class HomeFragment extends Fragment {
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
+        swipeRefereshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
 
+                updateDealLists();
+                swipeRefereshLayout.setRefreshing(false);
+            }
+        }
+
+        );
 
 
         textViewHeaderAll.setVisibility(View.INVISIBLE);
@@ -121,10 +135,23 @@ public class HomeFragment extends Fragment {
         recyclerView1.setAdapter(dealRecyclerAdapter1);
         recyclerView2.setAdapter(dealRecyclerAdapter2);
 
-
-
-
         //Initialising the list of deals
+       updateDealLists();
+
+
+        //REturning view type object
+        return view;
+
+
+
+    }
+
+    public void updateDealLists(){
+
+        featuredList.clear();
+        dealList1.clear();
+        dealList2.clear();
+
         mFirestore = FirebaseFirestore.getInstance();
         try {
             mFirestore.collection("deals").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -136,22 +163,22 @@ public class HomeFragment extends Fragment {
                     for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
                         Deal deal = doc.getDocument().toObject(Deal.class);
 
-                        if (doc.getType() == DocumentChange.Type.ADDED) {
+                        if (doc.getType() == DocumentChange.Type.ADDED ) {
+
+                            if(deal.getActive()){
+                                if (deal.getMainAd() ) {
+                                    featuredList.add(deal);
+                                    featuredDealRecyclerAdapter.notifyDataSetChanged();
+
+                                }
+
+                                dealList1.add(deal);
+                                dealList2.add(deal);
 
 
-                            if (deal.getMainAd()) {
-                                featuredList.add(deal);
-                                featuredDealRecyclerAdapter.notifyDataSetChanged();
-
-                            }
-
-                            dealList1.add(deal);
-                            dealList2.add(deal);
-
-
-                            dealRecyclerAdapter1.notifyDataSetChanged();
-                            dealRecyclerAdapter2.notifyDataSetChanged();
-                        }
+                                dealRecyclerAdapter1.notifyDataSetChanged();
+                                dealRecyclerAdapter2.notifyDataSetChanged();
+                            }}
                     }
 
 
@@ -165,13 +192,6 @@ public class HomeFragment extends Fragment {
         } catch (NullPointerException e){
             Log.e(TAG, "onCreateView: ", e );
         }
-
-
-        //REturning view type object
-        return view;
-
-
-
     }
 
 }

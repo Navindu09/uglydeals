@@ -67,6 +67,33 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewItemName" />
 
+            <View
+                android:id="@+id/viewIsFeaturedBanner"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="100dp"
+                android:background="#F04B49"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/itemImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/itemImage"
+                app:layout_constraintVertical_bias="0.475" />
+
+            <TextView
+                android:id="@+id/textViewFeaturedBanner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Featured"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/viewIsFeaturedBanner"
+                app:layout_constraintEnd_toEndOf="@+id/viewIsFeaturedBanner"
+                app:layout_constraintStart_toStartOf="@+id/viewIsFeaturedBanner"
+                app:layout_constraintTop_toTopOf="@+id/viewIsFeaturedBanner" />
+
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>

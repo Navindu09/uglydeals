@@ -198,7 +198,9 @@ public class RedeemSuccessActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        if (mInterstitialAd.isLoaded()){
+            mInterstitialAd.show();
+        }
+
     }
 }

@@ -81,7 +81,17 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
                             String restaurantName = restaurantDocument.get("name").toString();
 
                             //Set the name on the view holder
+
                             viewHolder.setRestaurantName(restaurantName);
+
+                            //check if the partner of the deal is featured, then set up the banner
+                            Boolean isFeatured = (Boolean) restaurantDocument.get("isFeatured");
+
+                            if(isFeatured){
+                                viewHolder.setUpBanner();
+                            }
+
+
                         }
                     }
 
@@ -122,6 +132,8 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
         private TextView name;
         private ImageView image;
         private TextView restaurantName;
+        private View banner;
+        private TextView isFeaturedBanner;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -144,6 +156,16 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
         public void setRestaurantName(String restName){
             restaurantName = mView.findViewById(R.id.textViewItemRestaurantName);
             restaurantName.setText(restName);
+        }
+
+        public void setUpBanner (){
+
+            banner = mView.findViewById(R.id.viewIsFeaturedBanner);
+            isFeaturedBanner = mView.findViewById(R.id.textViewFeaturedBanner);
+            banner.setVisibility(View.VISIBLE);
+            isFeaturedBanner.setVisibility(View.VISIBLE);
+
+
         }
     }
 }

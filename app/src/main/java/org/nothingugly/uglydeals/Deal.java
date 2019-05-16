@@ -7,8 +7,10 @@ public class Deal {
 
     public Deal(){}
 
+
+
     //Constructor
-    public Deal(String id, String name, String partnerID, String termsOfUse, String dealPhoto, String description, Date validFrom, Date validTill, Boolean mainAd) {
+    public Deal(String id, String name, String partnerID, String termsOfUse, String dealPhoto, String description, Date validFrom, Date validTill, Boolean mainAd, Boolean active) {
         this.name = name;
         this.partnerID = partnerID;
         //this.termsOfUse = termsOfUse;
@@ -16,13 +18,16 @@ public class Deal {
         this.id = id;
         this.validFrom = validFrom;
         this.validTill = validTill;
+        this.mainAd = mainAd;
+        this.active = active;
+
         this.description = description;
     }
 
   //Declarng the variables
 
     private String id, name, partnerID, dealImage, description;
-    private Boolean mainAd;
+    private Boolean mainAd, active;
     private Date validFrom;
     private Date validTill;
 
@@ -94,6 +99,14 @@ public class Deal {
     this.validTill = validTill;
     }
 
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
     public String getDescription() {
         return description;
