@@ -20,7 +20,6 @@ public class Deal {
         this.validTill = validTill;
         this.mainAd = mainAd;
         this.active = active;
-
         this.description = description;
     }
 

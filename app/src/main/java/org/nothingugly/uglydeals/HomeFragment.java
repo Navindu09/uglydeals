@@ -2,6 +2,7 @@ package org.nothingugly.uglydeals;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,17 +17,15 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 
 /**
@@ -153,45 +152,57 @@ public class HomeFragment extends Fragment {
         dealList2.clear();
 
         mFirestore = FirebaseFirestore.getInstance();
-        try {
-            mFirestore.collection("deals").addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+            mFirestore.collection("deals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isComplete()){
 
-                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            Deal deal = doc.toObject(Deal.class);
+
+                               try{
+                                if(deal.getActive()){
+                                    Log.d(TAG, " Active Deal:  " + deal.getId());
+                                    if (deal.getMainAd() ) {
+                                        featuredList.add(deal);
+                                        featuredDealRecyclerAdapter.notifyDataSetChanged();
+
+                                    }
+
+                                    dealList1.add(deal);
+                                    dealList2.add(deal);
 
 
-                    for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
-                        Deal deal = doc.getDocument().toObject(Deal.class);
-
-                        if (doc.getType() == DocumentChange.Type.ADDED ) {
-
-                            if(deal.getActive()){
-                                if (deal.getMainAd() ) {
-                                    featuredList.add(deal);
-                                    featuredDealRecyclerAdapter.notifyDataSetChanged();
+                                    dealRecyclerAdapter1.notifyDataSetChanged();
+                                    dealRecyclerAdapter2.notifyDataSetChanged();
+                                } else {
+                                    Log.d(TAG, " Deal not Active:  " + deal.getId());
+                                    deal = null;
 
                                 }
+                                /* else {
+                                    Log.d(TAG, deal.getId() + " is not active", task.getException());
+                                            
+                                }*/
+                               } catch (Exception e){
+                                   Log.e(TAG, "updateDealList / onCreateView / DealId :  " + deal.getId() , e );
+                               }
+                        }
 
-                                dealList1.add(deal);
-                                dealList2.add(deal);
+
+                        progressBarHomeFragment.setVisibility(View.INVISIBLE);
+                        textViewHeaderNearMe.setVisibility(View.VISIBLE);
+                        textViewHeaderFeatured.setVisibility(View.VISIBLE);
+                        textViewHeaderAll.setVisibility(View.VISIBLE);
 
 
-                                dealRecyclerAdapter1.notifyDataSetChanged();
-                                dealRecyclerAdapter2.notifyDataSetChanged();
-                            }}
                     }
-
-
-                    progressBarHomeFragment.setVisibility(View.INVISIBLE);
-                    textViewHeaderNearMe.setVisibility(View.VISIBLE);
-                    textViewHeaderFeatured.setVisibility(View.VISIBLE);
-                    textViewHeaderAll.setVisibility(View.VISIBLE);
-
                 }
             });
-        } catch (NullPointerException e){
-            Log.e(TAG, "onCreateView: ", e );
-        }
+
+
     }
 
 }

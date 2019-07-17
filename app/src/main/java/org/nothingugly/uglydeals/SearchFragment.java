@@ -82,10 +82,11 @@ public class SearchFragment extends Fragment {
                 searchedDeals.clear();
                 searchRecyclerAdapter.notifyDataSetChanged();
 
-
+                //Getting the search text
                 final String searchText = editTextSearchSearch.getText().toString().toLowerCase();
 
                     try {
+                        //List of partners
                     mFirestore.collection("partners").addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -96,22 +97,39 @@ public class SearchFragment extends Fragment {
                                 {
                                     DocumentSnapshot partnerDocument = documentChange.getDocument();
 
+                                    //Checks each partner document whether search text matches the name of the partner
                                     if (partnerDocument.get("name").toString().toLowerCase().contains(searchText)){
 
+                                        //Get the id, of the partner if search text matched
                                         String id = partnerDocument.getId();
 
-                                        mFirestore.collection("deals").whereEqualTo("partnerID",id).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        //Search all deals to see if partnerId field matches the SearchedID
+                                        mFirestore.collection(  "deals").whereEqualTo("partnerID",id).addSnapshotListener(new EventListener<QuerySnapshot>() {
                                             @Override
                                             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
                                                 for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()){
                                                     if(documentChange.getType() == DocumentChange.Type.ADDED){
 
+
                                                         Deal deal = documentChange.getDocument().toObject(Deal.class);
 
-                                                        searchedDeals.add(deal);
+                                                        //Log.d(TAG, "onEvent: DealId:  " +deal.getId() );
 
-                                                        searchRecyclerAdapter.notifyDataSetChanged();
+                                                        try{
+                                                            if(deal.getActive())
+                                                            {
+                                                                 Log.d(TAG, "onEvent: Deal : "+ deal.getId() + " is active");
+                                                                searchedDeals.add(deal);
+
+                                                                searchRecyclerAdapter.notifyDataSetChanged();
+                                                            }
+                                                        }catch (Exception e1){
+
+                                                            Log.e(TAG, "onEvent: DealID: " + deal.getId()  ,e1);
+
+                                                        }
+
                                                     }
                                                 }
                                             }

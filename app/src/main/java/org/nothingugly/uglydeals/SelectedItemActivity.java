@@ -122,47 +122,54 @@ public class SelectedItemActivity extends AppCompatActivity {
                             Log.d(TAG, "onComplete: deal with id found");
                             DocumentSnapshot dealDocument = task.getResult();
 
-                            //Convert the particular document into a Deal object
-                            Deal deal = dealDocument.toObject(Deal.class);
+                            try {
+                                //Convert the particular document into a Deal object
+                                Deal deal = dealDocument.toObject(Deal.class);
 
-                            isDealAvailable(finalDealId);
+                                isDealAvailable(finalDealId);
 
-                            //Set the deal name into the layout
-                            String name = deal.getName();
-                            textViewSelectedItemName.setText(name);
+                                //Set the deal name into the layout
+                                String name = deal.getName();
+                                textViewSelectedItemName.setText(name);
 
-                            //Set the photo into the layout
-                            String itemImageUrl = deal.getDealPhoto();
-                            Glide.with(getApplicationContext()).load(itemImageUrl).into(imageViewSelectedItemImage);
+                                //Set the photo into the layout
+                                String itemImageUrl = deal.getDealPhoto();
+                                Glide.with(getApplicationContext()).load(itemImageUrl).into(imageViewSelectedItemImage);
 
-                            //Set the description into the layout
-                            String description = deal.getDescription();
-                            textViewSelectedItemDescription.setText(description);
+                                //Set the description into the layout
+                                String description = deal.getDescription();
+                                textViewSelectedItemDescription.setText(description);
 
-                            // Coverting firebase timestamp into easy date format
-                            long millisecondValidfrom = deal.getValidFrom().getTime();
-                            String validFromString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidfrom)).toString();
+                                // Coverting firebase timestamp into easy date format
+                                long millisecondValidfrom = deal.getValidFrom().getTime();
+                                String validFromString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidfrom)).toString();
+                                long millisecondValidTill = deal.getValidTill().getTime();
+                                String validTillString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidTill)).toString();
+                                textViewSelectedActivityValidity.setText(validFromString + " to " + validTillString);
 
-                            long millisecondValidTill = deal.getValidTill().getTime();
-                            String validTillString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidTill)).toString();
-                            textViewSelectedActivityValidity.setText(validFromString + " to " + validTillString);
 
-                            //Retrieves the partner ID
-                            final String partnerId = (String) deal.getPartnerID();
+                                //Retrieves the partner ID
+                                final String partnerId = (String) deal.getPartnerID();
 
-                            //Checks partners collection for that particular partner
-                            mFireStore.collection("partners").document(partnerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                //Checks partners collection for that particular partner
+                                mFireStore.collection("partners").document(partnerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                                    //Save the document instance
-                                    DocumentSnapshot partnerDocument = task.getResult();
-                                    String partnerName = (String) partnerDocument.get("name");
+                                        //Save the document instance
+                                        DocumentSnapshot partnerDocument = task.getResult();
+                                        String partnerName = (String) partnerDocument.get("name");
 
-                                    //Set the name of the partner in the layout
-                                    textViewSelectedItemPartnerName.setText(partnerName);
-                                }
-                            });
+                                        //Set the name of the partner in the layout
+                                        textViewSelectedItemPartnerName.setText(partnerName);
+                                    }
+                                });
+
+                            }catch(NullPointerException e){
+                                Log.e(TAG, "onComplete: ", e);
+                            }
+
+
                         }
 
 

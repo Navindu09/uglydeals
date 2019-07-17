@@ -98,8 +98,8 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
                 }
             });
 
-        } catch (NullPointerException e){
-            Log.e(TAG, "onBindViewHolder: ",e );
+        } catch (Exception e){
+            Log.e(TAG, "onBindViewHolder: " + dealList.get(i).getId(),e );
         }
 
         viewHolder.mView.setOnClickListener(new View.OnClickListener() {

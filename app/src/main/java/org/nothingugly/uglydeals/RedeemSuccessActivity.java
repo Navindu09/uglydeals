@@ -20,6 +20,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class RedeemSuccessActivity extends AppCompatActivity {
 
     public static final String TAG = "RedeemSuccessActivity";
@@ -147,8 +150,10 @@ public class RedeemSuccessActivity extends AppCompatActivity {
                         textViewDeal.setText(name);
 
 
-                        //String validity = deal.getValidFrom()+ " to " + deal.getValidTill();
-                        // textViewSelectedActivityValidity.setText(validity);
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                        Date timestamp = new Date();
+                        textViewDateTime.setText((sdf.format(timestamp).toString()));
+                        //textViewSelectedActivityValidity.setText(validity);
 
                         //Retrieves the partner ID
                         final String partnerId = (String) deal.getPartnerID();
@@ -203,4 +208,5 @@ public class RedeemSuccessActivity extends AppCompatActivity {
         }
 
     }
+
 }
