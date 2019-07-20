@@ -157,6 +157,7 @@ public class ScanActivity extends AppCompatActivity {
                         //Create two hash maps
                         final Map<String, Object> redeemedDeal = new HashMap<>();
                         final Map<String, Object> unavailableDeal = new HashMap<>();
+                        final Map <String, Object> customerDealHistoryDeal = new HashMap<>();
 
                         //Hashmap for redeemed deals collection
                         redeemedDeal.put("deal", finalDealId);
@@ -167,6 +168,9 @@ public class ScanActivity extends AppCompatActivity {
                         unavailableDeal.put("unavailableDeal", finalDealId);
                         unavailableDeal.put("timestamp", date);
                         unavailableDeal.put("dealResumeDate", resumeDate);
+
+                        customerDealHistoryDeal.put("deal", finalDealId);
+                        customerDealHistoryDeal.put("timestamp", date);
 
                         //adding to redeemed deals
                         mFirestore.collection("redeemedDeals").add(redeemedDeal).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -181,9 +185,28 @@ public class ScanActivity extends AppCompatActivity {
                                     mFirestore.collection("customers").document(userId).collection("unavailableDeals").add(unavailableDeal).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
-                                            Log.d(TAG, "onComplete: unavailable deal added");
+                                            if(task.isSuccessful()){
+                                                Log.d(TAG, "onComplete: unavailable deal added");
+                                                
+                                                mFirestore.collection("customers").document(userId).collection("customerDealHistory").add(customerDealHistoryDeal).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                        if(task.isSuccessful()){
+                                                            Log.d(TAG, "onComplete: dealHistoryDocument added");
+                                                        } else {
+                                                            Log.d(TAG, "onComplete: dealHistoryDocument could not be added");
+                                                        }
+                                                    }
+                                                });
+                                            } else {
+                                                Log.d(TAG, "onComplete: Unavailable deal could not be added");
+                                            }
+                                            
                                         }
                                     });
+                                } else  {
+
+                                    Log.d(TAG, "onComplete: Redeemed deal document could not be added");
                                 }
 
                             }

@@ -21,7 +21,7 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ugly_deals_icon"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ugly_deals_icon_round"
         android:supportsRtl="true"
