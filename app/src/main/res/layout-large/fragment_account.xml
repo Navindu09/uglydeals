@@ -1,0 +1,131 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F7F7"
+    android:backgroundTint="#F7F7F7"
+    android:orientation="vertical"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <Button
+        android:id="@+id/buttonAccountFragmentProfil"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#F5F5F5"
+        android:drawableRight="@mipmap/baseline_person_black_24"
+        android:fontFamily="@font/poppins"
+        android:includeFontPadding="false"
+        android:text="Profile"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/typeFontColor" />
+
+
+    <View
+        android:id="@+id/separator4"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#90909090" />
+
+    <Button
+        android:id="@+id/buttonAccountFragmentProfileTAC"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#F5F5F5"
+        android:drawableRight="@drawable/sharp_arrow_forward_ios_black_24dp"
+        android:fontFamily="@font/poppins"
+        android:includeFontPadding="false"
+        android:text="Terms and conditions"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/typeFontColor" />
+
+    <View
+        android:id="@+id/separator1"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#90909090" />
+
+    <Button
+        android:id="@+id/buttonAccountFragmentProfileAbout"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/sharp_arrow_forward_ios_black_24dp"
+        android:fontFamily="@font/poppins"
+        android:text="About Ugly Deals"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/typeFontColor" />
+
+    <View
+        android:id="@+id/separator2"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#90909090" />
+
+
+    <Button
+        android:id="@+id/buttonAccountFragmentPrivacy"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#F5F5F5"
+        android:fontFamily="@font/poppins"
+        android:includeFontPadding="false"
+        android:text="Privacy Policy"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/typeFontColor" />
+
+    <View
+        android:id="@+id/separator6"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#90909090" />
+
+    <Button
+        android:id="@+id/buttonAccountFragmentContact"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/sharp_arrow_forward_ios_black_24dp"
+        android:fontFamily="@font/poppins"
+        android:text="Contact us"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/typeFontColor" />
+
+    <View
+        android:id="@+id/separator3"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#90909090" />
+
+    <Button
+        android:id="@+id/buttonAccountFragmentLogout"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#F5F5F5"
+        android:fontFamily="@font/poppins"
+        android:includeFontPadding="false"
+        android:text="Log out"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/typeFontColor" />
+
+    <View
+        android:id="@+id/separator5"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#90909090" />
+
+</LinearLayout>
+
+
+

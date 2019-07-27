@@ -10,14 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -63,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Initialise Firebase app
-        FirebaseApp.initializeApp(this);
+        //FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
 
@@ -131,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        //Retrieve the current logged in user
+        resumeDeals();
+
+      /*  //Retrieve the current logged in user
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //If not user is logged in
@@ -152,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 resumeDeals();
 
-            }
+            }*/
 
           /*  //Checks if the document exists.
             DocumentReference docIdRef = mFirestore.collection("customers").document(currentUser.getUid());
@@ -174,8 +171,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
-            });*/
-        }
+            });
+        }*/
 
 
 

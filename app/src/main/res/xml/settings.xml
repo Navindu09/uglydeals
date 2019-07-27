@@ -58,7 +58,7 @@
 
             android:title="Contact us"
             android:key="contact_us"
-            android:id="@+id/buttonAccountFragmentProfileLogOut"/>
+            android:id="@+id/buttonAccountFragmentContact"/>
 
 
 

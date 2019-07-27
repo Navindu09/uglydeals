@@ -6,5 +6,5 @@
     <color name="typeFontColor">#343330</color>
     <color name="buttonColor">#FABB6B</color>
     <color name="colorAccent">#F04B49</color>
-
+    <color name="darkBlue">#042B48</color>
 </resources>

@@ -69,7 +69,7 @@
         android:background="#90909090" />
 
     <Button
-        android:id="@+id/buttonAccountFragmentProfileLogOut"
+        android:id="@+id/buttonAccountFragmentContact"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
