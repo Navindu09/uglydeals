@@ -245,11 +245,7 @@ public class ScanActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
+
     //Send to LoginActivity
     private void sendToLogin() {
         Intent loginintent = new Intent(this, LogInActivity.class);

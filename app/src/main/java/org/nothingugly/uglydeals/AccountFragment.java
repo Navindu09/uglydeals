@@ -303,7 +303,7 @@ public class AccountFragment extends Fragment {
 
     //Send to LoginActivity
     private void sendToLogin() {
-        Intent loginintent = new Intent(getContext(), SplashActivity.class);
+        Intent loginintent = new Intent(getContext(), MainActivity.class);
         startActivity(loginintent);
         //gets the activity of the fragment and destroys the activity
         getActivity().finish();

@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
         AdView adView = (AdView) view.findViewById(R.id.adView);
 
         MobileAds.initialize(getActivity().getBaseContext(),
-                "ca-app-pub-3940256099942544/6300978111");
+                "ca-app-pub-9409818967408705/3931339753");
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);

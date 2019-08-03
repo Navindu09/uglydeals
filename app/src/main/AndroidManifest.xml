@@ -11,7 +11,8 @@
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="true"
-        android:xlargeScreens="true" />
+        android:xlargeScreens="true">
+    </supports-screens>
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -25,16 +26,11 @@
         android:roundIcon="@mipmap/ugly_deals_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9409818967408705/3461091184" />
+            android:value="ca-app-pub-9409818967408705/3461091184"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBlHlia2Rh78eXZegI0Rhlr6VIyoeQl4i8" />
@@ -42,26 +38,24 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity
-            android:name=".PhoneSetupActivity"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".RegisterActivity"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".LogInActivity"
-            android:launchMode="singleTask" />
+        <activity android:name=".PhoneSetupActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".RegisterActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".LogInActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".SelectedItemActivity"
             android:launchMode="singleTask" />
-        <activity
-            android:name=".ScanActivity"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".RedeemSuccessActivity"
-            android:launchMode="singleTask" />
+        <activity android:name=".ScanActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".RedeemSuccessActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".MainActivity">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

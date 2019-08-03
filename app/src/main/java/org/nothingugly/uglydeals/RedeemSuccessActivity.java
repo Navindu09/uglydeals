@@ -69,7 +69,7 @@ public class RedeemSuccessActivity extends AppCompatActivity {
 
         mInterstitialAd = new InterstitialAd(this);
         //replace this with my appcode.
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-9409818967408705/1660399637");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         mInterstitialAd.setAdListener(new AdListener() {

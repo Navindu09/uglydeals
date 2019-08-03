@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -126,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        resumeDeals();
 
-      /*  //Retrieve the current logged in user
+
+       //Retrieve the current logged in user
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //If not user is logged in
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 resumeDeals();
 
-            }*/
+            }
 
           /*  //Checks if the document exists.
             DocumentReference docIdRef = mFirestore.collection("customers").document(currentUser.getUid());
@@ -174,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }*/
 
-
+        }
 
     }
 
