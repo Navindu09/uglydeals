@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
     private void sendToLogin() {
         Intent loginintent = new Intent(this, LogInActivity.class);
         startActivity(loginintent);
-        finish();
+        //finish();
     }
 
     //Send to LoginActivity
@@ -212,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
 
+                try{
                 Log.d(TAG, "onEvent: Number of unavailableDeals: " + queryDocumentSnapshots.size());
                 for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
 
@@ -242,6 +243,8 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     }
+                }}catch (NullPointerException x){
+                    Log.e(TAG, "onEvent: ", x );
                 }
             }
         }); } catch (NullPointerException e){

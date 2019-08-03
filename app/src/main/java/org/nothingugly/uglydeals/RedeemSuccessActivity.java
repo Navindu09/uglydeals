@@ -209,4 +209,5 @@ public class RedeemSuccessActivity extends AppCompatActivity {
 
     }
 
+
 }

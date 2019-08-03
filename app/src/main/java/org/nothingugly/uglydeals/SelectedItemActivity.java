@@ -61,6 +61,14 @@ public class SelectedItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            sendToLogin();
+        }
+
         //dealId retrived from the relevant recycler adapter
         String dealId = null;
 
@@ -232,7 +240,6 @@ public class SelectedItemActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         finish();
     }
 
@@ -248,29 +255,27 @@ public class SelectedItemActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String uId = currentUser.getUid();
 
-        try {
+
             mFireStore.collection("customers").document(uId).collection("unavailableDeals").whereEqualTo("unavailableDeal", id).addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
+                   try {
+                       Log.d(TAG, "onEvent: unavailableDeals Query recieved SIZE: " + queryDocumentSnapshots.size());
+                       if (queryDocumentSnapshots.size() > 0) {
+                           buttonSelectedItemRedeem.setEnabled(false);
+                           buttonSelectedItemRedeem.setVisibility(View.INVISIBLE);
+                           textViewAlreadyUsed.setVisibility(View.VISIBLE);
 
-                    Log.d(TAG, "onEvent: unavailableDeals Query recieved SIZE: " + queryDocumentSnapshots.size());
-                    if (queryDocumentSnapshots.size() > 0) {
-                        buttonSelectedItemRedeem.setEnabled(false);
-                        buttonSelectedItemRedeem.setVisibility(View.INVISIBLE);
-                        textViewAlreadyUsed.setVisibility(View.VISIBLE);
-
-                        Log.d(TAG, "onEvent: Deal is unavaiable");
-                    } else {
-                        Log.d(TAG, "onEvent: this deal is available ");
+                           Log.d(TAG, "onEvent: Deal is unavaiable");
+                       } else {
+                           Log.d(TAG, "onEvent: this deal is available ");
+                       }
+                   }catch (Exception ex){
+                        Log.e(TAG, "isDealAvailable: ", ex);
                     }
                 }
             });
-        } catch (ArrayIndexOutOfBoundsException e){
-            Log.e(TAG, "isDealAvailable: ", e);
 
-        } catch (NullPointerException e){
-            Log.e(TAG, "isDealAvailable: ", e );
-        }
     }
 
 }

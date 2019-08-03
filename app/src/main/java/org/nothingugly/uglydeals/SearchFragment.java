@@ -85,12 +85,13 @@ public class SearchFragment extends Fragment {
                 //Getting the search text
                 final String searchText = editTextSearchSearch.getText().toString().toLowerCase();
 
-                    try {
+
                         //List of partners
                     mFirestore.collection("partners").addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
+                            try {
                             for (DocumentChange documentChange: queryDocumentSnapshots.getDocumentChanges())
                             {
                                 if (documentChange.getType() == DocumentChange.Type.ADDED)
@@ -135,16 +136,17 @@ public class SearchFragment extends Fragment {
                                             }
                                         });
                                     }}
+                            }}catch (Exception e2){
+                                    Log.e(TAG, "onClick: ", e2);
                             }
                         }
                     });
-                    }catch (NullPointerException e){
-                        Log.e(TAG, "onClick: ", e);
-                    }
+
 
             }
         });
         return view;
     }
+
 
 }

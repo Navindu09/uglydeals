@@ -110,6 +110,7 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
                 Intent intent = new Intent(context, SelectedItemActivity.class);
                 intent.putExtra("dealId",dealId);
                 context.startActivity(intent);
+
             }
         });
 
