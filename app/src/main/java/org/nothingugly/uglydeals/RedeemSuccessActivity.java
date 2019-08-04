@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,11 +64,11 @@ public class RedeemSuccessActivity extends AppCompatActivity {
 
 
 
-        MobileAds.initialize(this,"ca-app-pub-9409818967408705/3461091184");
+        //MobileAds.initialize(this,"ca-app-pub-9409818967408705/3461091184");
 
         mInterstitialAd = new InterstitialAd(this);
         //replace this with my appcode.
-        mInterstitialAd.setAdUnitId("ca-app-pub-9409818967408705/1660399637");
+        mInterstitialAd.setAdUnitId("ca-app-pub-9409818967408705/3461091184");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         mInterstitialAd.setAdListener(new AdListener() {

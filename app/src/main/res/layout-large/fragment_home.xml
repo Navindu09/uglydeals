@@ -62,7 +62,7 @@
                 android:background="#00523C3C"
                 android:backgroundTint="#003D1E1E"
                 ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                ads:adUnitId="ca-app-pub-9409818967408705/7852596485"
                 ads:layout_constraintBottom_toBottomOf="@+id/mainContainer"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintHorizontal_bias="0.493"
