@@ -12,11 +12,14 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -130,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
 
        //Retrieve the current logged in user
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //If not user is logged in
         if (currentUser == null)
@@ -142,15 +145,37 @@ public class MainActivity extends AppCompatActivity {
 
         //If a user is logged in
         else {
-            //If logged in user is not email verified.
-            if (!currentUser.isEmailVerified()) {
-                Toast.makeText(MainActivity.this, "Verify your email and log back in", Toast.LENGTH_LONG).show();
-                mAuth.signOut();
-                sendToLogin();
-            } else {
-                resumeDeals();
+            DocumentReference docIdRef = mFirestore.collection("customers").document(currentUser.getUid());
+            docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "User is a customer!");
 
-            }
+                            if (!currentUser.isEmailVerified()) {
+                                Toast.makeText(MainActivity.this, "Verify your email and log back in", Toast.LENGTH_LONG).show();
+                                mAuth.signOut();
+                                sendToLogin();
+                            } else {
+                                resumeDeals();
+
+                            }
+
+                        } else {
+                            Log.d(TAG, "User is not a customer, Logging out");
+                            Toast.makeText(MainActivity.this, "The corresponding account is not a customer account. Please create a customer account", Toast.LENGTH_LONG).show();
+                            mAuth.signOut();
+                            sendToLogin();
+                        }
+                    } else {
+                        Log.d(TAG, "Failed with: ", task.getException());
+                    }
+                }
+            });
+            //If logged in user is not email verified.
+
 
           /*  //Checks if the document exists.
             DocumentReference docIdRef = mFirestore.collection("customers").document(currentUser.getUid());

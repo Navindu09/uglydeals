@@ -7,7 +7,7 @@ android {
         applicationId "org.nothingugly.uglydeals"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 3
+        versionCode 5
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
