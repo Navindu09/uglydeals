@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private SearchFragment searchFragment;
     private NotificationsFragment notificationsFragment;
     private AccountFragment accountFragment;
+    private FlashDealFragment flashDealFragment;
 
     //private FusedLocationProviderClient locationProviderClient;
 
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         searchFragment = new SearchFragment();
         notificationsFragment = new NotificationsFragment();
         accountFragment = new AccountFragment();
+        flashDealFragment = new FlashDealFragment();
 
 
         //Setting up navigation.
@@ -110,6 +112,12 @@ public class MainActivity extends AppCompatActivity {
                     case (R.id.bottomNavigationAccount):
 
                         replaceFragment(accountFragment);
+                        return true;
+                   //If Flashdeal logo is clicked replace fragment with flasdeal
+
+                    case (R.id.bottomNavigationNotificationFlashDeal):
+
+                        replaceFragment(flashDealFragment);
                         return true;
 
                     default:
@@ -155,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "User is a customer!");
 
                             if (!currentUser.isEmailVerified()) {
-                                Toast.makeText(MainActivity.this, "Verify your email and log back in", Toast.LENGTH_LONG).show();
-                                mAuth.signOut();
-                                sendToLogin();
+
+                                sendToVerifyEmail();
+
                             } else {
                                 resumeDeals();
 
@@ -174,31 +182,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
-            //If logged in user is not email verified.
-
-
-          /*  //Checks if the document exists.
-            DocumentReference docIdRef = mFirestore.collection("customers").document(currentUser.getUid());
-            //Getting that document and addOnCompleteListener
-            docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                //When complete recieves a DocumentSnapShot as the result
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                    //If task is successful
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-
-                            if (document.get("isPhoneVerified").equals(false)) {
-                                mAuth.signOut();
-                                sendToPhoneSetup();
-                            }
-                        }
-                    }
-                }
-            });
-        }*/
 
         }
 
@@ -280,5 +263,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth getFirebaseAuth(){
         return FirebaseAuth.getInstance();
     }
+
+    private void sendToVerifyEmail() {
+        Intent verifyEmailIntent = new Intent(this, VerifyEmailActivity.class);
+        startActivity(verifyEmailIntent);
+        finish();
+    }
+
 
 }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "424011521969",
+    "firebase_url": "https://ugly-deals-debug.firebaseio.com",
+    "project_id": "ugly-deals-debug",
+    "storage_bucket": "ugly-deals-debug.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424011521969:android:b73b59dc12d006ca2fe790",
+        "android_client_info": {
+          "package_name": "org.nothingugly.uglydeals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424011521969-tqsgml5k8bf893nfdom9u2lvcpv9mt8p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf4i-v4ypSfDmE4wG6SL2HIKx_yeg02s8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424011521969-tqsgml5k8bf893nfdom9u2lvcpv9mt8p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

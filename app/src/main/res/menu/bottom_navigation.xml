@@ -13,6 +13,10 @@
         android:icon="@mipmap/baseline_search_black_24"
         android:title="Search" />
     <item
+        android:id="@+id/bottomNavigationNotificationFlashDeal"
+        android:icon="@drawable/baseline_flash_on_black_48"
+        android:title="Flash Deal" />
+    <item
         android:id="@+id/bottomNavigationNotification"
         android:icon="@mipmap/baseline_notifications_black_24"
         android:title="Notifications" />

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FlashDealFragment">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBarFlashDeal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <View
+        android:id="@+id/seperatorFlashDeal"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="#90909090"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBarFlashDeal" />
+
+    <TextView
+        android:id="@+id/textVewFlashDeal2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins"
+        android:text="Flash Deal"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolBarFlashDeal"
+        app:layout_constraintEnd_toEndOf="@+id/toolBarFlashDeal"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="@+id/toolBarFlashDeal"
+        app:layout_constraintTop_toTopOf="@+id/toolBarFlashDeal"
+        app:layout_constraintVertical_bias="0.571" />
+
+    <ImageView
+        android:id="@+id/flashDealImage"
+        android:layout_width="300dp"
+        android:layout_height="191dp"
+        android:layout_marginTop="24dp"
+        app:srcCompat="@android:color/darker_gray"
+        android:elevation="20dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seperatorFlashDeal" />
+
+    <TextView
+        android:id="@+id/flashDealName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Flash Deal"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flashDealImage" />
+
+    <TextView
+        android:id="@+id/flashDealValidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Valid from 19/09/19 to 20/09/19"
+        android:textColor="@color/typeFontColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flashDealName" />
+
+    <TextView
+        android:id="@+id/flashDealDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/poppins"
+        android:includeFontPadding="false"
+        android:paddingStart="15dp"
+        android:paddingRight="15dp"
+        android:text="Enjoy 20 % off from your order  for any student that comes in during the validity period"
+        android:textAlignment="center"
+        android:textColor="@color/typeFontColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flashDealValidity" />
+
+    <Button
+        android:id="@+id/flashDealRedeemButton"
+        android:layout_width="195dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/button_round"
+        android:text="Scan and Redeem!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flashDealDescription" />
+
+    <TextView
+        android:id="@+id/flashDealTerms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:autoSizeTextType="none"
+        android:fontFamily="@font/poppins"
+        android:text="Terms of use"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flashDealRedeemButton" />
+
+</android.support.constraint.ConstraintLayout>

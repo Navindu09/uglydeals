@@ -6,9 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,12 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editTextRegisterPassword;
     private EditText editTextRegisterConfirmPassword;
     private TextView textViewRegisterLogin;
+    private TextView textViewWhere;
+    private EditText editTextRegisterName;
+    private Spinner spinnerWhere;
+    private TextView textViewButtonLogin;
+
+    private boolean whereSelected;
 
 
     private Button buttonRegisterRegister;
@@ -50,31 +58,42 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Getting the current date/Time
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        final Date date = new Date ();
+        final Date date = new Date();
 
 
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
+        whereSelected = false;
+
+        //Set up the Dropdown  menu
+        Spinner dropdown = (Spinner) findViewById(R.id.spinnerWhere);
+        String[] items = new String[]{"How do you know about us?" ,"Restaurant", "Facebook", "Instagram", "YouTube", "Friend", "Poster", "Other"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
+
 
         //Mapping components to variables
-        editTextRegisterEmail= (EditText) findViewById(R.id.editTextRegisterEmail);
-        editTextRegisterPassword= (EditText) findViewById(R.id.editTextRegisterPassword);
+        editTextRegisterEmail = (EditText) findViewById(R.id.editTextRegisterEmail);
+        editTextRegisterPassword = (EditText) findViewById(R.id.editTextRegisterPassword);
         editTextRegisterConfirmPassword = (EditText) findViewById(R.id.editTextRegisterConfirmPassword);
         buttonRegisterRegister = (Button) findViewById(R.id.buttonRegisterRegister);
-        getButtonRegisterLogin= (Button) findViewById(R.id.buttonRegisterLogin);
+        getButtonRegisterLogin = (Button) findViewById(R.id.buttonRegisterLogin);
         progressBarRegister = (ProgressBar) findViewById(R.id.progressBarRegister);
         textViewRegisterLogin = (TextView) findViewById(R.id.textViewRegisterLogin);
+        textViewWhere = (TextView) findViewById(R.id.textViewWhere);
+        editTextRegisterName = (EditText) findViewById(R.id.editTextRegisterName);
+        spinnerWhere = (Spinner) findViewById(R.id.spinnerWhere);
+        textViewButtonLogin= (TextView) findViewById(R.id.textViewButtonLogin);
 
-
+       String selectedSpinnerItem = spinnerWhere.getSelectedItem().toString();
 
         //When the login button is clicked
-        getButtonRegisterLogin.setOnClickListener(new View.OnClickListener() {
+        textViewButtonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendToLogin();
             }
         });
-
 
         //When the Register Button is pressed
         buttonRegisterRegister.setOnClickListener(new View.OnClickListener() {
@@ -83,22 +102,25 @@ public class RegisterActivity extends AppCompatActivity {
 
                 //Getting values from editTexts
                 String email = editTextRegisterEmail.getText().toString();
+                final String name = editTextRegisterName.getText().toString();
                 String password = editTextRegisterPassword.getText().toString();
                 String confirmPassword = editTextRegisterConfirmPassword.getText().toString();
+                final String heardFrom = spinnerWhere.getSelectedItem().toString();
 
                 //If all the fields are filled
-                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(confirmPassword))
-                {
+                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(confirmPassword) && !TextUtils.isEmpty(name) && spinnerWhere.getSelectedItemPosition() != 0) {
                     //Are the passwords matching?
-                    if(confirmPassword.equals(password)) {
+                    if (confirmPassword.equals(password)) {
 
                         //Show the progressbar
                         progressBarRegister.setVisibility(View.VISIBLE);
 
                         //Set buttons in invisible
                         buttonRegisterRegister.setVisibility(View.INVISIBLE);
-                        getButtonRegisterLogin.setVisibility(View.INVISIBLE);
+                        textViewButtonLogin.setVisibility(View.INVISIBLE);
                         textViewRegisterLogin.setVisibility(View.INVISIBLE);
+                        textViewWhere.setVisibility(View.INVISIBLE);
+
 
 
                         //Execute firebase creat user with retrieved email and password. Setting on complete listener to see if registration is complete
@@ -117,6 +139,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     Map<String, Object> userMap = new HashMap<>();
 
                                     userMap.put("email", userEmail);
+                                    userMap.put("name", name);
+                                    userMap.put("points", 0);
+                                    userMap.put("hearFrom", heardFrom);
                                     userMap.put("isPhoneVerified", true);
                                     userMap.put("DateOfRegistration", date);
                                     userMap.put("isFreeTrailUsed", false);
@@ -138,10 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                                         //If Email sent successfully, log out and send to main. Make toast to verify email.
                                                         if (task.isSuccessful()) {
-                                                            //If email sent successfully, send toast message and sign out user. ACCOUNT IS CREATED
-                                                            Toast.makeText(RegisterActivity.this, "Account created. Please verify your email and log in!", Toast.LENGTH_LONG).show();
-                                                            mAuth.signOut();
-                                                            sendToMain();
+                                                            sendToVerifyEmail();
                                                         }
                                                     }
                                                 });
@@ -173,23 +195,24 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     //Make the progress bar invisible
                                     progressBarRegister.setVisibility(View.INVISIBLE);
+
                                     //Set buttons in to visible
                                     buttonRegisterRegister.setVisibility(View.VISIBLE);
                                     getButtonRegisterLogin.setVisibility(View.VISIBLE);
                                     textViewRegisterLogin.setVisibility(View.VISIBLE);
+                                    spinnerWhere.setVisibility(View.INVISIBLE);
                                 }
-
-
                             }
 
                         });
                     }
 
                     //If Password and ConfirmPassword dont match, let the user know
-                    else
-                    {
-                        Toast.makeText(RegisterActivity.this, "Password and Confirm Password should match",Toast.LENGTH_LONG).show();
+                    else {
+                        Toast.makeText(RegisterActivity.this, "Password and Confirm Password should match", Toast.LENGTH_LONG).show();
                     }
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Please make sure all the fields are completed",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -206,8 +229,7 @@ public class RegisterActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //If yes, send to their main page
-        if (currentUser != null)
-        {
+        if (currentUser != null) {
             sendToMain();
         }
     }
@@ -226,5 +248,12 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(loginIntent);
         finish();
     }
+
+    private void sendToVerifyEmail() {
+        Intent verifyEmailIntent = new Intent(this, VerifyEmailActivity.class);
+        startActivity(verifyEmailIntent);
+        finish();
+    }
+
 
 }

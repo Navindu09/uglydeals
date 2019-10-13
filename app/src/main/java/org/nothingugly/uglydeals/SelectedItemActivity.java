@@ -98,12 +98,12 @@ public class SelectedItemActivity extends AppCompatActivity {
         //Mapping out all the components
         progressBarSelectedItem = (ProgressBar) findViewById(R.id.progressBarSelectedItem);
         textViewSelectedItemPartnerName = (TextView) findViewById(R.id.textViewSelectedItemPartnerName);
-        imageViewSelectedItemImage = (ImageView)findViewById(R.id.imageViewSelectedItemImage);
-        textViewSelectedItemName = (TextView) findViewById(R.id.textViewSelectedItemName);
-        textViewSelectedActivityValidity = (TextView) findViewById(R.id.textViewSelectedActivityValidity);
-        textViewSelectedItemDescription = (TextView) findViewById(R.id.textViewSelectedItemDescription);
-        buttonSelectedItemRedeem = (Button) findViewById(R.id.buttonSelectedItemRedeem);
-        textViewSelectedItemTerms = (TextView) findViewById(R.id.textViewSelectedItemTerms);
+        imageViewSelectedItemImage = (ImageView)findViewById(R.id.flashDealImage);
+        textViewSelectedItemName = (TextView) findViewById(R.id.flashDealName);
+        textViewSelectedActivityValidity = (TextView) findViewById(R.id.flashDealValidity);
+        textViewSelectedItemDescription = (TextView) findViewById(R.id.flashDealDescription);
+        buttonSelectedItemRedeem = (Button) findViewById(R.id.flashDealRedeemButton);
+        textViewSelectedItemTerms = (TextView) findViewById(R.id.flashDealTerms);
         textViewAlreadyUsed = (TextView) findViewById(R.id.textViewAlreadyUsed);
 
         //set all the

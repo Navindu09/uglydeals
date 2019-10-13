@@ -41,7 +41,7 @@
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
     <ImageView
-        android:id="@+id/imageViewSelectedItemImage"
+        android:id="@+id/flashDealImage"
         android:layout_width="383dp"
         android:layout_height="191dp"
         android:layout_marginTop="44dp"
@@ -53,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
-        android:id="@+id/textViewSelectedItemName"
+        android:id="@+id/flashDealName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -64,10 +64,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewSelectedItemImage" />
+        app:layout_constraintTop_toBottomOf="@+id/flashDealImage" />
 
     <TextView
-        android:id="@+id/textViewSelectedActivityValidity"
+        android:id="@+id/flashDealValidity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -78,10 +78,10 @@
         android:textColor="@color/typeFontColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSelectedItemName" />
+        app:layout_constraintTop_toBottomOf="@+id/flashDealName" />
 
     <TextView
-        android:id="@+id/textViewSelectedItemDescription"
+        android:id="@+id/flashDealDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -95,10 +95,10 @@
         android:textColor="@color/typeFontColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSelectedActivityValidity" />
+        app:layout_constraintTop_toBottomOf="@+id/flashDealValidity" />
 
     <Button
-        android:id="@+id/buttonSelectedItemRedeem"
+        android:id="@+id/flashDealRedeemButton"
         android:layout_width="195dp"
         android:layout_height="47dp"
         android:layout_marginStart="8dp"
@@ -108,10 +108,10 @@
         android:text="Scan and Redeem!"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSelectedItemDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/flashDealDescription" />
 
     <TextView
-        android:id="@+id/textViewSelectedItemTerms"
+        android:id="@+id/flashDealTerms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -125,7 +125,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSelectedItemRedeem" />
+        app:layout_constraintTop_toBottomOf="@+id/flashDealRedeemButton" />
 
     <ProgressBar
         android:id="@+id/progressBarSelectedItem"
@@ -137,7 +137,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewSelectedItemTerms"
+        app:layout_constraintBottom_toBottomOf="@+id/flashDealTerms"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -156,7 +156,7 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSelectedItemDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/flashDealDescription" />
 
 
 </android.support.constraint.ConstraintLayout>
