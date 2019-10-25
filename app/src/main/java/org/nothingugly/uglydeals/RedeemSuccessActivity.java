@@ -41,8 +41,6 @@ public class RedeemSuccessActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +59,6 @@ public class RedeemSuccessActivity extends AppCompatActivity {
         } else {
             dealId = (String) savedInstanceState.getSerializable("dealId");
         }
-
 
 
         //MobileAds.initialize(this,"ca-app-pub-9409818967408705/3461091184");
@@ -108,9 +105,11 @@ public class RedeemSuccessActivity extends AppCompatActivity {
             }
         });
 
+        //Set the layout
         setContentView(R.layout.activity_redeem_success);
 
-        textViewMessage = (TextView) findViewById(R.id.textViewMessage) ;
+        //Initialising the components of the activity with
+        textViewMessage = (TextView) findViewById(R.id.textViewMessage);
         textViewDeal = (TextView) findViewById(R.id.textViewDeal);
         textViewAt = (TextView) findViewById(R.id.textViewAt);
         textViewPartnerName = (TextView) findViewById(R.id.textViewPartnerName);
@@ -132,6 +131,7 @@ public class RedeemSuccessActivity extends AppCompatActivity {
         buttonRedeemSuccessExit.setVisibility(View.INVISIBLE);
         progressBarRedeemSuccess.setVisibility(View.VISIBLE);
 
+        //Displaying the information about the deal.
         try {
             mFireStore.collection("deals").document(dealId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
@@ -186,8 +186,8 @@ public class RedeemSuccessActivity extends AppCompatActivity {
 
             });
 
-        } catch (NullPointerException e){
-            Log.e(TAG, "onCreate: ",e );
+        } catch (NullPointerException e) {
+            Log.e(TAG, "onCreate: ", e);
         }
         buttonRedeemSuccessExit.setOnClickListener(new View.OnClickListener() {
 
@@ -196,13 +196,14 @@ public class RedeemSuccessActivity extends AppCompatActivity {
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
 
-            }}
+                }
+            }
         });
     }
 
     @Override
     public void onBackPressed() {
-        if (mInterstitialAd.isLoaded()){
+        if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         }
 

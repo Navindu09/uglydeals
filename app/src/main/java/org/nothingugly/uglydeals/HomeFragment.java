@@ -67,7 +67,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         progressBarHomeFragment = (ProgressBar) view.findViewById(R.id.progressBarHomeFragment);
@@ -94,13 +93,13 @@ public class HomeFragment extends Fragment {
         adView.loadAd(adRequest);
 
         swipeRefereshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+                                                     @Override
+                                                     public void onRefresh() {
 
-                updateDealLists();
-                swipeRefereshLayout.setRefreshing(false);
-            }
-        }
+                                                         updateDealLists();
+                                                         swipeRefereshLayout.setRefreshing(false);
+                                                     }
+                                                 }
 
         );
 
@@ -110,7 +109,7 @@ public class HomeFragment extends Fragment {
         textViewHeaderNearMe.setVisibility(View.INVISIBLE);
 
         //Mapping the layout component
-        featuredRecyclerView =  view.findViewById(R.id.featuredRecyclerView);
+        featuredRecyclerView = view.findViewById(R.id.featuredRecyclerView);
         recyclerView1 = (RecyclerView) view.findViewById(R.id.recyclerView1);
         recyclerView2 = (RecyclerView) view.findViewById(R.id.recyclerView2);
 
@@ -121,6 +120,7 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager2
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
+        //Instantiating the recycler adapters with the relevant lists. See RecyclerAdapter.Constructor
         featuredDealRecyclerAdapter = new FeaturedDealRecyclerAdapter(featuredList);
         dealRecyclerAdapter1 = new DealRecyclerAdapter(dealList1);
         dealRecyclerAdapter2 = new DealRecyclerAdapter(dealList2);
@@ -130,22 +130,22 @@ public class HomeFragment extends Fragment {
         recyclerView1.setLayoutManager(layoutManager1);
         recyclerView2.setLayoutManager(layoutManager2);
 
+
         featuredRecyclerView.setAdapter(featuredDealRecyclerAdapter);
         recyclerView1.setAdapter(dealRecyclerAdapter1);
         recyclerView2.setAdapter(dealRecyclerAdapter2);
 
         //Initialising the list of deals
-       updateDealLists();
+        updateDealLists();
 
 
         //REturning view type object
         return view;
 
 
-
     }
 
-    public void updateDealLists(){
+    public void updateDealLists() {
 
         featuredList.clear();
         dealList1.clear();
@@ -153,54 +153,51 @@ public class HomeFragment extends Fragment {
 
         mFirestore = FirebaseFirestore.getInstance();
 
-            mFirestore.collection("deals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isComplete()){
+        mFirestore.collection("deals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isComplete()) {
 
 
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            Deal deal = doc.toObject(Deal.class);
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        Deal deal = doc.toObject(Deal.class);
 
-                               try{
-                                if(deal.getActive()){
-                                    Log.d(TAG, " Active Deal:  " + deal.getId());
-                                    if (deal.getMainAd() ) {
-                                        featuredList.add(deal);
-                                        featuredDealRecyclerAdapter.notifyDataSetChanged();
-
-                                    }
-
-                                    dealList1.add(deal);
-                                    dealList2.add(deal);
-
-
-                                    dealRecyclerAdapter1.notifyDataSetChanged();
-                                    dealRecyclerAdapter2.notifyDataSetChanged();
-                                } else {
-                                    Log.d(TAG, " Deal not Active:  " + deal.getId());
-                                    deal = null;
+                        try {
+                            if (deal.getActive()) {
+                                Log.d(TAG, " Active Deal:  " + deal.getId());
+                                if (deal.getMainAd()) {
+                                    featuredList.add(deal);
+                                    featuredDealRecyclerAdapter.notifyDataSetChanged();
 
                                 }
-                                /* else {
-                                    Log.d(TAG, deal.getId() + " is not active", task.getException());
-                                            
-                                }*/
-                               } catch (Exception e){
-                                   Log.e(TAG, "updateDealList / onCreateView / DealId :  " + deal.getId() , e );
-                               }
+
+                                dealList1.add(deal);
+                                dealList2.add(deal);
+
+
+                                dealRecyclerAdapter1.notifyDataSetChanged();
+                                dealRecyclerAdapter2.notifyDataSetChanged();
+                            } else {
+                                Log.d(TAG, " Deal not Active:  " + deal.getId());
+                                deal = null;
+
+                            }
+
+                        } catch (Exception e) {
+                            Log.e(TAG, "updateDealList / onCreateView / DealId :  " + deal.getId(), e);
                         }
-
-
-                        progressBarHomeFragment.setVisibility(View.INVISIBLE);
-                        textViewHeaderNearMe.setVisibility(View.VISIBLE);
-                        textViewHeaderFeatured.setVisibility(View.VISIBLE);
-                        textViewHeaderAll.setVisibility(View.VISIBLE);
-
-
                     }
+
+
+                    progressBarHomeFragment.setVisibility(View.INVISIBLE);
+                    textViewHeaderNearMe.setVisibility(View.VISIBLE);
+                    textViewHeaderFeatured.setVisibility(View.VISIBLE);
+                    textViewHeaderAll.setVisibility(View.VISIBLE);
+
+
                 }
-            });
+            }
+        });
 
 
     }

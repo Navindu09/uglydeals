@@ -67,25 +67,25 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Set up the Dropdown  menu
         Spinner dropdown = (Spinner) findViewById(R.id.spinnerWhere);
-        String[] items = new String[]{"How do you know about us?" ,"Restaurant", "Facebook", "Instagram", "YouTube", "Friend", "Poster", "Other"};
+        String[] items = new String[]{"How do you know about us?", "Restaurant", "Facebook", "Instagram", "YouTube", "Friend", "Poster", "Other"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
 
 
         //Mapping components to variables
-        editTextRegisterEmail = (EditText) findViewById(R.id.editTextRegisterEmail);
-        editTextRegisterPassword = (EditText) findViewById(R.id.editTextRegisterPassword);
-        editTextRegisterConfirmPassword = (EditText) findViewById(R.id.editTextRegisterConfirmPassword);
-        buttonRegisterRegister = (Button) findViewById(R.id.buttonRegisterRegister);
+        editTextRegisterEmail = (EditText) findViewById(R.id.editTextProfileEmail);
+        editTextRegisterPassword = (EditText) findViewById(R.id.editTextProfileName);
+        editTextRegisterConfirmPassword = (EditText) findViewById(R.id.editTextProfileSchool);
+        buttonRegisterRegister = (Button) findViewById(R.id.buttonProfileSave);
         getButtonRegisterLogin = (Button) findViewById(R.id.buttonRegisterLogin);
-        progressBarRegister = (ProgressBar) findViewById(R.id.progressBarRegister);
+        progressBarRegister = (ProgressBar) findViewById(R.id.progressBarProfile);
         textViewRegisterLogin = (TextView) findViewById(R.id.textViewRegisterLogin);
         textViewWhere = (TextView) findViewById(R.id.textViewWhere);
-        editTextRegisterName = (EditText) findViewById(R.id.editTextRegisterName);
+        editTextRegisterName = (EditText) findViewById(R.id.editTextProfilePhone);
         spinnerWhere = (Spinner) findViewById(R.id.spinnerWhere);
-        textViewButtonLogin= (TextView) findViewById(R.id.textViewButtonLogin);
+        textViewButtonLogin = (TextView) findViewById(R.id.textViewButtonLogin);
 
-       String selectedSpinnerItem = spinnerWhere.getSelectedItem().toString();
+        String selectedSpinnerItem = spinnerWhere.getSelectedItem().toString();
 
         //When the login button is clicked
         textViewButtonLogin.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +120,6 @@ public class RegisterActivity extends AppCompatActivity {
                         textViewButtonLogin.setVisibility(View.INVISIBLE);
                         textViewRegisterLogin.setVisibility(View.INVISIBLE);
                         textViewWhere.setVisibility(View.INVISIBLE);
-
 
 
                         //Execute firebase creat user with retrieved email and password. Setting on complete listener to see if registration is complete
@@ -161,7 +160,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
 
-                                                        //If Email sent successfully, log out and send to main. Make toast to verify email.
+                                                        //If Email sent successfully, log out and send to main. Send to verify email page.
                                                         if (task.isSuccessful()) {
                                                             sendToVerifyEmail();
                                                         }
@@ -192,6 +191,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     editTextRegisterEmail.setText("");
                                     editTextRegisterPassword.setText("");
                                     editTextRegisterConfirmPassword.setText("");
+                                    editTextRegisterName.setText("");
+
 
                                     //Make the progress bar invisible
                                     progressBarRegister.setVisibility(View.INVISIBLE);
@@ -205,14 +206,13 @@ public class RegisterActivity extends AppCompatActivity {
                             }
 
                         });
-                    }
 
-                    //If Password and ConfirmPassword dont match, let the user know
-                    else {
+                        //If Password and ConfirmPassword don't match, let the user know
+                    } else {
                         Toast.makeText(RegisterActivity.this, "Password and Confirm Password should match", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Please make sure all the fields are completed",Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Please make sure all the fields are completed", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -235,7 +235,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    //Simply close the Register Activity and Start MainActivity.
+    // Register Activity and Start MainActivity.
     private void sendToMain() {
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);

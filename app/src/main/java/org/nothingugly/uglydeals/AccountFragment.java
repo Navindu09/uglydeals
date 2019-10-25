@@ -5,12 +5,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 
@@ -24,8 +27,9 @@ public class AccountFragment extends Fragment {
     private Button buttonAccountFragmentAbout;
     private Button buttonAccountFragmentContact;
     private Button buttonAccountFragmentPrivacy;
+    private Button buttonAccountFragmentResetPassword;
+    private Button buttonAccountFragmentProfile;
     private FirebaseAuth mAuth;
-
 
 
     public AccountFragment() {
@@ -49,6 +53,8 @@ public class AccountFragment extends Fragment {
         buttonAccountFragmentAbout = view.findViewById(R.id.buttonAccountFragmentProfileAbout);
         buttonAccountFragmentContact = view.findViewById(R.id.buttonAccountFragmentContact);
         buttonAccountFragmentPrivacy = view.findViewById(R.id.buttonAccountFragmentPrivacy);
+        buttonAccountFragmentResetPassword = view.findViewById(R.id.buttonAccountFragmentResetPassword);
+        buttonAccountFragmentProfile = view.findViewById(R.id.buttonAccountFragmentProfile);
 
         //When the logout button is clicked
         buttonAccountFragmentLogout.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +68,7 @@ public class AccountFragment extends Fragment {
 
         buttonAccountFragmentTAC.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                 builder1.setTitle("Terms and Conditions");
                 builder1.setMessage(" Welcome to Ugly Deals! The following Terms of Use (“Terms”, “Terms of Use”) constitute an agreement made between you, the website user (“you”, “your,”) and us, Ugly Deals (“Ugly Deals”, “we”, “us”, “our”). By accessing and using this website www.uglydeals.co; including the Ugly Deals mobile application (“Ugly Deals App”); you are agreeing that you have read, understood, and accepted all of the Terms, as may be updated from time to time and agree to be bound by them. If you disagree with any part of the Terms then you may not access the Services. \n" +
@@ -145,71 +151,71 @@ public class AccountFragment extends Fragment {
                 builder1.setTitle("Privacy Policy");
                 builder1.setMessage(
                         "This Privacy Policy explains how Ugly Deals App (“Ugly Deals”, “we”, “us”, or “our”) collects, stores, uses and discloses your personal information. We are committed to protecting the privacy of any personal information we hold about any of our users in accordance with the Privacy policies of Bangladesh.\n" +
-                        "We are responsible for the collection of your Personal Information for our services (“Services”), including the Ugly Deals mobile application services. We use your personal information for providing and improving the Services. By using the Services, you agree to the collection and use of information in accordance with this policy.\n" +
-                        "\n" +
-                        "Personal information we collect:\n" +
-                        "* When you register as a user of our services, we will collect various types of personal information that you provide to us. Some of the common types of personal information that we may collect include:\n" +
-                        "* Contact details (e.g. last name, first name, and e-mail)\n" +
-                        "* Education (e.g. university, degree and majors)\n" +
-                        "* Demographic information (e.g. gender, address and ethnicity)\n" +
-                        "* Information about your hobbies and interests\n" +
-                        "* Any other information we ask you to provide when you register as a user;\n" +
-                        "* Correspondence and records relating to our dealings with you (e.g. letters, emails and telephone calls)\n" +
-                        "* If you cannot or will not provide us with the personal information we reasonably require, we may not be able to provide you with the services or assistance you require.\n" +
-                        "\n" +
-                        "Log Data:\n" +
-                        "We collect information that your browser sends whenever you visit our Services (\"Log Data\"). This Log Data may include information such as your computer's Internet Protocol (\"IP\") address, browser type, browser version, the pages of our Services that you visit, the time and date of your visit, the time spent on those pages and other statistics. In addition, we may use third party services such as Google Analytics that collect, monitor and analyze this type of information in order to increase our Service's functionality. These third party service providers have their own privacy policies addressing how they use such information. When you access the Services by or through a mobile device, we may collect certain information automatically, including, but not limited to, the type of mobile device you use, your mobile devices unique device ID, the IP address of your mobile device, your mobile operating system, the type of mobile Internet browser you use and other statistics.\n" +
-                        "\n" +
-                        "\n" +
-                        "\n" +
-                        "\n" +
-                        "\n" +
-                        "Cookies:\n" +
-                        "Cookies are anonymous data files stored on your computer after you access certain websites. There are merely used to identify visitors when they return to us, so that certain information already provided by the visitor to a site is not required to be provided again. Cookies are also used to gather data on which areas of a site are visited frequently and which are not, which help us plan and enhance our sites. We acknowledge that some users may wish to disable cookies. This can be done by changing your web browser settings and/or deleting them from your hard drive. Visit an appropriate website to find out more about cookies.\n" +
-                        "\n" +
-                        "Why we collect personal information:\n" +
-                        "* We will use your personal information for purposes including (but not limited to):\n" +
-                        "* To provide targeted advertising in accordance with the information that you provide;\n" +
-                        "* Handling questions or complaints that you have about us or our Services;\n" +
-                        "* Improving our Services (for example, by using information about your printing habits to get a better understanding of your needs and desires);\n" +
-                        "* Conducting competitions, promotions and trade incentive programs that you have entered;\n" +
-                        "* Provide your email address and name to our partners and advertisers from whom you consent, when registering with us or from time to time when asked, to receive newsletters, promotions or offers from our partners or advertisers;\n" +
-                        "* Securing and improving your use of our websites; and\n" +
-                        "* Complying with applicable legal requirements.\n" +
-                        "* How we collect your personal information\n" +
-                        "* We may collect your personal information directly from you when you register with us as a user of our Services. We may also collect your personal information when you provide it to us through other means, for example:\n" +
-                        "* When you contact us for any reasons\n" +
-                        "* When you browse our websites and social media sites\n" +
-                        "* We may also collect personal information about your from publicly available source or from third parties. Where it does so, it will ensure that we act in accordance with relevant privacy laws.\n" +
-                        "\n" +
-                        "Disclosing your personal information:\n" +
-                        "In some cases, we need to transfer or disclose your personal information to external recipients (some of which may be based outside of Bangladesh). The types of recipients that we share your information with will depend on the nature of the information and why we collected it. In the course of our ordinary business operations we disclose personal information to:\n" +
-                        "External service providers (for example third-party IT services (such as data storage services, email filtering, virus scanning, call centers, printers, and external printing and photocopying providers)\n" +
-                        "Our advisors and consultants\n" +
-                        "Other than those external recipients referred to above, we will not disclose your personal information to any other third party unless it has reasonable grounds to believe:\n" +
-                        "You have authorized us to do so;\n" +
-                        "Your safety, or the safety of others in the community is at risk; or\n" +
-                        "We are required or permitted by law to do so.\n" + "\n" +
-                        "Security:\n" +
-                        "We have taken and will take steps to ensure personal information we hold about you is protected from risks such as loss, unauthorized access, use destruction, modification or disclosure.\n" +
-                        "No data transmission over the internet is totally secure. As a result, any personal information you send to us over the Internet (including via email) is sent at your own risk.\n" +
-                        "Information sent by you to our App and/or Website is not encrypted. You acknowledge that we do not guarantee the security of the content of any such information, and it is entirely your responsibility to satisfy yourself as to whether our security measures are sufficient for your requirements.\n" +
-                        "\n" +
-                        "Storage of Data:\n" +
-                        "We use third party service providers to assist in storing and processing certain types of personal information for us, and some of these service providers may be located overseas, or use facilities located overseas to provide us with services.\n" +
-                        "Your personal information will not be stored for a time period exceeding the period required or permitted by law.\n" +
-                        "\n" +
-                        "Links To Other Sites:\n" +
-                        "Our Services may contain links to other sites that are not operated by us. If you click on a third party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy of every site you visit. We have no control over, and assume no responsibility for the content, privacy policies or practices of any third party sites or services.\n" +
-                        "\n" +
-                        "Accessing and correcting your personal information:\n" +
-                        "You have a right to request access to or correction of your personal information held by us. If you wish to access, correct or update any personal information we may hold about you, please contact us at info@uglydeals.co\n" +
-                                "\n"+
-                        "Updates:\n" +
-                        "We may amend this Privacy Policy at any time and for any reason. The latest version will be available on our website here. You should check this Privacy Policy regularly for changes.\n" +
+                                "We are responsible for the collection of your Personal Information for our services (“Services”), including the Ugly Deals mobile application services. We use your personal information for providing and improving the Services. By using the Services, you agree to the collection and use of information in accordance with this policy.\n" +
                                 "\n" +
-                        "Contact details:\n" +
-                        "If you have any questions regarding this Privacy Policy, please contact us at info@uglydeals.co\n");
+                                "Personal information we collect:\n" +
+                                "* When you register as a user of our services, we will collect various types of personal information that you provide to us. Some of the common types of personal information that we may collect include:\n" +
+                                "* Contact details (e.g. last name, first name, and e-mail)\n" +
+                                "* Education (e.g. university, degree and majors)\n" +
+                                "* Demographic information (e.g. gender, address and ethnicity)\n" +
+                                "* Information about your hobbies and interests\n" +
+                                "* Any other information we ask you to provide when you register as a user;\n" +
+                                "* Correspondence and records relating to our dealings with you (e.g. letters, emails and telephone calls)\n" +
+                                "* If you cannot or will not provide us with the personal information we reasonably require, we may not be able to provide you with the services or assistance you require.\n" +
+                                "\n" +
+                                "Log Data:\n" +
+                                "We collect information that your browser sends whenever you visit our Services (\"Log Data\"). This Log Data may include information such as your computer's Internet Protocol (\"IP\") address, browser type, browser version, the pages of our Services that you visit, the time and date of your visit, the time spent on those pages and other statistics. In addition, we may use third party services such as Google Analytics that collect, monitor and analyze this type of information in order to increase our Service's functionality. These third party service providers have their own privacy policies addressing how they use such information. When you access the Services by or through a mobile device, we may collect certain information automatically, including, but not limited to, the type of mobile device you use, your mobile devices unique device ID, the IP address of your mobile device, your mobile operating system, the type of mobile Internet browser you use and other statistics.\n" +
+                                "\n" +
+                                "\n" +
+                                "\n" +
+                                "\n" +
+                                "\n" +
+                                "Cookies:\n" +
+                                "Cookies are anonymous data files stored on your computer after you access certain websites. There are merely used to identify visitors when they return to us, so that certain information already provided by the visitor to a site is not required to be provided again. Cookies are also used to gather data on which areas of a site are visited frequently and which are not, which help us plan and enhance our sites. We acknowledge that some users may wish to disable cookies. This can be done by changing your web browser settings and/or deleting them from your hard drive. Visit an appropriate website to find out more about cookies.\n" +
+                                "\n" +
+                                "Why we collect personal information:\n" +
+                                "* We will use your personal information for purposes including (but not limited to):\n" +
+                                "* To provide targeted advertising in accordance with the information that you provide;\n" +
+                                "* Handling questions or complaints that you have about us or our Services;\n" +
+                                "* Improving our Services (for example, by using information about your printing habits to get a better understanding of your needs and desires);\n" +
+                                "* Conducting competitions, promotions and trade incentive programs that you have entered;\n" +
+                                "* Provide your email address and name to our partners and advertisers from whom you consent, when registering with us or from time to time when asked, to receive newsletters, promotions or offers from our partners or advertisers;\n" +
+                                "* Securing and improving your use of our websites; and\n" +
+                                "* Complying with applicable legal requirements.\n" +
+                                "* How we collect your personal information\n" +
+                                "* We may collect your personal information directly from you when you register with us as a user of our Services. We may also collect your personal information when you provide it to us through other means, for example:\n" +
+                                "* When you contact us for any reasons\n" +
+                                "* When you browse our websites and social media sites\n" +
+                                "* We may also collect personal information about your from publicly available source or from third parties. Where it does so, it will ensure that we act in accordance with relevant privacy laws.\n" +
+                                "\n" +
+                                "Disclosing your personal information:\n" +
+                                "In some cases, we need to transfer or disclose your personal information to external recipients (some of which may be based outside of Bangladesh). The types of recipients that we share your information with will depend on the nature of the information and why we collected it. In the course of our ordinary business operations we disclose personal information to:\n" +
+                                "External service providers (for example third-party IT services (such as data storage services, email filtering, virus scanning, call centers, printers, and external printing and photocopying providers)\n" +
+                                "Our advisors and consultants\n" +
+                                "Other than those external recipients referred to above, we will not disclose your personal information to any other third party unless it has reasonable grounds to believe:\n" +
+                                "You have authorized us to do so;\n" +
+                                "Your safety, or the safety of others in the community is at risk; or\n" +
+                                "We are required or permitted by law to do so.\n" + "\n" +
+                                "Security:\n" +
+                                "We have taken and will take steps to ensure personal information we hold about you is protected from risks such as loss, unauthorized access, use destruction, modification or disclosure.\n" +
+                                "No data transmission over the internet is totally secure. As a result, any personal information you send to us over the Internet (including via email) is sent at your own risk.\n" +
+                                "Information sent by you to our App and/or Website is not encrypted. You acknowledge that we do not guarantee the security of the content of any such information, and it is entirely your responsibility to satisfy yourself as to whether our security measures are sufficient for your requirements.\n" +
+                                "\n" +
+                                "Storage of Data:\n" +
+                                "We use third party service providers to assist in storing and processing certain types of personal information for us, and some of these service providers may be located overseas, or use facilities located overseas to provide us with services.\n" +
+                                "Your personal information will not be stored for a time period exceeding the period required or permitted by law.\n" +
+                                "\n" +
+                                "Links To Other Sites:\n" +
+                                "Our Services may contain links to other sites that are not operated by us. If you click on a third party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy of every site you visit. We have no control over, and assume no responsibility for the content, privacy policies or practices of any third party sites or services.\n" +
+                                "\n" +
+                                "Accessing and correcting your personal information:\n" +
+                                "You have a right to request access to or correction of your personal information held by us. If you wish to access, correct or update any personal information we may hold about you, please contact us at info@uglydeals.co\n" +
+                                "\n" +
+                                "Updates:\n" +
+                                "We may amend this Privacy Policy at any time and for any reason. The latest version will be available on our website here. You should check this Privacy Policy regularly for changes.\n" +
+                                "\n" +
+                                "Contact details:\n" +
+                                "If you have any questions regarding this Privacy Policy, please contact us at info@uglydeals.co\n");
 
 
                 builder1.setPositiveButton(
@@ -275,8 +281,8 @@ public class AccountFragment extends Fragment {
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                 builder1.setTitle("Contact Us");
-                builder1.setMessage("Ugly Deals \n"+
-                        "info@uglydeals.co\n"+
+                builder1.setMessage("Ugly Deals \n" +
+                        "info@uglydeals.co\n" +
                         "\u202D+880 14 0555 1986\n" +
                         "\n" +
                         "We would love to hear from you!");
@@ -296,6 +302,92 @@ public class AccountFragment extends Fragment {
             }
         });
 
+        buttonAccountFragmentResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Ask if they want to reset password
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Password reset email sent!");
+                builder.setMessage("Are you sure you want to reset your password?");
+
+                //If yes
+                builder.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                //Send the reset password to the email of current user
+                                String email = mAuth.getCurrentUser().getEmail().toString().trim();
+                                mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                        //If email successfully sent
+                                        if (task.isComplete()) {
+
+                                            //Dialog to notify email has been sent
+                                            AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                                            builder1.setTitle("Password reset email sent!");
+                                            builder1.setMessage("Please Check your email and follow the link to reset password");
+
+                                            builder1.setPositiveButton(
+                                                    "Got it!",
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+
+                                            AlertDialog alert11 = builder1.create();
+                                            alert11.show();
+
+                                            //If password reset email sending failed
+                                        } else {
+                                            AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                                            builder1.setTitle("Password reset failed");
+                                            builder1.setMessage("Oops, something went wrong, Please try again");
+
+                                            builder1.setPositiveButton(
+                                                    "Got it!",
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+
+                                            AlertDialog alert11 = builder1.create();
+                                            alert11.show();
+                                        }
+                                    }
+                                });
+
+                            }
+                        });
+
+                //If no selected, "Sure you want to change password?"
+                builder.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder.create();
+                alert11.show();
+
+
+            }
+        });
+
+        buttonAccountFragmentProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendToProfile();
+            }
+        });
 
 
         return view;
@@ -308,5 +400,14 @@ public class AccountFragment extends Fragment {
         //gets the activity of the fragment and destroys the activity
         getActivity().finish();
     }
+
+    //Send to profileActivity
+    private void sendToProfile() {
+        Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+        startActivity(profileIntent);
+        //gets the activity of the fragment and destroys the activity
+
+    }
+
 
 }

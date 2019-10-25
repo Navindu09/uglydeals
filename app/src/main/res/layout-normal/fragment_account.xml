@@ -9,8 +9,27 @@
     android:orientation="vertical"
     app:layout_constraintTop_toTopOf="parent">
 
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#90909090" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/poppins_light"
+        android:gravity="center_vertical"
+        android:text="Account"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
     <Button
-        android:id="@+id/buttonAccountFragmentProfil"
+        android:id="@+id/buttonAccountFragmentProfile"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -30,6 +49,12 @@
         android:layout_height="1px"
         android:background="#90909090" />
 
+    <View
+        android:id="@+id/separator3"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="#90909090" />
+
     <Button
         android:id="@+id/buttonAccountFragmentProfileTAC"
         style="?android:attr/buttonBarButtonStyle"
@@ -45,10 +70,10 @@
         android:textColor="@color/typeFontColor" />
 
     <View
-    android:id="@+id/separator1"
-    android:layout_width="match_parent"
-    android:layout_height="2px"
-    android:background="#90909090" />
+        android:id="@+id/separator1"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="#90909090" />
 
     <Button
         android:id="@+id/buttonAccountFragmentProfileAbout"
@@ -76,6 +101,24 @@
         android:drawableRight="@drawable/sharp_arrow_forward_ios_black_24dp"
         android:fontFamily="@font/poppins"
         android:text="Privacy Policy"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/typeFontColor" />
+
+    <View
+        android:id="@+id/separator9"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="#90909090" />
+
+    <Button
+        android:id="@+id/buttonAccountFragmentResetPassword"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/sharp_arrow_forward_ios_black_24dp"
+        android:fontFamily="@font/poppins"
+        android:text="Reset Password"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textColor="@color/typeFontColor" />
@@ -118,7 +161,7 @@
         android:textColor="@color/typeFontColor" />
 
     <View
-        android:id="@+id/separator3"
+        android:id="@+id/separator8"
         android:layout_width="match_parent"
         android:layout_height="2px"
         android:background="#90909090" />

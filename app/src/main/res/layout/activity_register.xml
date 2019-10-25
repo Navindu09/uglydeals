@@ -19,7 +19,7 @@
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonRegisterRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonProfileSave" />
 
     <TextView
         android:id="@+id/textViewRegisterUglyDeals"
@@ -49,7 +49,7 @@
         app:srcCompat="@drawable/logo_png" />
 
     <EditText
-        android:id="@+id/editTextRegisterEmail"
+        android:id="@+id/editTextProfileEmail"
         android:layout_width="335dp"
         android:layout_height="54dp"
         android:layout_marginStart="8dp"
@@ -69,7 +69,7 @@
 
 
     <EditText
-        android:id="@+id/editTextRegisterPassword"
+        android:id="@+id/editTextProfileName"
         android:layout_width="335dp"
         android:layout_height="54dp"
         android:layout_marginStart="8dp"
@@ -85,10 +85,10 @@
         android:textColorHighlight="#FFBC0A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRegisterEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextProfileEmail" />
 
     <EditText
-        android:id="@+id/editTextRegisterConfirmPassword"
+        android:id="@+id/editTextProfileSchool"
         android:layout_width="335dp"
         android:layout_height="54dp"
         android:layout_marginStart="8dp"
@@ -104,10 +104,10 @@
         android:textColorHighlight="#FFBC0A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRegisterPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextProfileName" />
 
     <Button
-        android:id="@+id/buttonRegisterRegister"
+        android:id="@+id/buttonProfileSave"
         android:layout_width="145dp"
         android:layout_height="47dp"
         android:layout_marginStart="8dp"
@@ -119,7 +119,7 @@
         android:textColor="@color/typeFontColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRegisterConfirmPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextProfileSchool" />
 
     <Button
         android:id="@+id/buttonRegisterLogin"
@@ -137,7 +137,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewRegisterLogin" />
 
     <ProgressBar
-        android:id="@+id/progressBarRegister"
+        android:id="@+id/progressBarProfile"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -149,6 +149,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRegisterConfirmPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextProfileSchool" />
 
 </android.support.constraint.ConstraintLayout>

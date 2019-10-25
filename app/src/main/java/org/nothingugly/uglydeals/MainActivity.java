@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private Date currentDate;
 
 
-
-
     private HomeFragment homeFragment;
     private SearchFragment searchFragment;
     private NotificationsFragment notificationsFragment;
@@ -59,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         currentDate = new Date();
-
 
 
         //Initialise Firebase app
@@ -103,17 +100,17 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(searchFragment);
                         return true;
                     //if notification button clicked, replace fragment with Notification
-                    case (R.id.bottomNavigationNotification):
+                   /* case (R.id.bottomNavigationNotification):
 
                         replaceFragment(notificationsFragment);
-                        return true;
+                        return true;*/
 
                     //if account button clicked, replace fragment with account
                     case (R.id.bottomNavigationAccount):
 
                         replaceFragment(accountFragment);
                         return true;
-                   //If Flashdeal logo is clicked replace fragment with flasdeal
+                    //If Flashdeal logo is clicked replace fragment with flasdeal
 
                     case (R.id.bottomNavigationNotificationFlashDeal):
 
@@ -128,9 +125,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
     }
-    //When ever MainActivity is started. Do these Validations : 1. user already logged in?
+
+    //When ever MainActivity is started. Do these Validations :
+    //  1. user already logged in?
     //  2. Email verfied?
     //  3. Is phone Verified?
     //  4. Has a subscription?
@@ -139,8 +137,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
 
-
-       //Retrieve the current logged in user
+        //Retrieve the current logged in user
         final FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //If not user is logged in
@@ -151,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             sendToLogin();
         }
 
-        //If a user is logged in
+        //If a user is logged in, also checks if it is a customer account.
         else {
             DocumentReference docIdRef = mFirestore.collection("customers").document(currentUser.getUid());
             docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -187,6 +184,60 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Check if there are unavailable deals for the user. Then refresh the dates to make it available of possible.
+    public void resumeDeals() {
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        final String uId = currentUser.getUid();
+        try {
+            mFirestore.collection("customers").document(uId).collection("unavailableDeals").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+
+                    try {
+                        Log.d(TAG, "onEvent: Number of unavailableDeals: " + queryDocumentSnapshots.size());
+                        for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
+
+                            if (doc.getType() == DocumentChange.Type.ADDED) {
+                                DocumentSnapshot dealSnapshot = doc.getDocument();
+                                final String documentID = dealSnapshot.getId();
+                                final String dealId = (String) dealSnapshot.get("unavailableDeal"); // Not necessary
+                                System.out.println(dealId);// ,,
+                                Date resumeDate = (Date) dealSnapshot.get("dealResumeDate");
+
+                                if (currentDate.after(resumeDate)) {
+                                    mFirestore.collection("customers").document(uId).collection("unavailableDeals").document(documentID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d(TAG, "onSuccess: " + dealId + " has been resumed and deleted from user");
+
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error deleting document, has not resumed", e);
+                                        }
+                                    });
+
+
+                                } else {
+                                    Log.d(TAG, "onEvent: " + dealId + " Can't be resumed");
+                                }
+
+                            }
+                        }
+                    } catch (NullPointerException x) {
+                        Log.e(TAG, "onEvent: ", x);
+                    }
+                }
+            });
+        } catch (NullPointerException e) {
+            Log.e(TAG, "resumeDeals: ", e);
+        }
+    }
+
+
     //Send to LoginActivity
     private void sendToLogin() {
         Intent loginintent = new Intent(this, LogInActivity.class);
@@ -210,60 +261,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void resumeDeals() {
-        final FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        final String uId = currentUser.getUid();
-        try{
-         mFirestore.collection("customers").document(uId).collection("unavailableDeals").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-
-                try{
-                Log.d(TAG, "onEvent: Number of unavailableDeals: " + queryDocumentSnapshots.size());
-                for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
-
-                    if (doc.getType() == DocumentChange.Type.ADDED) {
-                        DocumentSnapshot dealSnapshot = doc.getDocument();
-                        final String documentID = dealSnapshot.getId();
-                        final String dealId = (String) dealSnapshot.get("unavailableDeal"); // Not necessary
-                        System.out.println(dealId);// ,,
-                        Date resumeDate = (Date) dealSnapshot.get("dealResumeDate");
-
-                        if(currentDate.after(resumeDate)){
-                            mFirestore.collection("customers").document(uId).collection("unavailableDeals").document(documentID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "onSuccess: " + dealId + " has been resumed and deleted from user");
-
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error deleting document, has not resumed", e);
-                                }
-                            });
-
-
-                        } else {
-                            Log.d(TAG, "onEvent: " + dealId + " Can't be resumed");
-                        }
-
-                    }
-                }}catch (NullPointerException x){
-                    Log.e(TAG, "onEvent: ", x );
-                }
-            }
-        }); } catch (NullPointerException e){
-            Log.e(TAG, "resumeDeals: ",e);
-        }
-    }
-
-    private FirebaseAuth getFirebaseAuth(){
-        return FirebaseAuth.getInstance();
-    }
-
+    //Send to verifyEmail Activity
     private void sendToVerifyEmail() {
         Intent verifyEmailIntent = new Intent(this, VerifyEmailActivity.class);
         startActivity(verifyEmailIntent);

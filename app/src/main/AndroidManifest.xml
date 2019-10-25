@@ -25,7 +25,9 @@
         android:roundIcon="@mipmap/ugly_deals_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FlashDealFragment"></activity>
+        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".PasswordResetActivity" />
+        <activity android:name=".FlashDealFragment" />
         <activity android:name=".VerifyEmailActivity" />
 
         <meta-data

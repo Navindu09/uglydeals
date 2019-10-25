@@ -29,6 +29,7 @@ public class LogInActivity extends AppCompatActivity {
     private Button buttonLoginRegister;
 
     private TextView textViewRegister;
+    private TextView textViewLoginResetPassword;
 
     private ProgressBar progressBarLogin;
 
@@ -50,6 +51,7 @@ public class LogInActivity extends AppCompatActivity {
         buttonLoginRegister = (Button) findViewById(R.id.buttonLoginRegister);
 
         textViewRegister = (TextView) findViewById(R.id.textViewRegister);
+        textViewLoginResetPassword = (TextView) findViewById(R.id.textViewLoginResetPassword);
 
         progressBarLogin  =  (ProgressBar) findViewById(R.id.progressBarLogin);
 
@@ -72,6 +74,7 @@ public class LogInActivity extends AppCompatActivity {
                     buttonLoginRegister.setVisibility(View.INVISIBLE);
 
                     textViewRegister.setVisibility(View.INVISIBLE);
+                    textViewLoginResetPassword.setVisibility(View.INVISIBLE);
 
                     //Firebase Authentication in progress
                     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -98,6 +101,8 @@ public class LogInActivity extends AppCompatActivity {
                                 buttonLoginRegister.setVisibility(View.VISIBLE);
 
                                 textViewRegister.setVisibility(View.VISIBLE);
+                                textViewLoginResetPassword.setVisibility(View.VISIBLE);
+
                             }
 
 
@@ -106,6 +111,13 @@ public class LogInActivity extends AppCompatActivity {
                     });
                 }
 
+            }
+        });
+
+        textViewLoginResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendToPasswordReset();
             }
         });
 
@@ -141,6 +153,12 @@ public class LogInActivity extends AppCompatActivity {
     private void sendToMain() {
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
+        finish();
+    }
+
+    private void sendToPasswordReset(){
+        Intent passwordReset = new Intent(this, PasswordResetActivity.class);
+        startActivity(passwordReset);
         finish();
     }
 }
