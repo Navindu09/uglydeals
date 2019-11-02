@@ -108,11 +108,11 @@
             app:layout_constraintTop_toBottomOf="@+id/flashDealDescription" />
 
         <TextView
-            android:id="@+id/flashDealTerms"
+            android:id="@+id/textViewSelectedItemTermsOfUse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
             android:autoSizeTextType="none"
             android:fontFamily="@font/poppins"
@@ -134,7 +134,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/flashDealTerms"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewSelectedItemTermsOfUse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbarProfile" />
@@ -154,6 +154,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/flashDealDescription" />
+
+        <TextView
+            android:id="@+id/textViewSelectedItemTerms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:fontFamily="@font/poppins"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/typeFontColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSelectedItemTermsOfUse" />
 
 
     </android.support.constraint.ConstraintLayout>

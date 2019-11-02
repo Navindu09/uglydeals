@@ -7,7 +7,7 @@
     tools:context=".ProfileActivity">
 
     <EditText
-        android:id="@+id/editTextProfileAreaOfStudy"
+        android:id="@+id/editTextProfileDegree"
         android:layout_width="312dp"
         android:layout_height="42dp"
         android:layout_marginStart="32dp"
@@ -16,16 +16,16 @@
         android:background="@drawable/edittext_round"
         android:ems="10"
         android:fontFamily="@font/poppins_light"
-        android:hint="Area Of Study"
-        android:inputType="textPassword"
+        android:hint="Degree/Job Title"
+        android:inputType="textPersonName|text"
         android:textAlignment="center"
         android:textColor="@color/typeFontColor"
         android:textColorHighlight="#FFBC0A"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextProfileSchool" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextProfileOrganisation" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarProfile"
@@ -52,7 +52,7 @@
         android:textAlignment="center"
         android:textColor="@color/typeFontColor"
         android:textColorHighlight="#FFBC0A"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,11 +70,11 @@
         android:ems="10"
         android:fontFamily="@font/poppins_light"
         android:hint="Mobile Phone"
-        android:inputType="textEmailAddress"
+        android:inputType="phone"
         android:textAlignment="center"
         android:textColor="@color/typeFontColor"
         android:textColorHighlight="#FFBC0A"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +102,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextProfilePhone" />
 
     <EditText
-        android:id="@+id/editTextProfileSchool"
+        android:id="@+id/getEditTextProfileOccupation"
         android:layout_width="312dp"
         android:layout_height="42dp"
         android:layout_marginStart="32dp"
@@ -111,16 +111,37 @@
         android:background="@drawable/edittext_round"
         android:ems="10"
         android:fontFamily="@font/poppins_light"
-        android:hint="School/University"
-        android:inputType="textPassword"
+        android:hint="Occupation"
+        android:inputType="textPersonName|text"
         android:textAlignment="center"
         android:textColor="@color/typeFontColor"
         android:textColorHighlight="#FFBC0A"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextProfileName" />
+
+    <EditText
+        android:id="@+id/editTextProfileOrganisation"
+        android:layout_width="312dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/edittext_round"
+        android:ems="10"
+        android:fontFamily="@font/poppins_light"
+        android:hint="School/University/Organisation"
+        android:inputType="textPersonName|text"
+        android:textAlignment="center"
+        android:textColor="@color/typeFontColor"
+        android:textColorHighlight="#FFBC0A"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getEditTextProfileOccupation" />
 
     <Button
         android:id="@+id/buttonProfileSave"
@@ -135,7 +156,7 @@
         android:textColor="@color/typeFontColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextProfileAreaOfStudy" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextProfileDegree" />
 
     <ProgressBar
         android:id="@+id/progressBarProfile"
@@ -145,12 +166,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:indeterminateDrawable="@drawable/progress_bar"
+        android:indeterminateDrawable="@drawable/progress_bar_white"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextProfileAreaOfStudy" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextProfileDegree" />
 
     <TextView
         android:id="@+id/textViewProfileName"
@@ -158,7 +179,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="Navindu Dissanayake"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/toolbarProfile"

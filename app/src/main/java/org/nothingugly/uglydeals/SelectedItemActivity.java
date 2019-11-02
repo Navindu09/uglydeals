@@ -49,6 +49,7 @@ public class SelectedItemActivity extends AppCompatActivity {
     private TextView textViewSelectedItemTerms;
     private ProgressBar progressBarSelectedItem;
     private TextView textViewAlreadyUsed;
+    private TextView textViewSelectedItemTermsOfUse;
 
     private String deal;
 
@@ -103,8 +104,9 @@ public class SelectedItemActivity extends AppCompatActivity {
         textViewSelectedActivityValidity = (TextView) findViewById(R.id.flashDealValidity);
         textViewSelectedItemDescription = (TextView) findViewById(R.id.flashDealDescription);
         buttonSelectedItemRedeem = (Button) findViewById(R.id.flashDealRedeemButton);
-        textViewSelectedItemTerms = (TextView) findViewById(R.id.flashDealTerms);
+        textViewSelectedItemTerms = (TextView) findViewById(R.id.textViewSelectedItemTerms);
         textViewAlreadyUsed = (TextView) findViewById(R.id.textViewAlreadyUsed);
+        textViewSelectedItemTermsOfUse = (TextView) findViewById(R.id.textViewSelectedItemTermsOfUse);
 
         //set all the
         textViewSelectedItemPartnerName.setVisibility(View.INVISIBLE);
@@ -116,6 +118,8 @@ public class SelectedItemActivity extends AppCompatActivity {
         textViewSelectedItemTerms.setVisibility(View.INVISIBLE);
         textViewAlreadyUsed.setVisibility(View.INVISIBLE);
         progressBarSelectedItem.setVisibility(View.VISIBLE);
+        textViewSelectedItemTermsOfUse.setVisibility(View.INVISIBLE);
+
 
         try {
             if (deal != null) {
@@ -139,6 +143,9 @@ public class SelectedItemActivity extends AppCompatActivity {
                                 //Set the deal name into the layout
                                 String name = deal.getName();
                                 textViewSelectedItemName.setText(name);
+
+                                String terms = deal.getTermsOfUse();
+                                textViewSelectedItemTerms.setText(terms);
 
                                 //Set the photo into the layout
                                 String itemImageUrl = deal.getDealPhoto();
@@ -190,6 +197,7 @@ public class SelectedItemActivity extends AppCompatActivity {
                         buttonSelectedItemRedeem.setVisibility(View.VISIBLE);
                         textViewSelectedItemTerms.setVisibility(View.VISIBLE);
                         progressBarSelectedItem.setVisibility(View.INVISIBLE);
+                        textViewSelectedItemTermsOfUse.setVisibility(View.VISIBLE);
 
                     }
 
@@ -266,7 +274,7 @@ public class SelectedItemActivity extends AppCompatActivity {
                            buttonSelectedItemRedeem.setVisibility(View.INVISIBLE);
                            textViewAlreadyUsed.setVisibility(View.VISIBLE);
 
-                           Log.d(TAG, "onEvent: Deal is unavaiable");
+                           Log.d(TAG, "onEvent: Deal is unavailable");
                        } else {
                            Log.d(TAG, "onEvent: this deal is available ");
                        }

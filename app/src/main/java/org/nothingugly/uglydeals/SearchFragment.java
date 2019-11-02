@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,13 +35,12 @@ public class SearchFragment extends Fragment {
     private EditText editTextSearchSearch;
     private ImageButton imageButtonSearch;
     private RecyclerView recyclerViewSearchResults;
+    private TextView textViewSearchMessage;
 
     private SearchRecyclerAdapter searchRecyclerAdapter;
     private List<Deal> searchedDeals;
 
     private FirebaseFirestore mFirestore;
-
-
 
 
     public SearchFragment() {
@@ -59,14 +59,15 @@ public class SearchFragment extends Fragment {
         mFirestore = FirebaseFirestore.getInstance();
 
 
-        editTextSearchSearch =(EditText) view.findViewById(R.id.editTextSearchSearch);
-        imageButtonSearch =  (ImageButton) view.findViewById(R.id.imageButtonSearch);
-        recyclerViewSearchResults= (RecyclerView) view.findViewById(R.id.recyclerViewSearchResults);
+        editTextSearchSearch = (EditText) view.findViewById(R.id.editTextSearchSearch);
+        imageButtonSearch = (ImageButton) view.findViewById(R.id.imageButtonSearch);
+        recyclerViewSearchResults = (RecyclerView) view.findViewById(R.id.recyclerViewSearchResults);
+        textViewSearchMessage = (TextView) view.findViewById(R.id.textViewSearchMessage);
 
 
         searchedDeals = new ArrayList<>();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         searchRecyclerAdapter = new SearchRecyclerAdapter(searchedDeals);
 
@@ -86,48 +87,48 @@ public class SearchFragment extends Fragment {
                 final String searchText = editTextSearchSearch.getText().toString().toLowerCase();
 
 
-                        //List of partners
-                    mFirestore.collection("partners").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                //List of partners
+                mFirestore.collection("partners").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
-                            try {
-                            for (DocumentChange documentChange: queryDocumentSnapshots.getDocumentChanges())
-                            {
-                                if (documentChange.getType() == DocumentChange.Type.ADDED)
-                                {
+                        try {
+                            for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
+                                if (documentChange.getType() == DocumentChange.Type.ADDED) {
                                     DocumentSnapshot partnerDocument = documentChange.getDocument();
 
                                     //Checks each partner document whether search text matches the name of the partner
-                                    if (partnerDocument.get("name").toString().toLowerCase().contains(searchText)){
+                                    if (partnerDocument.get("name").toString().toLowerCase().contains(searchText)) {
 
                                         //Get the id, of the partner if search text matched
                                         String id = partnerDocument.getId();
 
                                         //Search all deals to see if partnerId field matches the SearchedID
-                                        mFirestore.collection(  "deals").whereEqualTo("partnerID",id).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        mFirestore.collection("deals").whereEqualTo("partnerID", id).addSnapshotListener(new EventListener<QuerySnapshot>() {
                                             @Override
                                             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
-                                                for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()){
-                                                    if(documentChange.getType() == DocumentChange.Type.ADDED){
+                                                for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
+                                                    if (documentChange.getType() == DocumentChange.Type.ADDED) {
 
 
                                                         Deal deal = documentChange.getDocument().toObject(Deal.class);
 
                                                         //Log.d(TAG, "onEvent: DealId:  " +deal.getId() );
 
-                                                        try{
-                                                            if(deal.getActive())
-                                                            {
-                                                                 Log.d(TAG, "onEvent: Deal : "+ deal.getId() + " is active");
+                                                        try {
+                                                            if (deal.getActive()) {
+                                                                Log.d(TAG, "onEvent: Deal : " + deal.getId() + " is active");
                                                                 searchedDeals.add(deal);
+                                                                if (searchedDeals.size() == 0) {
+                                                                    textViewSearchMessage.setVisibility(View.VISIBLE);
+                                                                }
 
                                                                 searchRecyclerAdapter.notifyDataSetChanged();
                                                             }
-                                                        }catch (Exception e1){
+                                                        } catch (Exception e1) {
 
-                                                            Log.e(TAG, "onEvent: DealID: " + deal.getId()  ,e1);
+                                                            Log.e(TAG, "onEvent: DealID: " + deal.getId(), e1);
 
                                                         }
 
@@ -135,18 +136,18 @@ public class SearchFragment extends Fragment {
                                                 }
                                             }
                                         });
-                                    }}
-                            }}catch (Exception e2){
-                                    Log.e(TAG, "onClick: ", e2);
+                                    }
+                                }
                             }
+                        } catch (Exception e2) {
+                            Log.e(TAG, "onClick: ", e2);
                         }
-                    });
+                    }
+                });
 
 
             }
         });
         return view;
     }
-
-
 }

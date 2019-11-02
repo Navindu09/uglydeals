@@ -7,7 +7,7 @@
     tools:context=".ProfileActivity">
 
     <EditText
-        android:id="@+id/editTextProfileAreaOfStudy"
+        android:id="@+id/editTextProfileDegree"
         android:layout_width="312dp"
         android:layout_height="42dp"
         android:layout_marginStart="32dp"
@@ -25,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextProfileSchool" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextProfileOrganisation" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarProfile"
@@ -101,7 +101,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextProfilePhone" />
 
     <EditText
-        android:id="@+id/editTextProfileSchool"
+        android:id="@+id/editTextProfileOrganisation"
         android:layout_width="312dp"
         android:layout_height="42dp"
         android:layout_marginStart="32dp"
@@ -134,7 +134,7 @@
         android:textColor="@color/typeFontColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextProfileAreaOfStudy" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextProfileDegree" />
 
     <ProgressBar
         android:id="@+id/progressBarProfile"
@@ -149,7 +149,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextProfileAreaOfStudy" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextProfileDegree" />
 
     <TextView
         android:id="@+id/textViewProfileName"

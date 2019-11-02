@@ -33,7 +33,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editTextRegisterPassword;
     private EditText editTextRegisterConfirmPassword;
     private TextView textViewRegisterLogin;
-    private TextView textViewWhere;
     private EditText editTextRegisterName;
     private Spinner spinnerWhere;
     private TextView textViewButtonLogin;
@@ -75,12 +74,11 @@ public class RegisterActivity extends AppCompatActivity {
         //Mapping components to variables
         editTextRegisterEmail = (EditText) findViewById(R.id.editTextProfileEmail);
         editTextRegisterPassword = (EditText) findViewById(R.id.editTextProfileName);
-        editTextRegisterConfirmPassword = (EditText) findViewById(R.id.editTextProfileSchool);
+        editTextRegisterConfirmPassword = (EditText) findViewById(R.id.editTextProfileOrganisation);
         buttonRegisterRegister = (Button) findViewById(R.id.buttonProfileSave);
         getButtonRegisterLogin = (Button) findViewById(R.id.buttonRegisterLogin);
         progressBarRegister = (ProgressBar) findViewById(R.id.progressBarProfile);
         textViewRegisterLogin = (TextView) findViewById(R.id.textViewRegisterLogin);
-        textViewWhere = (TextView) findViewById(R.id.textViewWhere);
         editTextRegisterName = (EditText) findViewById(R.id.editTextProfilePhone);
         spinnerWhere = (Spinner) findViewById(R.id.spinnerWhere);
         textViewButtonLogin = (TextView) findViewById(R.id.textViewButtonLogin);
@@ -119,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
                         buttonRegisterRegister.setVisibility(View.INVISIBLE);
                         textViewButtonLogin.setVisibility(View.INVISIBLE);
                         textViewRegisterLogin.setVisibility(View.INVISIBLE);
-                        textViewWhere.setVisibility(View.INVISIBLE);
+
 
 
                         //Execute firebase creat user with retrieved email and password. Setting on complete listener to see if registration is complete
@@ -143,7 +141,11 @@ public class RegisterActivity extends AppCompatActivity {
                                     userMap.put("hearFrom", heardFrom);
                                     userMap.put("isPhoneVerified", true);
                                     userMap.put("DateOfRegistration", date);
-                                    userMap.put("isFreeTrailUsed", false);
+                                    userMap.put("mobile", "");
+                                    userMap.put("degree", "");
+                                    userMap.put("organisation", "");
+                                    userMap.put("occupation", "");
+
 
                                     //Create the document for the user. Added set on complete listener to wait for writing document.
 

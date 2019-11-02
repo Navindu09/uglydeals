@@ -25,7 +25,7 @@ public class Deal {
 
   //Declarng the variables
 
-    private String id, name, partnerID, dealImage, description;
+    private String id, name, partnerID, dealImage, description,termsOfUse;
     private Boolean mainAd, active;
     private Date validFrom;
     private Date validTill;
@@ -55,6 +55,8 @@ public class Deal {
     public void setTermsOfUse(String termsOfUse) {
         this.termsOfUse = termsOfUse;
     }*/
+
+
 
     public String getDealPhoto() {
         return dealImage;
@@ -113,6 +115,14 @@ public class Deal {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTermsOfUse() {
+        return termsOfUse;
+    }
+
+    public void setTermsOfUse(String termsOfUse) {
+        this.termsOfUse = termsOfUse;
     }
 
 
