@@ -142,7 +142,7 @@ public class RedeemSuccessActivity extends AppCompatActivity {
                         DocumentSnapshot dealDocument = task.getResult();
 
                         //Convert the particular document into a Deal object
-                        Deal deal = dealDocument.toObject(Deal.class);
+                        FlashDeal deal = dealDocument.toObject(FlashDeal.class);
 
                         //Set the deal name into the layout
                         String name = deal.getName();
@@ -155,10 +155,10 @@ public class RedeemSuccessActivity extends AppCompatActivity {
                         //textViewSelectedActivityValidity.setText(validity);
 
                         //Retrieves the partner ID
-                        final String partnerId = (String) deal.getPartnerID();
+                        String partnerName = (String) deal.getPartnerName();
 
                         //Checks partners collection for that particular partner
-                        mFireStore.collection("partners").document(partnerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        /*mFireStore.collection("partners").document(partnerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
@@ -169,7 +169,7 @@ public class RedeemSuccessActivity extends AppCompatActivity {
                                 //Set the name of the partner in the layout
                                 textViewPartnerName.setText(partnerName);
                             }
-                        });
+                        });*/
 
 
                     }

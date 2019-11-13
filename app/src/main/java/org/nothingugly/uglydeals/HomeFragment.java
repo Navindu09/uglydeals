@@ -50,6 +50,7 @@ public class HomeFragment extends Fragment {
     private FeaturedDealRecyclerAdapter featuredDealRecyclerAdapter;
     private DealRecyclerAdapter dealRecyclerAdapter1;
     private DealRecyclerAdapter dealRecyclerAdapter2;
+    private FlashDealRecyclerAdapter flashDealRecyclerAdapter;
 
     private TextView textViewHeaderFeatured;
     private TextView textViewHeaderNearMe;
@@ -112,6 +113,7 @@ public class HomeFragment extends Fragment {
         featuredRecyclerView = view.findViewById(R.id.featuredRecyclerView);
         recyclerView1 = (RecyclerView) view.findViewById(R.id.recyclerView1);
         recyclerView2 = (RecyclerView) view.findViewById(R.id.recyclerView2);
+
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);

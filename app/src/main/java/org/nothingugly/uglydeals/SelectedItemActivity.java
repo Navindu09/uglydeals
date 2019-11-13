@@ -99,14 +99,14 @@ public class SelectedItemActivity extends AppCompatActivity {
         //Mapping out all the components
         progressBarSelectedItem = (ProgressBar) findViewById(R.id.progressBarSelectedItem);
         textViewSelectedItemPartnerName = (TextView) findViewById(R.id.textViewSelectedItemPartnerName);
-        imageViewSelectedItemImage = (ImageView)findViewById(R.id.flashDealImage);
-        textViewSelectedItemName = (TextView) findViewById(R.id.flashDealName);
-        textViewSelectedActivityValidity = (TextView) findViewById(R.id.flashDealValidity);
-        textViewSelectedItemDescription = (TextView) findViewById(R.id.flashDealDescription);
-        buttonSelectedItemRedeem = (Button) findViewById(R.id.flashDealRedeemButton);
+        imageViewSelectedItemImage = (ImageView)findViewById(R.id.imageViewFlashDealImage);
+        textViewSelectedItemName = (TextView) findViewById(R.id.textViewFlashDealName);
+        textViewSelectedActivityValidity = (TextView) findViewById(R.id.textViewFlashDealValidity);
+        textViewSelectedItemDescription = (TextView) findViewById(R.id.textViewFlashDealDescription);
+        buttonSelectedItemRedeem = (Button) findViewById(R.id.buttonFlashDealRedeemButton);
         textViewSelectedItemTerms = (TextView) findViewById(R.id.textViewSelectedItemTerms);
         textViewAlreadyUsed = (TextView) findViewById(R.id.textViewAlreadyUsed);
-        textViewSelectedItemTermsOfUse = (TextView) findViewById(R.id.textViewSelectedItemTermsOfUse);
+        textViewSelectedItemTermsOfUse = (TextView) findViewById(R.id.textViewFlashDealsTermOfUse);
 
         //set all the
         textViewSelectedItemPartnerName.setVisibility(View.INVISIBLE);

@@ -27,7 +27,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ProfileActivity"></activity>
         <activity android:name=".PasswordResetActivity" />
-        <activity android:name=".FlashDealFragment" />
         <activity android:name=".VerifyEmailActivity" />
 
         <meta-data
@@ -54,6 +53,12 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".ScanActivity"
+            android:launchMode="singleTask" />
+        <activity
+        android:name=".FlashDealScanActivity"
+        android:launchMode="singleTask" />
+        <activity
+            android:name=".FlashDealRedeemSuccessActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".RedeemSuccessActivity"

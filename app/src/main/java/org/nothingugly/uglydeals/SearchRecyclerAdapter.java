@@ -36,18 +36,18 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
     @NonNull
     @Override
     public SearchRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.single_search_item,viewGroup,false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.single_search_item, viewGroup, false);
         mFirestore = FirebaseFirestore.getInstance();
         context = viewGroup.getContext();
         ViewHolder holder = new ViewHolder(view);
-       return holder;
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final SearchRecyclerAdapter.ViewHolder viewHolder, int i) {
 
         //Retrieve name of the deal
-        String  name = dealList.get(i).getName();
+        String name = dealList.get(i).getName();
         //Set the name of the deal to the viewholder
         viewHolder.setName(name);
 
@@ -62,36 +62,36 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         final String dealID = dealList.get(i).getId();
 
         //Getting the corresponding document for the partner ID
-        try{
-        DocumentReference temp = mFirestore.collection("partners").document(restaurantId);
+        try {
+            DocumentReference temp = mFirestore.collection("partners").document(restaurantId);
 
-        //Get Document Snapshot
-        temp.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            //Get Document Snapshot
+            temp.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                //If document snap recieved successfully.
-                if (task.isSuccessful()){
-                    DocumentSnapshot restaurantDocument = task.getResult();
-                    if(restaurantDocument.exists()){
-                        String restaurantName = restaurantDocument.get("name").toString();
+                    //If document snap recieved successfully.
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot restaurantDocument = task.getResult();
+                        if (restaurantDocument.exists()) {
+                            String restaurantName = restaurantDocument.get("name").toString();
 
-                        //Set the name on the view holder
-                        viewHolder.setRestaurantName(restaurantName);
+                            //Set the name on the view holder
+                            viewHolder.setRestaurantName(restaurantName);
+
+                        }
 
                     }
-
                 }
-            }
-        });
-        } catch (NullPointerException e){
-            Log.e(TAG, "onBindViewHolder: ",e );
+            });
+        } catch (NullPointerException e) {
+            Log.e(TAG, "onBindViewHolder: ", e);
         }
 
         viewHolder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context ,SelectedItemActivity.class );
+                Intent intent = new Intent(context, SelectedItemActivity.class);
                 intent.putExtra("dealId", dealID);
                 context.startActivity(intent);
             }
@@ -120,7 +120,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         }
 
 
-        public void setName(String nametext){
+        public void setName(String nametext) {
 
             name = mView.findViewById(R.id.textViewSearchItemName);
             name.setText(nametext);
@@ -131,7 +131,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             Glide.with(context).load(imageURL).into(image);
         }
 
-        public void setRestaurantName(String restName){
+        public void setRestaurantName(String restName) {
             restaurantName = mView.findViewById(R.id.textViewSearchItemRestaurant);
             restaurantName.setText(restName);
         }
