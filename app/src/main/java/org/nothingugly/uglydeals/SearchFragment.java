@@ -80,6 +80,8 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                textViewSearchMessage.setVisibility(View.INVISIBLE);
+
                 searchedDeals.clear();
                 searchRecyclerAdapter.notifyDataSetChanged();
 
@@ -120,9 +122,6 @@ public class SearchFragment extends Fragment {
                                                             if (deal.getActive()) {
                                                                 Log.d(TAG, "onEvent: Deal : " + deal.getId() + " is active");
                                                                 searchedDeals.add(deal);
-                                                                if (searchedDeals.size() == 0) {
-                                                                    textViewSearchMessage.setVisibility(View.VISIBLE);
-                                                                }
 
                                                                 searchRecyclerAdapter.notifyDataSetChanged();
                                                             }
@@ -136,6 +135,8 @@ public class SearchFragment extends Fragment {
                                                 }
                                             }
                                         });
+                                    } else {
+                                        textViewSearchMessage.setVisibility(View.VISIBLE);
                                     }
                                 }
                             }

@@ -308,7 +308,7 @@ public class AccountFragment extends Fragment {
 
                 //Ask if they want to reset password
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Password reset email sent!");
+                builder.setTitle("Password Reset");
                 builder.setMessage("Are you sure you want to reset your password?");
 
                 //If yes
