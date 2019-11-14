@@ -1,6 +1,7 @@
 package org.nothingugly.uglydeals;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -19,6 +21,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -44,6 +48,7 @@ public class HomeFragment extends Fragment {
     private List<Deal> dealList2;
 
     private FirebaseFirestore mFirestore;
+    private FirebaseAuth mAuth;
 
     private SwipeRefreshLayout swipeRefereshLayout;
 
@@ -56,6 +61,10 @@ public class HomeFragment extends Fragment {
     private TextView textViewHeaderNearMe;
     private TextView textViewHeaderAll;
 
+    private Long points;
+
+    private Button buttonPoints;
+
     private ProgressBar progressBarHomeFragment;
 
     public HomeFragment() {
@@ -67,7 +76,20 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        mFirestore = FirebaseFirestore.getInstance();
 
+        mAuth = FirebaseAuth.getInstance();
+        String userId = mAuth.getCurrentUser().getUid();
+        Log.d(TAG, "onCreateView: *************" + userId);
+
+        /*try{
+            String uId = mAuth.getCurrentUser().getUid();
+            userId = uId;
+        } catch (NullPointerException e){
+            Log.d(TAG, "onCreateView: " + e);
+
+        }
+*/
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         progressBarHomeFragment = (ProgressBar) view.findViewById(R.id.progressBarHomeFragment);
@@ -83,6 +105,8 @@ public class HomeFragment extends Fragment {
         textViewHeaderFeatured = (TextView) view.findViewById(R.id.textViewHeaderFeatured);
         textViewHeaderNearMe = (TextView) view.findViewById(R.id.textViewHeaderNearMe);
         textViewHeaderAll = (TextView) view.findViewById(R.id.textViewHeaderAll);
+
+        buttonPoints = (Button) view.findViewById(R.id.buttonPoints);
 
 
         AdView adView = (AdView) view.findViewById(R.id.adView);
@@ -136,6 +160,25 @@ public class HomeFragment extends Fragment {
         featuredRecyclerView.setAdapter(featuredDealRecyclerAdapter);
         recyclerView1.setAdapter(dealRecyclerAdapter1);
         recyclerView2.setAdapter(dealRecyclerAdapter2);
+
+
+        //Update the number of points shown to the user
+        mFirestore.collection("customers").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                points = (Long) documentSnapshot.get("points");
+
+                buttonPoints.setText(points.toString());
+            }
+        });
+
+        buttonPoints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendToPointsActivity();
+            }
+        });
 
         //Initialising the list of deals
         updateDealLists();
@@ -202,6 +245,11 @@ public class HomeFragment extends Fragment {
         });
 
 
+    }
+
+    public void sendToPointsActivity(){
+        Intent pointsIntent = new Intent(getContext(), PointsActivity.class);
+        startActivity(pointsIntent);
     }
 
 }

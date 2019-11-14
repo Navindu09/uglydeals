@@ -148,4 +148,21 @@
         app:layout_constraintStart_toStartOf="@+id/toolbar2"
         app:layout_constraintTop_toTopOf="@+id/toolbar2" />
 
+    <Button
+        android:id="@+id/buttonPoints"
+        android:layout_width="58dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/button_round"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/typeFontColor"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/pullToRefresh"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar2"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

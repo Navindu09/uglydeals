@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextProfileOrganisation" />
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbarProfile"
+        android:id="@+id/toolbarPoints"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -56,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarPoints" />
 
 
     <EditText
@@ -181,9 +181,9 @@
         android:fontFamily="@font/poppins_bold"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbarProfile"
-        app:layout_constraintEnd_toEndOf="@+id/toolbarProfile"
-        app:layout_constraintStart_toStartOf="@+id/toolbarProfile"
-        app:layout_constraintTop_toTopOf="@+id/toolbarProfile" />
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarPoints"
+        app:layout_constraintEnd_toEndOf="@+id/toolbarPoints"
+        app:layout_constraintStart_toStartOf="@+id/toolbarPoints"
+        app:layout_constraintTop_toTopOf="@+id/toolbarPoints" />
 
 </android.support.constraint.ConstraintLayout>

@@ -12,7 +12,7 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbarProfile"
+        android:id="@+id/toolbarPoints"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,8 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="#90909090"
-        app:layout_constraintStart_toStartOf="@+id/toolbarProfile"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarProfile" />
+        app:layout_constraintStart_toStartOf="@+id/toolbarPoints"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarPoints" />
 
     <TextView
         android:id="@+id/textViewSelectedItemPartnerName"
@@ -35,10 +35,10 @@
         android:text="McDonalds"
         android:textColor="@color/typeFontColor"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbarProfile"
-        app:layout_constraintEnd_toEndOf="@+id/toolbarProfile"
-        app:layout_constraintStart_toStartOf="@+id/toolbarProfile"
-        app:layout_constraintTop_toTopOf="@+id/toolbarProfile" />
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarPoints"
+        app:layout_constraintEnd_toEndOf="@+id/toolbarPoints"
+        app:layout_constraintStart_toStartOf="@+id/toolbarPoints"
+        app:layout_constraintTop_toTopOf="@+id/toolbarPoints" />
 
     <ImageView
         android:id="@+id/imageViewFlashDealImage"
@@ -50,7 +50,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarPoints" />
 
     <TextView
         android:id="@+id/textViewFlashDealName"
@@ -138,7 +138,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textViewFlashDealsTermOfUse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarPoints" />
 
     <TextView
         android:id="@+id/textViewAlreadyUsed"

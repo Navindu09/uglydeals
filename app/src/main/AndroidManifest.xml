@@ -25,7 +25,8 @@
         android:roundIcon="@mipmap/ugly_deals_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".PointsActivity"></activity>
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".PasswordResetActivity" />
         <activity android:name=".VerifyEmailActivity" />
 
@@ -55,8 +56,8 @@
             android:name=".ScanActivity"
             android:launchMode="singleTask" />
         <activity
-        android:name=".FlashDealScanActivity"
-        android:launchMode="singleTask" />
+            android:name=".FlashDealScanActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".FlashDealRedeemSuccessActivity"
             android:launchMode="singleTask" />
