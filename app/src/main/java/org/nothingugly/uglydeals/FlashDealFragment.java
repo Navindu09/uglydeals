@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -107,10 +108,10 @@ public class FlashDealFragment extends Fragment {
                     textViewFlashDealDescription.setText(flashDealDescription);
 
                     String itemImageUrl = flashDeal.getDealPhoto();
-                    try{
+                    try {
                         Glide.with(getActivity().getApplicationContext()).load(itemImageUrl).into(imageViewFlashDealImage);
 
-                    } catch (Exception e1){
+                    } catch (Exception e1) {
                         Log.d(TAG, "onEvent: " + e);
                     }
 
@@ -118,6 +119,9 @@ public class FlashDealFragment extends Fragment {
                     textViewFlashDealTerms.setText(termsOfUse);
 
                     setDoneLoading();
+
+                    isFlashDealAvailable(dealId);
+
 
                 } catch (IndexOutOfBoundsException e1) {
                     Log.e(TAG, "onEvent: ", e1);
@@ -152,7 +156,7 @@ public class FlashDealFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        if(mAuth.getCurrentUser() == null){
+        if (mAuth.getCurrentUser() == null) {
             sendToLogin();
         }
     }
@@ -170,11 +174,8 @@ public class FlashDealFragment extends Fragment {
         textViewFlashDealPartnerName.setVisibility(View.INVISIBLE);
         textViewFlashDealValidity.setVisibility(View.INVISIBLE);
         textViewFlashDealDescription.setVisibility(View.INVISIBLE);
-        buttonFlashDealRedeemButton.setVisibility(View.INVISIBLE);
         textViewFlashDealTerms.setVisibility(View.INVISIBLE);
-        textViewFlashDealAlreadyUsed.setVisibility(View.INVISIBLE);
         textViewFlashDealsTermOfUse.setVisibility(View.INVISIBLE);
-
         progressBarSelectedItem.setVisibility(View.VISIBLE);
     }
 
@@ -185,12 +186,37 @@ public class FlashDealFragment extends Fragment {
         textViewFlashDealPartnerName.setVisibility(View.VISIBLE);
         textViewFlashDealValidity.setVisibility(View.VISIBLE);
         textViewFlashDealDescription.setVisibility(View.VISIBLE);
-        buttonFlashDealRedeemButton.setVisibility(View.VISIBLE);
         textViewFlashDealTerms.setVisibility(View.VISIBLE);
-        textViewFlashDealAlreadyUsed.setVisibility(View.VISIBLE);
         textViewFlashDealsTermOfUse.setVisibility(View.VISIBLE);
 
-
         progressBarSelectedItem.setVisibility(View.INVISIBLE);
+    }
+
+    //Whenever the FlashDeal is opened, check if this deals limit has exceeded for the day.
+    private void isFlashDealAvailable(String id) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String uId = currentUser.getUid();
+
+
+        mFirestore.collection("customers").document(uId).collection("unavailableFlashDeals").whereEqualTo("unavailableDeal", id).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
+                try {
+                    Log.d(TAG, "onEvent: unavailableFlashDeals Query recieved SIZE: " + queryDocumentSnapshots.size());
+                    if (queryDocumentSnapshots.size() > 0) {
+                        buttonFlashDealRedeemButton.setEnabled(false);
+                        buttonFlashDealRedeemButton.setVisibility(View.INVISIBLE);
+                        textViewFlashDealAlreadyUsed.setVisibility(View.VISIBLE);
+
+                        Log.d(TAG, "onEvent: FlashDeal is unavailable");
+                    } else {
+                        Log.d(TAG, "onEvent: this FlashDeal is available ");
+                    }
+                } catch (Exception ex) {
+                    Log.e(TAG, "isDealAvailable: ", ex);
+                }
+            }
+        });
+
     }
 }

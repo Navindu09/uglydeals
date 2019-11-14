@@ -106,7 +106,7 @@ public class FlashDealRedeemSuccessActivity extends AppCompatActivity {
         });
 
         //Set the layout
-        setContentView(R.layout.activity_redeem_success);
+        setContentView(R.layout.activity_flash_deal_redeem_success);
 
         //Initialising the components of the activity with
         textViewMessage = (TextView) findViewById(R.id.textViewMessage);
@@ -141,7 +141,7 @@ public class FlashDealRedeemSuccessActivity extends AppCompatActivity {
                         Log.d(TAG, "onComplete: deal with id found");
                         DocumentSnapshot dealDocument = task.getResult();
 
-                        //Convert the particular document into a Deal object
+                        //Convert the particular document into a Flash Deal object
                         FlashDeal deal = dealDocument.toObject(FlashDeal.class);
 
                         //Set the deal name into the layout
@@ -154,8 +154,9 @@ public class FlashDealRedeemSuccessActivity extends AppCompatActivity {
                         textViewDateTime.setText((sdf.format(timestamp).toString()));
                         //textViewSelectedActivityValidity.setText(validity);
 
-                        //Retrieves the partner ID
+                        //Retrieves the partner Name
                         final String partnerId = (String) deal.getPartnerName();
+                        textViewPartnerName.setText(partnerId);
 
                        /* //Checks partners collection for that particular partner
                         mFireStore.collection("partners").document(partnerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
