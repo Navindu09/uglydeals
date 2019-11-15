@@ -94,6 +94,8 @@ public class ProfileActivity extends AppCompatActivity {
 
                                         setDoneLoading();
                                         Log.d(TAG, "SaveButton.onClick.Success: Document Updated Successfully");
+                                        Toast.makeText(ProfileActivity.this, "Your information has been saved!", Toast.LENGTH_SHORT).show();
+
 
                                     } else {
 

@@ -8,11 +8,29 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-105dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewAnswerOne3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/poppins"
+                android:text="No! You keep accumilating points with every scan. You will only lose points when you trade them for rewards."
+                android:textAlignment="viewStart"
+                android:textColor="@color/typeFontColor"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWhatArePointsUsedFor2" />
 
             <TextView
                 android:id="@+id/textViewAnswerOne2"
@@ -21,40 +39,69 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="@font/poppins"
-                android:text="Points are the rewards we give you for redeeming Deals on our app! We give you 5 points for redeeming and ordinary deal and 10 points for redeeming featured and flash deals!"
+                android:text="You can see your points on this page and on the top right corner of your home page."
                 android:textAlignment="viewStart"
                 android:textColor="@color/typeFontColor"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewWhatArePointsUsedFor" />
 
             <TextView
-                android:id="@+id/textViewWhatArePointsUsedFor2"
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewAnswer2"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="24dp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="What are points?"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/poppins"
+                android:text="You can redeem exciting rewards from Ugly Deals in exchange to your points. Stay tuned, the rewards will be announced soon! But we suggest you keep accumilating points to get a head start!"
+                android:textAlignment="viewStart"
+                android:textColor="@color/typeFontColor"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewAnswerOne" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewQuestion2" />
 
             <TextView
                 android:id="@+id/textViewWhatArePointsUsedFor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="What are points?"
+                android:text="Where can I see my points?"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewAnswer2" />
+
+            <TextView
+                android:id="@+id/textViewQuestion2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="What can I do with points?"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewAnswerOne" />
+
+            <TextView
+                android:id="@+id/textViewWhatArePointsUsedFor2"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Will my points expire?"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewAnswerOne2" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbarPoints"
@@ -109,7 +156,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewYouHave" />
 
             <TextView
-                android:id="@+id/textViewWhatArePoints"
+                android:id="@+id/textViewQuestion1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -134,22 +181,22 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewWhatArePoints" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewQuestion1" />
 
             <Button
                 android:id="@+id/buttonPointsGotIt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/button_round"
                 android:fontFamily="@font/poppins"
                 android:text="Got it!"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.527"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewAnswerOne2" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewAnswerOne3" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

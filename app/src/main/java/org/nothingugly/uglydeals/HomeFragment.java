@@ -22,6 +22,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -62,6 +63,7 @@ public class HomeFragment extends Fragment {
     private TextView textViewHeaderAll;
 
     private Long points;
+    private String userId;
 
     private Button buttonPoints;
 
@@ -79,8 +81,16 @@ public class HomeFragment extends Fragment {
         mFirestore = FirebaseFirestore.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
-        String userId = mAuth.getCurrentUser().getUid();
-        Log.d(TAG, "onCreateView: *************" + userId);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = mAuth.getCurrentUser().getUid();
+            this.userId = userId;
+            Log.d(TAG, "onCreateView: *************" + userId);
+        } else {
+            sendToLogin();
+            Log.d(TAG, "onCreateView: No user found, sending to login");
+        }
+
 
         /*try{
             String uId = mAuth.getCurrentUser().getUid();
@@ -163,22 +173,27 @@ public class HomeFragment extends Fragment {
 
 
         //Update the number of points shown to the user
-        mFirestore.collection("customers").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot documentSnapshot = task.getResult();
-                points = (Long) documentSnapshot.get("points");
+        try {
+            mFirestore.collection("customers").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    points = (Long) documentSnapshot.get("points");
 
-                buttonPoints.setText(points.toString());
-            }
-        });
+                    buttonPoints.setText(points.toString());
+                }
+            });
 
-        buttonPoints.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendToPointsActivity();
-            }
-        });
+            buttonPoints.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendToPointsActivity();
+                }
+            });
+        } catch (NullPointerException e) {
+            Log.d(TAG, "onCreateView: " + e);
+        }
+
 
         //Initialising the list of deals
         updateDealLists();
@@ -247,9 +262,15 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public void sendToPointsActivity(){
+    public void sendToPointsActivity() {
         Intent pointsIntent = new Intent(getContext(), PointsActivity.class);
         startActivity(pointsIntent);
+    }
+
+    public void sendToLogin() {
+        Intent loginIntent = new Intent(getContext(), LogInActivity.class);
+        startActivity(loginIntent);
+
     }
 
 }

@@ -102,7 +102,6 @@ public class ScanActivity extends AppCompatActivity {
                     if (ContextCompat.checkSelfPermission(ScanActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         cameraSource.start(cameraView.getHolder());
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

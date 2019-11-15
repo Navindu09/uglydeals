@@ -66,7 +66,7 @@ public class SelectedItemActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null){
+        if (currentUser == null) {
             sendToLogin();
         }
 
@@ -74,7 +74,7 @@ public class SelectedItemActivity extends AppCompatActivity {
         String dealId = null;
 
         //If no id is passed through, id = null
-        if(savedInstanceState ==  null) {
+        if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
 
@@ -82,13 +82,13 @@ public class SelectedItemActivity extends AppCompatActivity {
                 dealId = (String) extras.get("dealId");
                 deal = dealId;
             }
-        }else{
+        } else {
             dealId = (String) savedInstanceState.getSerializable("dealId");
 
         }
 
 
-        Log.d(TAG, "onCreate: DealId retrieved : "+ dealId);
+        Log.d(TAG, "onCreate: DealId retrieved : " + dealId);
 
 
         //Setting the layout for the activity
@@ -99,7 +99,7 @@ public class SelectedItemActivity extends AppCompatActivity {
         //Mapping out all the components
         progressBarSelectedItem = (ProgressBar) findViewById(R.id.progressBarSelectedItem);
         textViewSelectedItemPartnerName = (TextView) findViewById(R.id.textViewSelectedItemPartnerName);
-        imageViewSelectedItemImage = (ImageView)findViewById(R.id.imageViewFlashDealImage);
+        imageViewSelectedItemImage = (ImageView) findViewById(R.id.imageViewFlashDealImage);
         textViewSelectedItemName = (TextView) findViewById(R.id.textViewFlashDealName);
         textViewSelectedActivityValidity = (TextView) findViewById(R.id.textViewFlashDealValidity);
         textViewSelectedItemDescription = (TextView) findViewById(R.id.textViewFlashDealDescription);
@@ -112,8 +112,8 @@ public class SelectedItemActivity extends AppCompatActivity {
         textViewSelectedItemPartnerName.setVisibility(View.INVISIBLE);
         imageViewSelectedItemImage.setVisibility(View.INVISIBLE);
         textViewSelectedItemName.setVisibility(View.INVISIBLE);
-        textViewSelectedActivityValidity .setVisibility(View.INVISIBLE);
-        textViewSelectedItemDescription .setVisibility(View.INVISIBLE);
+        textViewSelectedActivityValidity.setVisibility(View.INVISIBLE);
+        textViewSelectedItemDescription.setVisibility(View.INVISIBLE);
         buttonSelectedItemRedeem.setVisibility(View.INVISIBLE);
         textViewSelectedItemTerms.setVisibility(View.INVISIBLE);
         textViewAlreadyUsed.setVisibility(View.INVISIBLE);
@@ -180,7 +180,7 @@ public class SelectedItemActivity extends AppCompatActivity {
                                     }
                                 });
 
-                            }catch(NullPointerException e){
+                            } catch (NullPointerException e) {
                                 Log.e(TAG, "onComplete: ", e);
                             }
 
@@ -207,33 +207,36 @@ public class SelectedItemActivity extends AppCompatActivity {
                 sendToMain();
                 finish();
             }
-        }catch (NullPointerException e){
-            Log.e(TAG, "onCreate: ",e );
+        } catch (NullPointerException e) {
+            Log.e(TAG, "onCreate: ", e);
         }
-
 
 
         buttonSelectedItemRedeem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 
-                    if(ContextCompat.checkSelfPermission(SelectedItemActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-                        ActivityCompat.requestPermissions(SelectedItemActivity.this, new String [] {Manifest.permission.CAMERA},PERMISSION_REQUEST);
-                    }
-                    Intent scanIntent = new Intent (SelectedItemActivity.this, ScanActivity.class);
+                if (ContextCompat.checkSelfPermission(SelectedItemActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(SelectedItemActivity.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST);
+
+
+                } else {
+                    Intent scanIntent = new Intent(SelectedItemActivity.this, ScanActivity.class);
                     scanIntent.putExtra("dealId", deal);
                     startActivity(scanIntent);
-
-
                 }
-            });
-        }
-//Checks if there is a user logged in
+
+
+            }
+        });
+    }
+
+    //Checks if there is a user logged in
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null){
+        if (currentUser == null) {
             sendToLogin();
         }
     }
@@ -258,32 +261,43 @@ public class SelectedItemActivity extends AppCompatActivity {
     }
 
     //Whenever the deal is opened, check if this deals limit has exceeded for the day.
-    private void isDealAvailable(String id)
-    {
+    private void isDealAvailable(String id) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String uId = currentUser.getUid();
 
 
-            mFireStore.collection("customers").document(uId).collection("unavailableDeals").whereEqualTo("unavailableDeal", id).addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
-                   try {
-                       Log.d(TAG, "onEvent: unavailableDeals Query recieved SIZE: " + queryDocumentSnapshots.size());
-                       if (queryDocumentSnapshots.size() > 0) {
-                           buttonSelectedItemRedeem.setEnabled(false);
-                           buttonSelectedItemRedeem.setVisibility(View.INVISIBLE);
-                           textViewAlreadyUsed.setVisibility(View.VISIBLE);
+        mFireStore.collection("customers").document(uId).collection("unavailableDeals").whereEqualTo("unavailableDeal", id).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
+                try {
+                    Log.d(TAG, "onEvent: unavailableDeals Query recieved SIZE: " + queryDocumentSnapshots.size());
+                    if (queryDocumentSnapshots.size() > 0) {
+                        buttonSelectedItemRedeem.setEnabled(false);
+                        buttonSelectedItemRedeem.setVisibility(View.INVISIBLE);
+                        textViewAlreadyUsed.setVisibility(View.VISIBLE);
 
-                           Log.d(TAG, "onEvent: Deal is unavailable");
-                       } else {
-                           Log.d(TAG, "onEvent: this deal is available ");
-                       }
-                   }catch (Exception ex){
-                        Log.e(TAG, "isDealAvailable: ", ex);
+                        Log.d(TAG, "onEvent: Deal is unavailable");
+                    } else {
+                        Log.d(TAG, "onEvent: this deal is available ");
                     }
+                } catch (Exception ex) {
+                    Log.e(TAG, "isDealAvailable: ", ex);
                 }
-            });
+            }
+        });
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_REQUEST) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent scanInent = new Intent(this, ScanActivity.class);
+                startActivity(scanInent);
+                finish();
+            }
+        }
+    }
 }
