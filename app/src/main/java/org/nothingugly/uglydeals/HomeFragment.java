@@ -27,7 +27,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +39,7 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
 
-    private DiscreteScrollView featuredRecyclerView;
+    private RecyclerView featuredRecyclerView;
     private RecyclerView recyclerView1;
     private RecyclerView recyclerView2;
 
@@ -56,7 +55,7 @@ public class HomeFragment extends Fragment {
     private FeaturedDealRecyclerAdapter featuredDealRecyclerAdapter;
     private DealRecyclerAdapter dealRecyclerAdapter1;
     private DealRecyclerAdapter dealRecyclerAdapter2;
-    private FlashDealRecyclerAdapter flashDealRecyclerAdapter;
+    //private FlashDealRecyclerAdapter flashDealRecyclerAdapter;
 
     private TextView textViewHeaderFeatured;
     private TextView textViewHeaderNearMe;
@@ -78,9 +77,12 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         mFirestore = FirebaseFirestore.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String userId = mAuth.getCurrentUser().getUid();
@@ -144,7 +146,7 @@ public class HomeFragment extends Fragment {
         textViewHeaderNearMe.setVisibility(View.INVISIBLE);
 
         //Mapping the layout component
-        featuredRecyclerView = view.findViewById(R.id.featuredRecyclerView);
+        featuredRecyclerView = view.findViewById(R.id.recyclerView);
         recyclerView1 = (RecyclerView) view.findViewById(R.id.recyclerView1);
         recyclerView2 = (RecyclerView) view.findViewById(R.id.recyclerView2);
 
@@ -162,7 +164,7 @@ public class HomeFragment extends Fragment {
         dealRecyclerAdapter2 = new DealRecyclerAdapter(dealList2);
 
 
-        //featuredRecyclerView.setLayoutManager(layoutManager);
+        featuredRecyclerView.setLayoutManager(layoutManager);
         recyclerView1.setLayoutManager(layoutManager1);
         recyclerView2.setLayoutManager(layoutManager2);
 
@@ -180,7 +182,14 @@ public class HomeFragment extends Fragment {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     points = (Long) documentSnapshot.get("points");
 
-                    buttonPoints.setText(points.toString());
+                    try {
+
+                        buttonPoints.setText(points.toString());
+
+                    } catch (NullPointerException e) {
+                        Log.d(TAG, "onComplete: " + e);
+                    }
+
                 }
             });
 
@@ -228,17 +237,22 @@ public class HomeFragment extends Fragment {
                                 if (deal.getMainAd()) {
                                     featuredList.add(deal);
                                     featuredDealRecyclerAdapter.notifyDataSetChanged();
+                                } else {
+
+                                    if(deal.getCategory() == 1){
+                                        dealList1.add(deal);
+                                        dealRecyclerAdapter1.notifyDataSetChanged();
+                                    }
+
+                                    if(deal.getCategory() == 2){
+                                        dealList2.add(deal);
+                                        dealRecyclerAdapter2.notifyDataSetChanged();
+                                    }
 
                                 }
 
-                                dealList1.add(deal);
-                                dealList2.add(deal);
-
-
-                                dealRecyclerAdapter1.notifyDataSetChanged();
-                                dealRecyclerAdapter2.notifyDataSetChanged();
                             } else {
-                                Log.d(TAG, " Deal not Active:  " + deal.getId());
+                               // Log.d(TAG, " Deal not Active:  " + deal.getId());
                                 deal = null;
 
                             }

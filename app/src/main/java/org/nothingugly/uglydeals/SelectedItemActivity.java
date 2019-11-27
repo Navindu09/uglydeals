@@ -156,11 +156,16 @@ public class SelectedItemActivity extends AppCompatActivity {
                                 textViewSelectedItemDescription.setText(description);
 
                                 // Coverting firebase timestamp into easy date format
-                                long millisecondValidfrom = deal.getValidFrom().getTime();
-                                String validFromString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidfrom)).toString();
-                                long millisecondValidTill = deal.getValidTill().getTime();
-                                String validTillString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidTill)).toString();
-                                textViewSelectedActivityValidity.setText(validFromString + " to " + validTillString);
+                                try {
+                                    long millisecondValidfrom = deal.getValidFrom().getTime();
+                                    String validFromString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidfrom)).toString();
+                                    long millisecondValidTill = deal.getValidTill().getTime();
+                                    String validTillString = DateFormat.format("dd/MM/yyyy", new Date(millisecondValidTill)).toString();
+                                    textViewSelectedActivityValidity.setText(validFromString + " to " + validTillString);
+
+                                } catch (NullPointerException e) {
+                                    Log.d(TAG, "onComplete: " + e);
+                                }
 
 
                                 //Retrieves the partner ID

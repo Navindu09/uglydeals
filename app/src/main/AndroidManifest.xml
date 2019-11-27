@@ -53,6 +53,9 @@
             android:name=".SelectedItemActivity"
             android:launchMode="singleTask" />
         <activity
+            android:name=".FeaturedItemActivity"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".ScanActivity"
             android:launchMode="singleTask" />
         <activity

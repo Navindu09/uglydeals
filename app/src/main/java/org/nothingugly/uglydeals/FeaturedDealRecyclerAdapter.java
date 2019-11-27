@@ -100,7 +100,7 @@ public class FeaturedDealRecyclerAdapter extends RecyclerView.Adapter<FeaturedDe
         viewHolder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, SelectedItemActivity.class);
+                Intent intent = new Intent(context, FeaturedItemActivity.class);
                 intent.putExtra("dealId",dealId);
                 context.startActivity(intent);
             }

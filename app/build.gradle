@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Users/navindudissanayake/Key')
+            storePassword 'QQzz11,,@'
+            keyPassword 'QQzz11,,@'
+            keyAlias = 'key0'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "org.nothingugly.uglydeals"

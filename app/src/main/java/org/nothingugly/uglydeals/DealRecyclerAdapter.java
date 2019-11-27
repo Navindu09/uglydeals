@@ -87,9 +87,10 @@ public class DealRecyclerAdapter extends RecyclerView.Adapter<DealRecyclerAdapte
                             //check if the partner of the deal is featured, then set up the banner
                             Boolean isFeatured = (Boolean) restaurantDocument.get("isFeatured");
 
-                            if(isFeatured){
+                           /* if(isFeatured){
                                 viewHolder.setUpBanner();
                             }
+                           */
 
 
                         }

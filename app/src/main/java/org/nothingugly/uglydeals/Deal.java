@@ -10,7 +10,7 @@ public class Deal {
 
 
     //Constructor
-    public Deal(String id, String name, String partnerID, String termsOfUse, String dealPhoto, String description, Date validFrom, Date validTill, Boolean mainAd, Boolean active) {
+    public Deal(String id, String name, String partnerID, String termsOfUse, String dealPhoto, String description, Date validFrom, Date validTill, Boolean mainAd, Boolean active, int category) {
         this.name = name;
         this.partnerID = partnerID;
         //this.termsOfUse = termsOfUse;
@@ -21,6 +21,7 @@ public class Deal {
         this.mainAd = mainAd;
         this.active = active;
         this.description = description;
+        this.category = category;
     }
 
   //Declarng the variables
@@ -29,6 +30,7 @@ public class Deal {
     private Boolean mainAd, active;
     private Date validFrom;
     private Date validTill;
+    private int category;
 
     //Getters and Setters
 
@@ -126,5 +128,19 @@ public class Deal {
     }
 
 
+    public String getDealImage() {
+        return dealImage;
+    }
 
+    public void setDealImage(String dealImage) {
+        this.dealImage = dealImage;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
 }

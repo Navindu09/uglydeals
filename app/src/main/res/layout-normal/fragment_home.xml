@@ -53,15 +53,16 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/poppins"
-                    android:text="Featured"
+                    android:text="What's new!"
                     android:textColor="@color/typeFontColor"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <com.yarolegovich.discretescrollview.DiscreteScrollView
-                    android:id="@+id/featuredRecyclerView"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp" />
 
                 <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/adView"
@@ -71,6 +72,7 @@
                     android:layout_centerHorizontal="true"
                     android:background="#00523C3C"
                     android:backgroundTint="#003D1E1E"
+                    android:elevation="10dp"
                     ads:adSize="BANNER"
                     ads:adUnitId="ca-app-pub-9409818967408705/7852596485"
                     ads:layout_constraintBottom_toBottomOf="@+id/mainContainer"
@@ -85,7 +87,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/poppins"
-                    android:text="Near me"
+                    android:text="Food and Beverage"
                     android:textColor="@color/typeFontColor"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -105,7 +107,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/poppins"
-                    android:text="All"
+                    android:text="Other"
                     android:textColor="@color/typeFontColor"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -126,9 +128,9 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:indeterminateDrawable="@drawable/progress_bar_white"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    android:indeterminateDrawable="@drawable/progress_bar_white"
                     android:visibility="invisible" />
             </LinearLayout>
         </ScrollView>
