@@ -238,20 +238,26 @@ public class FlashDealScanActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot documentSnapshot = task.getResult();
-                                Long userPoints = (Long) documentSnapshot.get("points");
-                                Long newPoints = userPoints + 10;
 
-                                documentSnapshot.getReference().update("points", newPoints).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d(TAG, "onComplete: New points have been awarded and updated.");
-                                        } else {
-                                            Log.d(TAG, "onComplete: New points have NOT been added and updated");
+                                try {
+                                    Long userPoints = (Long) documentSnapshot.get("points");
+                                    Long newPoints = userPoints + 10;
+
+
+                                    documentSnapshot.getReference().update("points", newPoints).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "onComplete: New points have been awarded and updated.");
+                                            } else {
+                                                Log.d(TAG, "onComplete: New points have NOT been added and updated");
+                                            }
                                         }
-                                    }
-                                });
+                                    });
 
+                                } catch (NullPointerException e) {
+                                    Toast.makeText(FlashDealScanActivity.this, "Please contact Ugly Deals support regarding your ugly deals points",Toast.LENGTH_LONG).show();
+                                }
 
                             }
                         });

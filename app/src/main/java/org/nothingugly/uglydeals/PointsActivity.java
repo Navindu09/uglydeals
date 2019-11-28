@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,6 +17,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class PointsActivity extends AppCompatActivity {
+
+    private static final String TAG = "PointsActivity";
 
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
@@ -40,12 +44,18 @@ public class PointsActivity extends AppCompatActivity {
         mFirestore.collection("customers").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.getResult().exists()){
+                if (task.getResult().exists()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
-                    Long userPoints = (Long) documentSnapshot.get("points");
+                    try {
 
-                    textViewNumberOfPoints.setText(userPoints.toString());
+                        Long userPoints = (Long) documentSnapshot.get("points");
+                        textViewNumberOfPoints.setText(userPoints.toString());
 
+
+                    } catch (NullPointerException e) {
+                        Toast.makeText(PointsActivity.this, "Please contact Ugly Deals Support regarding your points", Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "onComplete: ");
+                    }
                 }
             }
         });
@@ -63,7 +73,7 @@ public class PointsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if(mAuth.getCurrentUser() == null){
+        if (mAuth.getCurrentUser() == null) {
             sendToLogin();
         }
     }

@@ -135,8 +135,6 @@ public class SearchFragment extends Fragment {
                                                 }
                                             }
                                         });
-                                    } else {
-                                        textViewSearchMessage.setVisibility(View.VISIBLE);
                                     }
                                 }
                             }

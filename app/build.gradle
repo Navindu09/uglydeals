@@ -4,10 +4,10 @@ apply plugin: 'io.fabric'
 android {
     signingConfigs {
         release {
-            storeFile file('/Users/navindudissanayake/Key')
+            storeFile file('/Users/navindudissanayake/key1')
+            keyAlias = 'key1'
             storePassword 'QQzz11,,@'
             keyPassword 'QQzz11,,@'
-            keyAlias = 'key0'
         }
     }
     compileSdkVersion 28
@@ -23,6 +23,7 @@ android {
     }
     buildTypes {
         release {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

@@ -23,13 +23,23 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.annotation.Nullable;
 
 
 /**
@@ -76,7 +86,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
 
         mFirestore = FirebaseFirestore.getInstance();
@@ -186,7 +195,7 @@ public class HomeFragment extends Fragment {
 
                         buttonPoints.setText(points.toString());
 
-                    } catch (NullPointerException e) {
+                    } catch (Exception e) {
                         Log.d(TAG, "onComplete: " + e);
                     }
 
@@ -220,6 +229,8 @@ public class HomeFragment extends Fragment {
         dealList1.clear();
         dealList2.clear();
 
+        updatesFeaturedList();
+
         mFirestore = FirebaseFirestore.getInstance();
 
         mFirestore.collection("deals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -234,25 +245,18 @@ public class HomeFragment extends Fragment {
                         try {
                             if (deal.getActive()) {
                                 Log.d(TAG, " Active Deal:  " + deal.getId());
-                                if (deal.getMainAd()) {
-                                    featuredList.add(deal);
-                                    featuredDealRecyclerAdapter.notifyDataSetChanged();
-                                } else {
 
-                                    if(deal.getCategory() == 1){
-                                        dealList1.add(deal);
-                                        dealRecyclerAdapter1.notifyDataSetChanged();
-                                    }
-
-                                    if(deal.getCategory() == 2){
-                                        dealList2.add(deal);
-                                        dealRecyclerAdapter2.notifyDataSetChanged();
-                                    }
-
+                                if (deal.getCategory() == 1) {
+                                    dealList1.add(deal);
+                                    dealRecyclerAdapter1.notifyDataSetChanged();
                                 }
 
+                                dealList2.add(deal);
+                                dealRecyclerAdapter2.notifyDataSetChanged();
+
+
                             } else {
-                               // Log.d(TAG, " Deal not Active:  " + deal.getId());
+                                // Log.d(TAG, " Deal not Active:  " + deal.getId());
                                 deal = null;
 
                             }
@@ -284,6 +288,86 @@ public class HomeFragment extends Fragment {
     public void sendToLogin() {
         Intent loginIntent = new Intent(getContext(), LogInActivity.class);
         startActivity(loginIntent);
+
+    }
+
+    //This methods takes the add the last five deals on UD and shows it as a featuredItem
+    public void updatesFeaturedList() {
+
+        final Map<Date, String> dateAndIdMap = new HashMap<>();
+        final ArrayList<String> lastFiveDeals = new ArrayList<>();
+        final ArrayList<Deal> dealList = new ArrayList<>();
+
+        //Gets all the deals that are active
+        try {
+            mFirestore.collection("deals").whereEqualTo("active", true).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                    //For each deal takes the dealTimeStamp and ID then put it in a Map
+                    for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
+                        Date dealTimestamp = (Date) doc.getDocument().get("dealTimeStamp");
+                        String id = (String) doc.getDocument().get("id");
+
+                        dateAndIdMap.put(dealTimestamp, id);
+                    }
+
+                    /*for (Date d : dateAndIdMap.keySet()) {
+                        System.out.println(d.toString());
+                    }*/
+
+                    //Initialise a Tree map
+                    Map<Date, String> sortedMap = new TreeMap<>(Collections.reverseOrder());
+
+                    //Put all the sorted entries in to the Map. This sorts it against the keys of the map
+                    sortedMap.putAll(dateAndIdMap);
+
+
+                    int count = 0;
+                    for (Map.Entry<Date, String> entry : sortedMap.entrySet()) {
+                        //System.out.println(entry.getValue());
+                        if (count >= 5) break;
+
+                        //Add all the deals to an arrayList that holds only ID's of the deal
+                        lastFiveDeals.add(entry.getValue());
+                        System.out.println("*************13" + entry.getKey());
+                        count++;
+                    }
+
+                    /*for (String i : lastFiveDeals) {
+                        System.out.println("*****" + i);
+                    }*/
+
+
+                    //Uses the String id arraylist and fetches each Deal from the database
+                    try {
+                        for (int i = 0; i < 5; i++) {
+                            mFirestore.collection("deals").document(lastFiveDeals.get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    DocumentSnapshot doc = task.getResult();
+
+                                    //Convert the Document to a Deal Object
+                                    Deal deal = doc.toObject(Deal.class);
+                                    //Adds the deal to the FeaturedList
+                                    featuredList.add(deal);
+
+                                    featuredDealRecyclerAdapter.notifyDataSetChanged();
+
+                                }
+                            });
+                        }
+                    } catch (IndexOutOfBoundsException indexE) {
+                        Log.d(TAG, "onEvent: " + indexE);
+                    }
+
+
+                }
+            });
+        } catch (Exception e) {
+            Log.d(TAG, "updatesFeaturedList: ]" + e);
+        }
+
 
     }
 

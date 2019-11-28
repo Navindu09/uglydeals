@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -27,8 +28,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
-
-import javax.annotation.Nullable;
 
 import static org.nothingugly.uglydeals.SelectedItemActivity.PERMISSION_REQUEST;
 
@@ -83,10 +82,10 @@ public class FlashDealFragment extends Fragment {
         mFirestore.collection("flashDeals").whereEqualTo("active", true).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                Log.d(TAG, "onEvent: query size: " + queryDocumentSnapshots.size());
+
 
                 try {
-
+                    //Log.d(TAG, "onEvent: query size: " + queryDocumentSnapshots.size());
                     DocumentChange documentChange = queryDocumentSnapshots.getDocumentChanges().get(0);
                     FlashDeal flashDeal = documentChange.getDocument().toObject(FlashDeal.class);
 
@@ -123,14 +122,17 @@ public class FlashDealFragment extends Fragment {
                     isFlashDealAvailable(dealId);
 
 
-                } catch (IndexOutOfBoundsException e1) {
+                } catch (NullPointerException e1) {
                     Log.e(TAG, "onEvent: ", e1);
                     textViewFlashDealPartnerName.setText("No Flash Deals Available");
                     textViewFlashDealPartnerName.setVisibility(View.VISIBLE);
                     progressBarSelectedItem.setVisibility(View.INVISIBLE);
+                    buttonFlashDealRedeemButton.setVisibility(View.INVISIBLE);
                 }
 
             }
+
+
         });
 
 
@@ -177,6 +179,7 @@ public class FlashDealFragment extends Fragment {
         textViewFlashDealTerms.setVisibility(View.INVISIBLE);
         textViewFlashDealsTermOfUse.setVisibility(View.INVISIBLE);
         progressBarSelectedItem.setVisibility(View.VISIBLE);
+        //buttonFlashDealRedeemButton.setVisibility(View.INVISIBLE);
     }
 
     //Show everything when loading complete
