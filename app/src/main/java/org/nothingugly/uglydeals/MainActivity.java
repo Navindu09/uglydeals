@@ -166,6 +166,17 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 resumeDeals();
 
+                                //This checks if all the profile details are filled in at all times to proceed using the app
+                                if (document.get("degree") == ""
+                                        || document.get("mobile") == ""
+                                        || document.get("name") == ""
+                                        || document.get("occupation") == ""
+                                        || document.get("organisation") == "") {
+
+                                    sendToProfileActivity();
+                                    Toast.makeText(MainActivity.this, "Please fill in all the fields to proceed", Toast.LENGTH_SHORT).show();
+                                }
+
                             }
 
                         } else {
@@ -179,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+
 
         }
 
@@ -266,6 +278,12 @@ public class MainActivity extends AppCompatActivity {
         Intent verifyEmailIntent = new Intent(this, VerifyEmailActivity.class);
         startActivity(verifyEmailIntent);
         finish();
+    }
+
+    private void sendToProfileActivity() {
+        Intent profileActivity = new Intent(this, ProfileActivity.class);
+        startActivity(profileActivity);
+
     }
 
 

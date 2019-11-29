@@ -11,6 +11,7 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         app:itemBackground="@color/colorPrimary"
         app:itemIconSize="30dp"
         app:itemIconTint="@drawable/tab_color"

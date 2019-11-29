@@ -201,16 +201,17 @@ public class HomeFragment extends Fragment {
 
                 }
             });
-
-            buttonPoints.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sendToPointsActivity();
-                }
-            });
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             Log.d(TAG, "onCreateView: " + e);
         }
+
+
+        buttonPoints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendToPointsActivity();
+            }
+        });
 
 
         //Initialising the list of deals
