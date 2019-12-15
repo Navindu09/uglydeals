@@ -4,8 +4,8 @@ apply plugin: 'io.fabric'
 android {
     signingConfigs {
         release {
-            storeFile file('/Users/navindudissanayake/key1')
-            keyAlias = 'key1'
+            storeFile file('/Users/navindudissanayake/key')
+            keyAlias = 'key0'
             storePassword 'QQzz11,,@'
             keyPassword 'QQzz11,,@'
         }
@@ -15,15 +15,15 @@ android {
         applicationId "org.nothingugly.uglydeals"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 5
-        versionName "1.0"
+        versionCode 9
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         aaptOptions.cruncherEnabled = false
         aaptOptions.useNewCruncher = false
     }
     buildTypes {
         release {
-            debuggable true
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

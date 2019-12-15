@@ -164,7 +164,7 @@ public class ScanActivity extends AppCompatActivity {
                         //Hashmap for redeemed deals collection
                         redeemedDeal.put("deal", finalDealId);
                         redeemedDeal.put("user", userId);
-                        redeemedDeal.put("timestamp ", date);
+                        redeemedDeal.put("timestamp", date);
 
                         //Hashmap for unavailable deal for the user
                         unavailableDeal.put("unavailableDeal", finalDealId);

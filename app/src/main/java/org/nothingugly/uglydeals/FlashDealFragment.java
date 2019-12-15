@@ -122,7 +122,7 @@ public class FlashDealFragment extends Fragment {
                     isFlashDealAvailable(dealId);
 
 
-                } catch (NullPointerException e1) {
+                } catch (Exception e1) {
                     Log.e(TAG, "onEvent: ", e1);
                     textViewFlashDealPartnerName.setText("No Flash Deals Available");
                     textViewFlashDealPartnerName.setVisibility(View.VISIBLE);

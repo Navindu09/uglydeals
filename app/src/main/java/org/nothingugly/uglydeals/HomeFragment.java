@@ -121,7 +121,7 @@ public class HomeFragment extends Fragment {
         dealList1 = new ArrayList<>();
         dealList2 = new ArrayList<>();
 
-        swipeRefereshLayout = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
+       // swipeRefereshLayout = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
 
         textViewHeaderFeatured = (TextView) view.findViewById(R.id.textViewHeaderFeatured);
         textViewHeaderNearMe = (TextView) view.findViewById(R.id.textViewHeaderNearMe);
@@ -138,7 +138,7 @@ public class HomeFragment extends Fragment {
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
-        swipeRefereshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+       /* swipeRefereshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                                                      @Override
                                                      public void onRefresh() {
 
@@ -147,7 +147,7 @@ public class HomeFragment extends Fragment {
                                                      }
                                                  }
 
-        );
+        );*/
 
 
         textViewHeaderAll.setVisibility(View.INVISIBLE);

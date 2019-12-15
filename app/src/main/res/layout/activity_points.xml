@@ -175,7 +175,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="@font/poppins"
-                android:text="Points are the rewards we give you for redeeming Deals on our app! We give you 5 points for redeeming and ordinary deal and 10 points for redeeming featured and flash deals!"
+                android:text="Points are the rewards we give you for redeeming Deals on our app! We give you 5 points for redeeming an ordinary deal and 10 points for redeeming featured and flash deals!"
                 android:textAlignment="viewStart"
                 android:textColor="@color/typeFontColor"
                 android:textSize="14sp"

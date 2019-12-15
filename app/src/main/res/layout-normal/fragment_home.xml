@@ -17,124 +17,113 @@
         app:layout_scrollFlags="scroll" />
 
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/pullToRefresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewToolbarTitle">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#003D1E1E"
+            android:backgroundTint="#00161616"
+            android:orientation="vertical"
+            tools:context=".HomeFragment">
 
-        <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar2">
+            <TextView
+                android:id="@+id/textViewHeaderFeatured"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/poppins"
+                android:text="What's new!"
+                android:textColor="@color/typeFontColor"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp" />
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#003D1E1E"
-                android:backgroundTint="#00161616"
-                android:orientation="vertical"
-                tools:context=".HomeFragment">
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="#00523C3C"
+                android:backgroundTint="#003D1E1E"
+                android:elevation="10dp"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-9409818967408705/7852596485"
+                ads:layout_constraintBottom_toBottomOf="@+id/mainContainer"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.493"
+                ads:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
 
-                <TextView
-                    android:id="@+id/textViewHeaderFeatured"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="24dp"
-                    android:fontFamily="@font/poppins"
-                    android:text="What's new!"
-                    android:textColor="@color/typeFontColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp" />
-
-                <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/adView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:background="#00523C3C"
-                    android:backgroundTint="#003D1E1E"
-                    android:elevation="10dp"
-                    ads:adSize="BANNER"
-                    ads:adUnitId="ca-app-pub-9409818967408705/7852596485"
-                    ads:layout_constraintBottom_toBottomOf="@+id/mainContainer"
-                    ads:layout_constraintEnd_toEndOf="parent"
-                    ads:layout_constraintHorizontal_bias="0.493"
-                    ads:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
-
-                <TextView
-                    android:id="@+id/textViewHeaderNearMe"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/poppins"
-                    android:text="Food and Beverage"
-                    android:textColor="@color/typeFontColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textViewHeaderNearMe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins"
+                android:text="Food and Beverage"
+                android:textColor="@color/typeFontColor"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp" />
 
 
-                <TextView
-                    android:id="@+id/textViewHeaderAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/poppins"
-                    android:text="All"
-                    android:textColor="@color/typeFontColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textViewHeaderAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins"
+                android:text="All"
+                android:textColor="@color/typeFontColor"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp" />
 
 
-                <ProgressBar
-                    android:id="@+id/progressBarHomeFragment"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:indeterminateDrawable="@drawable/progress_bar_white"
-                    android:visibility="invisible" />
-            </LinearLayout>
-        </ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <ProgressBar
+                android:id="@+id/progressBarHomeFragment"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:indeterminateDrawable="@drawable/progress_bar_white"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </ScrollView>
+
 
     <TextView
         android:id="@+id/textViewToolbarTitle"
@@ -155,17 +144,16 @@
         android:id="@+id/buttonPoints"
         android:layout_width="58dp"
         android:layout_height="28dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/button_round"
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="@color/typeFontColor"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/pullToRefresh"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="@+id/toolbar2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar2" />
 
 </android.support.constraint.ConstraintLayout>

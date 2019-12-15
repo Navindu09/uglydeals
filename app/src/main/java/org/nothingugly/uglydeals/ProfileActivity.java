@@ -1,5 +1,7 @@
 package org.nothingugly.uglydeals;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -66,51 +68,76 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                setLoading();
+                if (editTextProfilePhone.getText().toString().equals("")
+                        || editTextProfileName.getText().toString().equals("")
+                        || editTextProfileOrganisation.getText().toString().equals("")
+                        || editTextProfileDegree.getText().toString().equals("")
+                        || getEditTextProfileOccupation.getText().toString().equals("")) {
 
-                mFirestore.collection("customers").document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot doc = task.getResult();
-                        if (doc.exists()) {
-                            String mobile = editTextProfilePhone.getText().toString();
-                            String name = editTextProfileName.getText().toString();
-                            String occupation = getEditTextProfileOccupation.getText().toString();
-                            String organisation = editTextProfileOrganisation.getText().toString();
-                            String degree = editTextProfileDegree.getText().toString();
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(ProfileActivity.this);
+                    builder1.setTitle("Empty Field");
+                    builder1.setMessage("Please fill in all the details to proceed");
 
-                            Map<String, Object> profileMap = new HashMap<>();
-
-                            profileMap.put("mobile", mobile);
-                            profileMap.put("name", name);
-                            profileMap.put("occupation", occupation);
-                            profileMap.put("organisation", organisation);
-                            profileMap.put("degree", degree);
-
-                            doc.getReference().update(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-
-                                        setDoneLoading();
-                                        Log.d(TAG, "SaveButton.onClick.Success: Document Updated Successfully");
-                                        Toast.makeText(ProfileActivity.this, "Your information has been saved!", Toast.LENGTH_SHORT).show();
-
-
-                                    } else {
-
-                                        setDoneLoading();
-                                        Log.e(TAG, "SaveButton.onClick.Unsuccess: Document Update failed", task.getException());
-                                    }
+                    builder1.setPositiveButton(
+                            "Okay!",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
                                 }
                             });
-                        } else {
-                            Toast.makeText(ProfileActivity.this, "Document Error: Please contact Ugly Deals Support for help", Toast.LENGTH_LONG).show();
-                            setDoneLoading();
-                        }
 
-                    }
-                });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+
+                } else {
+                    setLoading();
+
+                    mFirestore.collection("customers").document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc.exists()) {
+                                String mobile = editTextProfilePhone.getText().toString();
+                                String name = editTextProfileName.getText().toString();
+                                String occupation = getEditTextProfileOccupation.getText().toString();
+                                String organisation = editTextProfileOrganisation.getText().toString();
+                                String degree = editTextProfileDegree.getText().toString();
+
+                                Map<String, Object> profileMap = new HashMap<>();
+
+                                profileMap.put("mobile", mobile);
+                                profileMap.put("name", name);
+                                profileMap.put("occupation", occupation);
+                                profileMap.put("organisation", organisation);
+                                profileMap.put("degree", degree);
+
+                                doc.getReference().update(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+
+                                            setDoneLoading();
+                                            Log.d(TAG, "SaveButton.onClick.Success: Document Updated Successfully");
+                                            Toast.makeText(ProfileActivity.this, "Your information has been saved!", Toast.LENGTH_SHORT).show();
+
+
+                                        } else {
+
+                                            setDoneLoading();
+                                            Log.e(TAG, "SaveButton.onClick.Unsuccess: Document Update failed", task.getException());
+                                        }
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(ProfileActivity.this, "Document Error: Please contact Ugly Deals Support for help", Toast.LENGTH_LONG).show();
+                                setDoneLoading();
+                            }
+
+                        }
+                    });
+                }
+
 
             }
         });

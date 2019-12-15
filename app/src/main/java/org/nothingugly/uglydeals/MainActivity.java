@@ -281,8 +281,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendToProfileActivity() {
-        Intent profileActivity = new Intent(this, ProfileActivity.class);
-        startActivity(profileActivity);
+        Intent ForceProfileActivity = new Intent(this, ForceProfileActivity.class);
+        startActivity(ForceProfileActivity);
 
     }
 

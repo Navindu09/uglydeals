@@ -171,7 +171,7 @@ public class FlashDealScanActivity extends AppCompatActivity {
                         //Hashmap for redeemed deals collection
                         redeemedFlashDeal.put("deal", finalDealId);
                         redeemedFlashDeal.put("user", userId);
-                        redeemedFlashDeal.put("timestamp ", date);
+                        redeemedFlashDeal.put("timestamp", date);
 
                         //Hashmap for unavailable deal for the user
                         unavailableFlashDeal.put("unavailableDeal", finalDealId);

@@ -27,6 +27,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".PointsActivity"></activity>
         <activity android:name=".ProfileActivity" />
+        <activity android:name=".ForceProfileActivity" />
         <activity android:name=".PasswordResetActivity" />
         <activity android:name=".VerifyEmailActivity" />
 
