@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.nothingugly.uglydeals">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -25,7 +26,8 @@
         android:roundIcon="@mipmap/ugly_deals_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PointsActivity"></activity>
+        <activity android:name=".jobPort.activity.JobPortActivity"></activity>
+        <activity android:name=".PointsActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ForceProfileActivity" />
         <activity android:name=".PasswordResetActivity" />

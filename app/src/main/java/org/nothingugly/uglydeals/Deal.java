@@ -22,6 +22,7 @@ public class Deal {
         this.active = active;
         this.description = description;
         this.category = category;
+
     }
 
   //Declarng the variables

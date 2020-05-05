@@ -9,6 +9,7 @@ public class FlashDeal {
 
     public FlashDeal(){}
 
+
     public FlashDeal(Boolean active, String dealPhoto, String description, String id, String name, String termsOfUse, Date ValidFrom, Date ValidTill){
         this.active = active;
         this.dealPhoto = dealPhoto;

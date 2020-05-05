@@ -3,11 +3,6 @@ package org.nothingugly.uglydeals;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -30,6 +31,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.nothingugly.uglydeals.jobPort.activity.JobPortActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,6 +80,7 @@ public class HomeFragment extends Fragment {
     private Button buttonPoints;
 
     private ProgressBar progressBarHomeFragment;
+    private Button buttonJob;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -121,13 +125,14 @@ public class HomeFragment extends Fragment {
         dealList1 = new ArrayList<>();
         dealList2 = new ArrayList<>();
 
-       // swipeRefereshLayout = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
+        // swipeRefereshLayout = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
 
         textViewHeaderFeatured = (TextView) view.findViewById(R.id.textViewHeaderFeatured);
         textViewHeaderNearMe = (TextView) view.findViewById(R.id.textViewHeaderNearMe);
         textViewHeaderAll = (TextView) view.findViewById(R.id.textViewHeaderAll);
 
         buttonPoints = (Button) view.findViewById(R.id.buttonPoints);
+        buttonJob = (Button) view.findViewById(R.id.buttonJob);
 
 
         AdView adView = (AdView) view.findViewById(R.id.adView);
@@ -210,6 +215,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 sendToPointsActivity();
+            }
+        });
+        buttonJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), JobPortActivity.class);
+                startActivity(intent);
             }
         });
 

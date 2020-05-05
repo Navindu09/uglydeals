@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/jobBottomNavigationHome"
+        android:enabled="true"
+        android:icon="@mipmap/baseline_home_black_24"
+        android:title="Home"
+        android:visible="true" />
+    <item
+        android:id="@+id/jobBottomNavigationNotificationApplication"
+        android:icon="@drawable/baseline_flash_on_black_48"
+        android:title="Applications" />
+
+    <item
+        android:id="@+id/jobBottomNavigationSearch"
+        android:icon="@mipmap/baseline_search_black_24"
+        android:title="Search" />
+
+    <item
+        android:id="@+id/jobBottomNavigationProfile"
+        android:icon="@mipmap/baseline_person_black_24"
+        android:title="Profile" />
+</menu>
