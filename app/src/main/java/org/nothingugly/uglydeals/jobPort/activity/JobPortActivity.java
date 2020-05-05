@@ -2,7 +2,9 @@ package org.nothingugly.uglydeals.jobPort.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,9 +18,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.nothingugly.uglydeals.R;
 import org.nothingugly.uglydeals.jobPort.fragments.JobHomeFragment;
+import org.nothingugly.uglydeals.jobPort.fragments.SystemAnalystFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class JobPortActivity extends AppCompatActivity {
@@ -31,6 +35,8 @@ public class JobPortActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
     @BindView(R.id.tvToolbarTitle)
     TextView tvToolbarTitle;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
     private JobHomeFragment jobHomeFragment;
 
     @Override
@@ -43,9 +49,9 @@ public class JobPortActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
+        tvToolbarTitle.setText("Job Port");
         jobHomeFragment = new JobHomeFragment();
         replaceFragment(jobHomeFragment, "Job Port");
-
         //When the bottom navigation buttons are clicked
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -75,10 +81,31 @@ public class JobPortActivity extends AppCompatActivity {
         });
     }
 
-    private void replaceFragment(Fragment fragment, String title) {
+    public void setTitle(String title) {
         tvToolbarTitle.setText(title);
+    }
+
+    public void replaceFragment(Fragment fragment, String title) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.job_container, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.job_container);
+        if (f instanceof JobHomeFragment) {
+            setTitle("Job Port");
+            ivBack.setVisibility(View.GONE);
+        } else if (f instanceof SystemAnalystFragment) {
+            setTitle("System Analyst");
+            ivBack.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @OnClick(R.id.iv_back)
+    public void onViewClicked() {
+        onBackPressed();
     }
 }

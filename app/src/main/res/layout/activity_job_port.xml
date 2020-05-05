@@ -12,6 +12,15 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary">
 
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_back"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/tvToolbarTitle"
             android:layout_width="wrap_content"

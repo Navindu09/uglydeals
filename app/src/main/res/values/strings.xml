@@ -10,4 +10,12 @@
     <string name="recommended">Recommended</string>
     <string name="all_jobs">All jobs</string>
     <string name="job_port">Job Port</string>
+    <string name="save">Save</string>
+    <string name="saved">Saved</string>
+    <string name="remote">Remote</string>
+    <string name="description">Description</string>
+    <string name="requirements">Requirements</string>
+    <string name="clickNapply">Click &amp; Apply</string>
+    <string name="your_application_is_submitted_successfully">Your application is submitted succesfully! "\n"Next step: Check youe email regularly for a reply from us regrading your application. Goodluck! </string>
+    <string name="similar_job">Similar Jobs</string>
 </resources>

@@ -5,9 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,14 +17,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.nothingugly.uglydeals.Deal;
 import org.nothingugly.uglydeals.R;
+import org.nothingugly.uglydeals.jobPort.activity.JobPortActivity;
 import org.nothingugly.uglydeals.jobPort.adapters.RvCommonJobAdapter;
 import org.nothingugly.uglydeals.jobPort.adapters.RvMainAdapter;
+import org.nothingugly.uglydeals.jobPort.interfaces.RvClickInterface;
 import org.nothingugly.uglydeals.jobPort.models.CommonJobsModel;
 
 import java.util.ArrayList;
@@ -34,7 +39,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class JobHomeFragment extends Fragment {
+public class JobHomeFragment extends Fragment implements RvClickInterface {
 
     @BindView(R.id.rv_main)
     RecyclerView rvMain;
@@ -61,8 +66,8 @@ public class JobHomeFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         //Initialise Firebase app
         //FirebaseApp.initializeApp(this);
-        mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         checkUser();
         getFromFireBase();
         setMainAdapter();
@@ -73,17 +78,21 @@ public class JobHomeFragment extends Fragment {
 
     private void getFromFireBase() {
         jobsModelArrayList = new ArrayList<>();
-        mFirestore.collection("jobs").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        mFirestore = FirebaseFirestore.getInstance();
+        ArrayList<Deal> deals = new ArrayList<>();
+        mFirestore.collection("jobs").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isComplete()) {
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                /*if (task.isComplete()) {
                     for (QueryDocumentSnapshot doc : task.getResult()) {
                         CommonJobsModel commonJobsModel = doc.toObject(CommonJobsModel.class);
                         jobsModelArrayList.add(commonJobsModel);
                     }
                 } else {
 
-                }
+                }*/
+                DocumentSnapshot documentSnapshot = task.getResult();
+                Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -102,7 +111,8 @@ public class JobHomeFragment extends Fragment {
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvAllJobs.setLayoutManager(layoutManager);
-        RvCommonJobAdapter rvCommonJobAdapter = new RvCommonJobAdapter(getActivity(),jobsModelArrayList);
+        RvCommonJobAdapter rvCommonJobAdapter = new RvCommonJobAdapter(getActivity(), jobsModelArrayList);
+        rvCommonJobAdapter.setListener(this);
         rvAllJobs.setAdapter(rvCommonJobAdapter);
     }
 
@@ -111,6 +121,7 @@ public class JobHomeFragment extends Fragment {
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvRecommended.setLayoutManager(layoutManager);
         RvCommonJobAdapter rvCommonJobAdapter = new RvCommonJobAdapter(getActivity(), jobsModelArrayList);
+        rvCommonJobAdapter.setListener(this);
         rvRecommended.setAdapter(rvCommonJobAdapter);
     }
 
@@ -126,5 +137,25 @@ public class JobHomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        /*JobPortActivity jobPortActivity = new JobPortActivity();
+        jobPortActivity.setTvToolbarTitle("Job Port");*/
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        SystemAnalystFragment systemAnalystFragment = new SystemAnalystFragment();
+        replaceFragment(systemAnalystFragment, "System Analyst");
+    }
+
+    public void replaceFragment(Fragment fragment, String title) {
+        ((JobPortActivity) getActivity()).setTitle(title);
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.job_container, fragment).addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

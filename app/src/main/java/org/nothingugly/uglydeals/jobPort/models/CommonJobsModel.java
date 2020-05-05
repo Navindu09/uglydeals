@@ -9,10 +9,28 @@ public class CommonJobsModel {
     private String experience;
     private boolean paid;
     private boolean remote;
-    private String reward;
+    private int reward;
     private String skills;
     private Date startDate;
     private String title;
+    private String location;
+    String type;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getDescription() {
         return description;
@@ -62,11 +80,11 @@ public class CommonJobsModel {
         this.remote = remote;
     }
 
-    public String getReward() {
+    public int getReward() {
         return reward;
     }
 
-    public void setReward(String reward) {
+    public void setReward(int reward) {
         this.reward = reward;
     }
 
