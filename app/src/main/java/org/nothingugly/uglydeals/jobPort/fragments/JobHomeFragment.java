@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,7 +17,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -48,10 +47,14 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
     @BindView(R.id.rv_all_jobs)
     RecyclerView rvAllJobs;
     Unbinder unbinder;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBarItem;
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
     private String userId;
     private ArrayList<CommonJobsModel> jobsModelArrayList;
+    private RvCommonJobAdapter rvRecommendedJobAdapter;
+    private RvCommonJobAdapter rvAllJobAdapter;
 
     public JobHomeFragment() {
         // Required empty public constructor
@@ -66,33 +69,40 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
         unbinder = ButterKnife.bind(this, view);
         //Initialise Firebase app
         //FirebaseApp.initializeApp(this);
+        progressBarItem.setVisibility(View.VISIBLE);
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        jobsModelArrayList = new ArrayList<>();
         checkUser();
         getFromFireBase();
-        setMainAdapter();
         setRecommendedAdapter();
         setAllJobsAdapter();
+        setMainAdapter();
         return view;
     }
 
     private void getFromFireBase() {
-        jobsModelArrayList = new ArrayList<>();
         mFirestore = FirebaseFirestore.getInstance();
         ArrayList<Deal> deals = new ArrayList<>();
-        mFirestore.collection("jobs").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        mFirestore.collection("jobs").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                /*if (task.isComplete()) {
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        CommonJobsModel commonJobsModel = doc.toObject(CommonJobsModel.class);
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isComplete()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                       /* Deal deal = document.toObject(Deal.class);
+                        deals.add(deal);*/
+                        // Convert the whole Query Snapshot to a list
+                        // of objects directly! No need to fetch each
+                        // document.
+                        CommonJobsModel commonJobsModel = document.toObject(CommonJobsModel.class);
+                        // Add all to your list
                         jobsModelArrayList.add(commonJobsModel);
+                        rvAllJobAdapter.notifyDataSetChanged();
+                        rvRecommendedJobAdapter.notifyDataSetChanged();
+                        Log.d("see", "onSuccess: " + jobsModelArrayList.toString());
+                        progressBarItem.setVisibility(View.GONE);
                     }
-                } else {
-
-                }*/
-                DocumentSnapshot documentSnapshot = task.getResult();
-                Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -111,18 +121,18 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvAllJobs.setLayoutManager(layoutManager);
-        RvCommonJobAdapter rvCommonJobAdapter = new RvCommonJobAdapter(getActivity(), jobsModelArrayList);
-        rvCommonJobAdapter.setListener(this);
-        rvAllJobs.setAdapter(rvCommonJobAdapter);
+        rvAllJobAdapter = new RvCommonJobAdapter(getActivity(), jobsModelArrayList);
+        rvAllJobAdapter.setListener(this);
+        rvAllJobs.setAdapter(rvAllJobAdapter);
     }
 
     private void setRecommendedAdapter() {
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvRecommended.setLayoutManager(layoutManager);
-        RvCommonJobAdapter rvCommonJobAdapter = new RvCommonJobAdapter(getActivity(), jobsModelArrayList);
-        rvCommonJobAdapter.setListener(this);
-        rvRecommended.setAdapter(rvCommonJobAdapter);
+        rvRecommendedJobAdapter = new RvCommonJobAdapter(getActivity(), jobsModelArrayList);
+        rvRecommendedJobAdapter.setListener(this);
+        rvRecommended.setAdapter(rvRecommendedJobAdapter);
     }
 
     private void setMainAdapter() {
@@ -147,9 +157,9 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
     }
 
     @Override
-    public void onItemClick(int position) {
-        SystemAnalystFragment systemAnalystFragment = new SystemAnalystFragment();
-        replaceFragment(systemAnalystFragment, "System Analyst");
+    public void onItemClick(CommonJobsModel jobsModels) {
+        SystemAnalystFragment systemAnalystFragment = new SystemAnalystFragment(jobsModels);
+        replaceFragment(systemAnalystFragment, jobsModels.getTitle());
     }
 
     public void replaceFragment(Fragment fragment, String title) {

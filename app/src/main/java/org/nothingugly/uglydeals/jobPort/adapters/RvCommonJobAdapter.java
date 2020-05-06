@@ -42,12 +42,13 @@ public class RvCommonJobAdapter extends RecyclerView.Adapter<RvCommonJobAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull JobHoler jobHoler, int i) {
-//        jobHoler.textViewItemName.setText(jobsModelArrayList.get(i).getSkills());
+        jobHoler.textViewItemName.setText(jobsModelArrayList.get(i).getTitle());
+        jobHoler.textViewItemRestaurantName.setText(jobsModelArrayList.get(i).getLocation());
         jobHoler.itemCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (rvClickInterface != null) {
-                    rvClickInterface.onItemClick(i);
+                    rvClickInterface.onItemClick(jobsModelArrayList.get(i));
                 }
             }
         });
@@ -55,7 +56,7 @@ public class RvCommonJobAdapter extends RecyclerView.Adapter<RvCommonJobAdapter.
 
     @Override
     public int getItemCount() {
-        return 6;
+        return jobsModelArrayList.size();
     }
 
     public void setListener(RvClickInterface listener) {

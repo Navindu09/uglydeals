@@ -89,6 +89,7 @@
                     android:weightSum="2">
 
                     <TextView
+                        android:id="@+id/tv_location"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -98,6 +99,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/tv_type"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -115,6 +117,7 @@
                     android:weightSum="2">
 
                     <TextView
+                        android:id="@+id/tv_paid"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -124,6 +127,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/tv_experience"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -151,10 +155,10 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:gravity="center"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla rhoncus tristique odio, sed tempus mi dignissim et. Vivamus id tortor at risus laoreet ultrices. Cras blandit magna eget ipsum porta facilisis. Donec urna diam, sodales a mauris in, sollicitudin varius diam. Integer aliquet non dui eget sagittis. Nam et justo enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed consequat augue purus. Praesent fringilla eleifend metus id congue. Ut pretium pharetra lectus, ac semper nibh dictum semper. Mauris a euismod ligula, sit amet tincidunt mi. Morbi ac ultrices est, eget luctus tellus. Nulla facilisi. In ac lacus non mauris accumsan sodales."
                 android:textColor="@color/DarkGray"
                 android:textSize="16dp" />
@@ -168,10 +172,10 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_requirements"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:gravity="center"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla rhoncus tristique odio, sed tempus mi dignissim et. Vivamus id tortor at risus laoreet ultrices. Cras blandit magna eget ipsum porta facilisis. Donec urna diam, sodales a mauris in, sollicitudin varius diam. Integer aliquet non dui eget sagittis. Nam et justo enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed consequat augue purus. Praesent fringilla eleifend metus id congue. Ut pretium pharetra lectus, ac semper nibh dictum semper. Mauris a euismod ligula, sit amet tincidunt mi. Morbi ac ultrices est, eget luctus tellus. Nulla facilisi. In ac lacus non mauris accumsan sodales."
                 android:textColor="@color/DarkGray"
                 android:textSize="16dp" />

@@ -99,8 +99,8 @@ public class JobPortActivity extends AppCompatActivity {
             setTitle("Job Port");
             ivBack.setVisibility(View.GONE);
         } else if (f instanceof SystemAnalystFragment) {
-            setTitle("System Analyst");
-            ivBack.setVisibility(View.VISIBLE);
+//            setTitle("System Analyst");
+//            ivBack.setVisibility(View.VISIBLE);
         }
     }
 

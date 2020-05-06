@@ -91,7 +91,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         mFirestore = FirebaseFirestore.getInstance();
 
         mAuth = FirebaseAuth.getInstance();

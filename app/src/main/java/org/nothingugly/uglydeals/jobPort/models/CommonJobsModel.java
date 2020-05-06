@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class CommonJobsModel {
     private String description;
-    private String educationRequirement;
+    private String educationRequirements;
     private Date endDate;
     private String experience;
     private boolean paid;
@@ -41,11 +41,11 @@ public class CommonJobsModel {
     }
 
     public String getEducationRequirement() {
-        return educationRequirement;
+        return educationRequirements;
     }
 
     public void setEducationRequirement(String educationRequirement) {
-        this.educationRequirement = educationRequirement;
+        this.educationRequirements = educationRequirement;
     }
 
     public Date getEndDate() {
