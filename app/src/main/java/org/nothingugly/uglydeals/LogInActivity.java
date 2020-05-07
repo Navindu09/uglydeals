@@ -19,6 +19,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.nothingugly.uglydeals.jobPort.activity.JobPortActivity;
+
 public class LogInActivity extends AppCompatActivity {
 
     //Initiating EditText components
@@ -45,7 +47,7 @@ public class LogInActivity extends AppCompatActivity {
 
         //Assigning the EditText to the View components
         editTextLoginEmail = (EditText) findViewById(R.id.editTextLoginEmail);
-        editTextLoginPassword= (EditText) findViewById(R.id.editTextLoginPassword);
+        editTextLoginPassword = (EditText) findViewById(R.id.editTextLoginPassword);
 
         //Assigning the Buttons to the View Components
         buttonLoginLogin = (Button) findViewById(R.id.buttonLoginLogin);
@@ -54,7 +56,7 @@ public class LogInActivity extends AppCompatActivity {
         textViewRegister = (TextView) findViewById(R.id.textViewRegister);
         textViewLoginResetPassword = (TextView) findViewById(R.id.textViewLoginResetPassword);
 
-        progressBarLogin  =  (ProgressBar) findViewById(R.id.progressBarLogin);
+        progressBarLogin = (ProgressBar) findViewById(R.id.progressBarLogin);
 
         //When Login button is clicked
         buttonLoginLogin.setOnClickListener(new View.OnClickListener() {
@@ -65,8 +67,7 @@ public class LogInActivity extends AppCompatActivity {
                 String password = editTextLoginPassword.getText().toString();
 
                 //If the bars are filled
-                if((!TextUtils.isEmpty(email)) && !TextUtils.isEmpty(password))
-                {
+                if ((!TextUtils.isEmpty(email)) && !TextUtils.isEmpty(password)) {
                     progressBarLogin.setVisibility(View.VISIBLE);
                     buttonLoginLogin.setEnabled(false);
                     buttonLoginRegister.setEnabled(false);
@@ -83,14 +84,12 @@ public class LogInActivity extends AppCompatActivity {
                         //When the user is signed in.
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful())
-                            {
+                            if (task.isSuccessful()) {
                                 sendToMain();
                             }
 
                             //If user is not authenitcated
-                            else
-                            {
+                            else {
                                 String error = task.getException().getMessage();
                                 Toast.makeText(LogInActivity.this, error, Toast.LENGTH_LONG).show();
 
@@ -105,7 +104,6 @@ public class LogInActivity extends AppCompatActivity {
                                 textViewLoginResetPassword.setVisibility(View.VISIBLE);
 
                             }
-
 
 
                         }
@@ -145,19 +143,18 @@ public class LogInActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //If there is a user logged in, Go to MainAtivity.
-        if (currentUser != null)
-        {
+        if (currentUser != null) {
             sendToMain();
         }
     }
 
     private void sendToMain() {
-        Intent mainIntent = new Intent(this, MainActivity.class);
+        Intent mainIntent = new Intent(this, JobPortActivity.class);
         startActivity(mainIntent);
         finish();
     }
 
-    private void sendToPasswordReset(){
+    private void sendToPasswordReset() {
         Intent passwordReset = new Intent(this, PasswordResetActivity.class);
         startActivity(passwordReset);
         finish();

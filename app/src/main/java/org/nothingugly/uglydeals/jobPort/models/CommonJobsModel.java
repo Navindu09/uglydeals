@@ -6,7 +6,7 @@ public class CommonJobsModel {
     private String description;
     private String educationRequirements;
     private Date endDate;
-    private String experience;
+    private String experienceRequirements;
     private boolean paid;
     private boolean remote;
     private int reward;
@@ -14,7 +14,25 @@ public class CommonJobsModel {
     private Date startDate;
     private String title;
     private String location;
-    String type;
+    private String type;
+    private String id;
+    private boolean saved;
+
+    public boolean getSaved() {
+        return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getLocation() {
         return location;
@@ -57,11 +75,11 @@ public class CommonJobsModel {
     }
 
     public String getExperience() {
-        return experience;
+        return experienceRequirements;
     }
 
     public void setExperience(String experience) {
-        this.experience = experience;
+        this.experienceRequirements = experience;
     }
 
     public boolean isPaid() {

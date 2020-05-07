@@ -26,7 +26,12 @@
         android:roundIcon="@mipmap/ugly_deals_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".jobPort.activity.JobPortActivity"></activity>
+        <activity android:name=".jobPort.activity.JobPortActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".PointsActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ForceProfileActivity" />
@@ -70,13 +75,7 @@
         <activity
             android:name=".RedeemSuccessActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

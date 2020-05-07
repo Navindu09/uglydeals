@@ -1,8 +1,10 @@
 package org.nothingugly.uglydeals.jobPort.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,9 +17,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.nothingugly.uglydeals.LogInActivity;
+import org.nothingugly.uglydeals.MainActivity;
 import org.nothingugly.uglydeals.R;
 import org.nothingugly.uglydeals.jobPort.fragments.JobHomeFragment;
+import org.nothingugly.uglydeals.jobPort.fragments.SavedJobsFragment;
 import org.nothingugly.uglydeals.jobPort.fragments.SystemAnalystFragment;
 
 import butterknife.BindView;
@@ -37,7 +45,11 @@ public class JobPortActivity extends AppCompatActivity {
     TextView tvToolbarTitle;
     @BindView(R.id.iv_back)
     ImageView ivBack;
+    @BindView(R.id.btn_deals)
+    Button btnDeals;
     private JobHomeFragment jobHomeFragment;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore mFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +59,15 @@ public class JobPortActivity extends AppCompatActivity {
         //placing toolbar in place of actionbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //Initialise Firebase app
+        //FirebaseApp.initializeApp(this);
+        mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
         toolbar.setTitle("");
         toolbar.setSubtitle("");
-        tvToolbarTitle.setText("Job Port");
+        tvToolbarTitle.setText("Job Portal");
         jobHomeFragment = new JobHomeFragment();
-        replaceFragment(jobHomeFragment, "Job Port");
+        replaceFragment(jobHomeFragment, "Job Portal");
         //When the bottom navigation buttons are clicked
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -59,12 +75,14 @@ public class JobPortActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     //if home button clicked, replace fragment with home
                     case (R.id.jobBottomNavigationHome):
+                        setTitle("Job Portal");
                         jobHomeFragment = new JobHomeFragment();
-                        replaceFragment(jobHomeFragment, "Job Port");
+                        replaceFragment(jobHomeFragment, "");
                         return true;
                     //if Search button clicked, replace fragment with search
                     case (R.id.jobBottomNavigationNotificationApplication):
-                        Toast.makeText(JobPortActivity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
+                        SavedJobsFragment savedJobsFragment = new SavedJobsFragment();
+                        replaceFragment(savedJobsFragment, "Saved");
                         return true;
                     //if account button clicked, replace fragment with account
                     case (R.id.jobBottomNavigationSearch):
@@ -79,6 +97,25 @@ public class JobPortActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //Retrieve the current logged in user
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
+        //If not user is logged in
+        if (currentUser == null)
+        //Open loginActivity to login
+        {
+            sendToLogin();
+        }
+    }
+
+    //Send to LoginActivity
+    private void sendToLogin() {
+        Intent loginintent = new Intent(this, LogInActivity.class);
+        startActivity(loginintent);
     }
 
     public void setTitle(String title) {
@@ -96,10 +133,13 @@ public class JobPortActivity extends AppCompatActivity {
         super.onBackPressed();
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.job_container);
         if (f instanceof JobHomeFragment) {
-            setTitle("Job Port");
+            setTitle("Job Portal");
             ivBack.setVisibility(View.GONE);
         } else if (f instanceof SystemAnalystFragment) {
 //            setTitle("System Analyst");
+//            ivBack.setVisibility(View.VISIBLE);
+        } else if (f instanceof SavedJobsFragment) {
+            setTitle("Saved");
 //            ivBack.setVisibility(View.VISIBLE);
         }
     }
@@ -107,5 +147,12 @@ public class JobPortActivity extends AppCompatActivity {
     @OnClick(R.id.iv_back)
     public void onViewClicked() {
         onBackPressed();
+    }
+
+    @OnClick(R.id.btn_deals)
+    public void onDealsClicked() {
+        Intent loginintent = new Intent(this, MainActivity.class);
+        startActivity(loginintent);
+        finish();
     }
 }

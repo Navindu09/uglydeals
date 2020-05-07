@@ -18,4 +18,6 @@
     <string name="clickNapply">Click &amp; Apply</string>
     <string name="your_application_is_submitted_successfully">Your application is submitted succesfully! "\n"Next step: Check youe email regularly for a reply from us regrading your application. Goodluck! </string>
     <string name="similar_job">Similar Jobs</string>
+    <string name="paid">Paid</string>
+    <string name="location">Location</string>
 </resources>
