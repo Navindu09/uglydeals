@@ -145,7 +145,7 @@ public class SavedJobsFragment extends Fragment implements RemoveItemInterfaces 
                     float height = (float) itemView.getBottom() - (float) itemView.getTop();
                     float width = height / 3;
                     p.setColor(Color.parseColor("#D32F2F"));
-                    RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop() + width, (float) itemView.getRight(), (float) itemView.getBottom());
+                    RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop() + 20, (float) itemView.getRight(), (float) itemView.getBottom());
                     c.drawRect(background, p);
                     icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_check);
                     RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
