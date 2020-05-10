@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -24,7 +25,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.nothingugly.uglydeals.LogInActivity;
 import org.nothingugly.uglydeals.MainActivity;
 import org.nothingugly.uglydeals.R;
+import org.nothingugly.uglydeals.SearchFragment;
 import org.nothingugly.uglydeals.jobPort.fragments.JobHomeFragment;
+import org.nothingugly.uglydeals.jobPort.fragments.ProfileFragment;
 import org.nothingugly.uglydeals.jobPort.fragments.SavedJobsFragment;
 import org.nothingugly.uglydeals.jobPort.fragments.SystemAnalystFragment;
 
@@ -81,16 +84,21 @@ public class JobPortActivity extends AppCompatActivity {
                         return true;
                     //if Search button clicked, replace fragment with search
                     case (R.id.jobBottomNavigationNotificationApplication):
+                        setTitle("Saved");
                         SavedJobsFragment savedJobsFragment = new SavedJobsFragment();
-                        replaceFragment(savedJobsFragment, "Saved");
+                        replaceFragment(savedJobsFragment, "");
                         return true;
                     //if account button clicked, replace fragment with account
                     case (R.id.jobBottomNavigationSearch):
-                        Toast.makeText(JobPortActivity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
+                        setTitle("Search");
+                        SearchFragment searchFragment = new SearchFragment();
+                        replaceFragment(searchFragment, "");
                         return true;
                     //If Flashdeal logo is clicked replace fragment with flasdeal
                     case (R.id.jobBottomNavigationProfile):
-                        Toast.makeText(JobPortActivity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
+                        setTitle("Profile");
+                        ProfileFragment profileFragment = new ProfileFragment();
+                        replaceFragment(profileFragment, "");
                         return true;
                     default:
                         return false;
@@ -98,6 +106,15 @@ public class JobPortActivity extends AppCompatActivity {
             }
         });
     }
+/*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentByTag(childTag);
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, intent);
+        }
+    }*/
 
     @Override
     protected void onStart() {

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/et_education"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:fontFamily="@font/poppins_light"
+        android:hint="Type here..."
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/tv_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_education"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="50dp"
+        android:fontFamily="@font/poppins_light"
+        android:text="Done"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_education"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_toLeftOf="@id/tv_done"
+        android:fontFamily="@font/poppins_light"
+        android:text="Cancel"
+        android:textSize="18dp" />
+</RelativeLayout>

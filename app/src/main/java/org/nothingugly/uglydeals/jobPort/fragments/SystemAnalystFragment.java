@@ -9,20 +9,33 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Transaction;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.HttpUrl;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 
 import org.nothingugly.uglydeals.R;
 import org.nothingugly.uglydeals.jobPort.activity.JobPortActivity;
 import org.nothingugly.uglydeals.jobPort.models.CommonJobsModel;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -62,6 +75,7 @@ public class SystemAnalystFragment extends Fragment {
     Unbinder unbinder;
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
+    private String FIREBASE_CLOUD_FUNCTION_URL = "https://us-central1-ugly-deals-debug.cloudfunctions.net/sendMail";
 
     public SystemAnalystFragment(CommonJobsModel jobsModels) {
         // Required empty public constructor
@@ -137,26 +151,109 @@ public class SystemAnalystFragment extends Fragment {
                 Map<String, Object> data = new HashMap<>();
                 data.put("id", commonJobsModel.getId());
                 data.put("timeStamp", currentTime);
-                mFirestore.collection("customers").document(userId).
-                        collection("appliedJobs").document(commonJobsModel.getId()).set(data)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                ((JobPortActivity) getActivity()).setTitle("saved");
-                                AppliedFragment appliedFragment = new AppliedFragment();
-                                replaceFragment(appliedFragment);
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressBar.setVisibility(View.GONE);
-                                Log.w("Saved", "Error writing document", e);
-                            }
-                        });
+                mFirestore.collection("customers").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            String userName = (String) documentSnapshot.get("name");
+                            String contact = (String) documentSnapshot.get("mobile");
+                            String emailId = (String) documentSnapshot.get("email");
+                            String degree = (String) documentSnapshot.get("degree");
+                            String occupation = (String) documentSnapshot.get("occupation");
+                            mFirestore.collection("customers").document(userId).
+                                    collection("appliedJobs").document(commonJobsModel.getId()).set(data)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            HashMap<String, Object> map = new HashMap<>();
+                                            map.put("message", "Job description: " + commonJobsModel.getDescription() + System.getProperty("line.separator") +
+                                                    "Job info:- " + commonJobsModel.getTitle() + System.getProperty("line.separator") +
+                                                    "User Profile:- " + userName + System.getProperty("line.separator") + contact + System.getProperty("line.separator") + emailId + System.getProperty("line.separator") +
+                                                    "User info:- " + degree + System.getProperty("line.separator") + occupation + System.getProperty("line.separator") +
+                                                    "Company info:- " + commonJobsModel.getCompanyId() + System.getProperty("line.separator") +
+                                                    "Signature," + System.getProperty("line.separator") +
+                                                    "Ugly Deals Job");
+                                            map.put("to", "info@uglydeals.co");
+                                            mFirestore.collection("mail").add(map).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(getContext(), "succc", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                            ((JobPortActivity) getActivity()).setTitle("saved");
+                                            AppliedFragment appliedFragment = new AppliedFragment();
+                                            replaceFragment(appliedFragment);
+                                            progressBar.setVisibility(View.GONE);
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            progressBar.setVisibility(View.GONE);
+                                            Log.w("Saved", "Error writing document", e);
+                                        }
+                                    });
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), "Something went wrong...", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
                 break;
         }
+    }
+
+    private void callMailAPI() {
+
+
+        String email = mAuth.getCurrentUser().getEmail().toString().trim();
+        Log.d("emaol", email + "");
+        OkHttpClient httpClient = new OkHttpClient();
+        HttpUrl.Builder httpBuider =
+                HttpUrl.parse(FIREBASE_CLOUD_FUNCTION_URL).newBuilder();
+        httpBuider.addQueryParameter("dest", email);
+        Request request = new Request.Builder().
+                url(httpBuider.build()).build();
+        httpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.d("failre", e.getMessage() + "====" + request.toString());
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+                String resp = "";
+                if (!response.isSuccessful()) {
+//                    Log.e(TAG, “fail response from firebase cloud function”);
+                    Toast.makeText(getActivity(), "Cound't get response from cloud function",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        resp = responseBody.string();
+                    } catch (IOException e) {
+                        resp = "Problem in getting discount info";
+//                        Log.e(TAG, “Problem in reading response “ + e);
+                    }
+                }
+                getActivity().runOnUiThread(responseRunnable(resp));
+            }
+        });
+    }
+
+    private Runnable responseRunnable(final String responseStr) {
+        Runnable resRunnable = new Runnable() {
+            public void run() {
+                Toast.makeText(getActivity()
+                        , responseStr,
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+        return resRunnable;
     }
 
     public void replaceFragment(Fragment fragment) {

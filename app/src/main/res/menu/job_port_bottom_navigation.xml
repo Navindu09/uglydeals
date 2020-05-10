@@ -10,7 +10,7 @@
         android:visible="true" />
     <item
         android:id="@+id/jobBottomNavigationNotificationApplication"
-        android:icon="@drawable/baseline_flash_on_black_48"
+        android:icon="@drawable/iv_application"
         android:title="Applications" />
 
     <item

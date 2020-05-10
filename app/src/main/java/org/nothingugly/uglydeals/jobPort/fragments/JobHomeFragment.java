@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.nothingugly.uglydeals.Deal;
 import org.nothingugly.uglydeals.R;
+import org.nothingugly.uglydeals.jobPort.activity.Constants;
 import org.nothingugly.uglydeals.jobPort.activity.JobPortActivity;
 import org.nothingugly.uglydeals.jobPort.adapters.RvCommonJobAdapter;
 import org.nothingugly.uglydeals.jobPort.adapters.RvMainAdapter;
@@ -69,7 +70,6 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
         unbinder = ButterKnife.bind(this, view);
         //Initialise Firebase app
         //FirebaseApp.initializeApp(this);
-        progressBarItem.setVisibility(View.VISIBLE);
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         jobsModelArrayList = new ArrayList<>();
@@ -81,7 +81,18 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
         return view;
     }
 
+    private void hide() {
+        Constants.hide(getActivity());
+        progressBarItem.setVisibility(View.GONE);
+    }
+
+    private void show() {
+        Constants.showProgessBar(getActivity());
+        progressBarItem.setVisibility(View.VISIBLE);
+    }
+
     private void getFromFireBase() {
+        show();
         mFirestore = FirebaseFirestore.getInstance();
         ArrayList<Deal> deals = new ArrayList<>();
         mFirestore.collection("jobs").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -89,8 +100,6 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isComplete()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                       /* Deal deal = document.toObject(Deal.class);
-                        deals.add(deal);*/
                         // Convert the whole Query Snapshot to a list
                         // of objects directly! No need to fetch each
                         // document.
@@ -99,9 +108,10 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
                         jobsModelArrayList.add(commonJobsModel);
                         rvAllJobAdapter.notifyDataSetChanged();
                         rvRecommendedJobAdapter.notifyDataSetChanged();
-                        Log.d("see", "onSuccess: " + jobsModelArrayList.toString());
-                        progressBarItem.setVisibility(View.GONE);
+                        hide();
                     }
+                } else {
+                    hide();
                 }
             }
         });

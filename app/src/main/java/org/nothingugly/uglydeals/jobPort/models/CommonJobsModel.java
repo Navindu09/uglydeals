@@ -3,6 +3,7 @@ package org.nothingugly.uglydeals.jobPort.models;
 import java.util.Date;
 
 public class CommonJobsModel {
+    String companyId;
     private String description;
     private String educationRequirements;
     private Date endDate;
@@ -17,6 +18,14 @@ public class CommonJobsModel {
     private String type;
     private String id;
     private boolean saved;
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
 
     public boolean getSaved() {
         return saved;
