@@ -1,20 +1,14 @@
 package org.nothingugly.uglydeals.jobPort.fragments;
 
 import android.Manifest;
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +25,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,31 +35,32 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import org.nothingugly.uglydeals.R;
 import org.nothingugly.uglydeals.jobPort.activity.Constants;
+import org.nothingugly.uglydeals.jobPort.adapters.RvEducationAdapter;
+import org.nothingugly.uglydeals.jobPort.interfaces.RemoveItemInterfaces;
+import org.nothingugly.uglydeals.jobPort.models.EducationModel;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static androidx.core.content.PermissionChecker.checkSelfPermission;
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements RemoveItemInterfaces {
     public static final int PICK_IMAGE = 1;
     private static final int REQUEST_WRITE_PERMISSION = 786;
     static final Integer WRITE_EXST = 0x3;
@@ -85,8 +82,6 @@ public class ProfileFragment extends Fragment {
     TextView tvEducation;
     @BindView(R.id.iv_add_education)
     ImageView ivAddEducation;
-    @BindView(R.id.iv_edit_education)
-    ImageView ivEditEducation;
     @BindView(R.id.tv_skills)
     TextView tvSkills;
     @BindView(R.id.et_skills)
@@ -108,6 +103,10 @@ public class ProfileFragment extends Fragment {
     EditText etEducationTwo;
     @BindView(R.id.iv_education_two)
     ImageView ivEducationTwo;
+    @BindView(R.id.rv_education)
+    RecyclerView rvEducation;
+    @BindView(R.id.iv_edit_name)
+    ImageView ivEditName;
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
     private Dialog dialog;
@@ -115,6 +114,8 @@ public class ProfileFragment extends Fragment {
     private TextView tvCancel;
     private EditText edt;
     private Bitmap bitmap;
+    private ArrayList<EducationModel> educationList;
+    private RvEducationAdapter rvEducationAdapter;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -127,14 +128,88 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         unbinder = ButterKnife.bind(this, view);
-        Constants.showProgessBar(getActivity());
+        educationList = new ArrayList<>();
+        show();
         setHasOptionsMenu(true);
         //Initialise Firebase app
         //FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
-        getProfileData();
+        mFirestore.collection("customers").document(mAuth.getUid()).
+                collection("profile").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult().size() > 0) {
+                        getProfileData();
+                    } else {
+                        HashMap<String, Object> data = new HashMap<>();
+                        data.put("education", "");
+                        data.put("professionalSkills", "");
+                        data.put("profileImage", "");
+                        data.put("summary", "");
+                        mFirestore.collection("customers").document(mAuth.getUid()).
+                                collection("profile").document("profileId" + mAuth.getUid()).set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                mFirestore.collection("customers").document(mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        DocumentSnapshot documentSnapshot = task.getResult();
+                                        String userName = (String) documentSnapshot.get("name");
+                                        String contact = (String) documentSnapshot.get("mobile");
+                                        String emailId = (String) documentSnapshot.get("email");
+                                        if (!userName.equalsIgnoreCase("")) {
+                                            etName.setText(userName);
+                                        }
+                                        if (!emailId.equalsIgnoreCase("")) {
+                                            tvEmail.setText(emailId);
+                                        }
+                                        if (!contact.equalsIgnoreCase("")) {
+                                            tvContact.setText(contact);
+                                        }
+                                        HashMap<String, Object> educationMap = new HashMap<>();
+                                        educationMap.put("educationId", FieldValue.arrayUnion(""));
+                                        educationMap.put("education", FieldValue.arrayUnion(""));
+                                        mFirestore.collection("customers").document(mAuth.getUid()).
+                                                collection("profile").document("education" + mAuth.getUid())
+                                                .set(educationMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                ArrayList<String> arrayList = new ArrayList<>();
+                                                arrayList.add("");
+                                                EducationModel educationModel = new EducationModel();
+                                                educationModel.setEducation(arrayList);
+                                                educationModel.setEducationId(arrayList);
+                                                ArrayList<EducationModel> list = new ArrayList<>();
+                                                list.add(educationModel);
+                                                educationList.addAll(list);
+                                                setEducationAdapter();
+                                            }
+                                        });
+                                    }
+                                });
+                                hide();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                hide();
+                            }
+                        });
+                    }
+                }
+            }
+        });
         return view;
+    }
+
+    private void setEducationAdapter() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvEducation.setLayoutManager(linearLayoutManager);
+        rvEducationAdapter = new RvEducationAdapter(getActivity(), educationList);
+        rvEducation.setAdapter(rvEducationAdapter);
+        rvEducationAdapter.setListener(this);
     }
 
     private void initDialog() {
@@ -148,7 +223,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getProfileData() {
-        show();
         String userId = mAuth.getUid();
         mFirestore.collection("customers").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -159,9 +233,15 @@ public class ProfileFragment extends Fragment {
                         String userName = (String) documentSnapshot.get("name");
                         String contact = (String) documentSnapshot.get("mobile");
                         String emailId = (String) documentSnapshot.get("email");
-                        etName.setText(userName);
-                        tvEmail.setText(emailId);
-                        tvContact.setText(contact);
+                        if (!userName.equalsIgnoreCase("")) {
+                            etName.setText(userName);
+                        }
+                        if (!emailId.equalsIgnoreCase("")) {
+                            tvEmail.setText(emailId);
+                        }
+                        if (!contact.equalsIgnoreCase("")) {
+                            tvContact.setText(contact);
+                        }
                         mFirestore.collection("customers").document(userId).collection("profile").document("profileId" + userId)
                                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -171,15 +251,33 @@ public class ProfileFragment extends Fragment {
                                 String skills = (String) documentSnapshot.get("professionalSkills");
                                 String profImage = (String) documentSnapshot.get("profileImage");
                                 String summary = (String) documentSnapshot.get("summary");
-                                byte[] decodedString = Base64.decode(profImage, Base64.DEFAULT);
-                                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                                ivProfile.setImageBitmap(decodedByte);
+                                Glide.with(getContext()).load(profImage).into(ivProfile);
                                 etSkills.setText(skills);
                                 etSummary.setText(summary);
+                                mFirestore.collection("customers").document(userId).collection("profile")
+                                        .document("education" + userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot documentSnapshot1 = task.getResult();
+                                            //Convert the particular document into a Deal object
+                                            EducationModel educationModel = documentSnapshot1.toObject(EducationModel.class);
+                                            ArrayList<EducationModel> list = new ArrayList<>();
+                                            list.add(educationModel);
+                                            educationList.addAll(list);
+                                            educationList.get(0).getEducation().remove(0);
+                                            setEducationAdapter();
+//                                            rvEducationAdapter.notifyDataSetChanged();
+                                        } else {
+                                            hide();
+                                        }
+                                    }
+                                });
                             }
                         });
                         hide();
-                    } catch (NullPointerException e) {
+                    } catch (
+                            NullPointerException e) {
                         hide();
                         Toast.makeText(getContext(), "Something went wrong...", Toast.LENGTH_LONG).show();
                     }
@@ -194,7 +292,7 @@ public class ProfileFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.iv_education_one, R.id.iv_education_two, R.id.iv_skills, R.id.iv_summary, R.id.et_name, R.id.iv_profile, R.id.et_summary, R.id.iv_add_education, R.id.iv_edit_education, R.id.et_skills})
+    @OnClick({R.id.iv_education_one, R.id.iv_education_two, R.id.iv_skills, R.id.iv_summary, R.id.et_name, R.id.iv_profile, R.id.et_summary, R.id.iv_add_education, R.id.et_skills})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_education_one:
@@ -297,46 +395,69 @@ public class ProfileFragment extends Fragment {
                 askForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXST);
                 break;
             case R.id.iv_add_education:
-                initDialog();
-                tvCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-                tvDone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                        show();
-                        if (edt.getText() != null) {
-                            String getSummary = edt.getText().toString();
-                            mFirestore.collection("customers").document(mAuth.getUid()).
-                                    collection("profile").document("profileId" + mAuth.getUid()).update("summary", getSummary).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-//                                    etSummary.setText(getSummary);
-                                    edt.setText(null);
-                                    hide();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    hide();
-                                    dialog.dismiss();
-                                    edt.setText(null);
-                                }
-                            });
-
-                        }
-                    }
-                });
-                break;
-            case R.id.iv_edit_education:
+                addEducation();
                 break;
             case R.id.et_skills:
                 break;
         }
+    }
+
+    private void addEducation() {
+        initDialog();
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        tvDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                show();
+                if (edt.getText() != null) {
+                    String getSummary = edt.getText().toString();
+                    int id = educationList.get(0).getEducation().size();
+                    HashMap<String, Object> educationMap = new HashMap<>();
+                    educationMap.put("educationId", FieldValue.arrayUnion(id + ""));
+                    educationMap.put("education", FieldValue.arrayUnion(getSummary));
+                    mFirestore.collection("customers").document(mAuth.getUid()).
+                            collection("profile").document("education" + mAuth.getUid()).update(educationMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            mFirestore.collection("customers").document(mAuth.getUid()).collection("profile")
+                                    .document("education" + mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot documentSnapshot1 = task.getResult();
+                                        //Convert the particular document into a Deal object
+                                        EducationModel educationModel = documentSnapshot1.toObject(EducationModel.class);
+                                        ArrayList<EducationModel> list = new ArrayList<>();
+                                        list.add(educationModel);
+                                        educationList.clear();
+                                        educationList.addAll(list);
+                                        educationList.get(0).getEducation().remove(0);
+                                        rvEducationAdapter.notifyDataSetChanged();
+                                        hide();
+                                    } else {
+                                        hide();
+                                    }
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            hide();
+                            dialog.dismiss();
+                            edt.setText(null);
+                        }
+                    });
+
+                }
+            }
+        });
     }
 
     private void askForPermission(String readExternalStorage, Integer readExst) {
@@ -344,7 +465,7 @@ public class ProfileFragment extends Fragment {
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_IMAGE);
             } else {
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryIntent, PICK_IMAGE);
             }
         } catch (Exception e) {
@@ -353,12 +474,13 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
         switch (requestCode) {
             case PICK_IMAGE:
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(galleryIntent, PICK_IMAGE);
                 } else {
                     //do something like displaying a message that he didn`t allow the app to access gallery and you wont be able to let him select from gallery
@@ -378,37 +500,9 @@ public class ProfileFragment extends Fragment {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
-            FileInputStream in;
-            BufferedInputStream buf;
             try {
-                in = new FileInputStream(picturePath);
-                buf = new BufferedInputStream(in);
-                Bitmap bMap = BitmapFactory.decodeStream(buf);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bMap.compress(Bitmap.CompressFormat.PNG, 20, baos);
-                byte[] byteData = baos.toByteArray();
-                String encoded = Base64.encodeToString(byteData, Base64.DEFAULT);
                 show();
                 uploadToFirebase(selectedImage);
-                /*mFirestore.collection("customers").document(mAuth.getUid()).
-                        collection("profile").document("profileId" + mAuth.getUid()).update("profileImage", encoded).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getActivity(), "Image uploaded successfully", Toast.LENGTH_SHORT).show();
-                        } else {
-                            hide();
-                            Toast.makeText(getActivity(), "Something went wrong...", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });*/
-                if (in != null) {
-                    in.close();
-                }
-                if (buf != null) {
-                    buf.close();
-                }
-                ivProfile.setImageBitmap(bMap);
             } catch (Exception e) {
                 hide();
                 Log.e("Error reading file", e.toString());
@@ -425,10 +519,26 @@ public class ProfileFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        hide();
-                        //if the upload is successfull
-                        //hiding the progress dialog
-                        //and displaying a success toast
+                        Task<Uri> uri = taskSnapshot.getStorage().getDownloadUrl();
+                        uri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String imageUri = uri.toString();
+                                mFirestore.collection("customers").document(mAuth.getUid()).collection("profile").document("profileId" + mAuth.getUid()).update("profileImage", imageUri)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(getContext(), "Profile uploaded", Toast.LENGTH_SHORT).show();
+                                                    Glide.with(getContext()).load(imageUri).into(ivProfile);
+                                                    hide();
+                                                } else {
+                                                    hide();
+                                                }
+                                            }
+                                        });
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -456,5 +566,62 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void addItem() {
+        addEducation();
+    }
+
+    @Override
+    public void remove(int pos) {
+        educationList.get(0).getEducation().remove(pos);
+        rvEducationAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void removeItem(String userId) {
+        show();
+        //Map to remove user from array
+        final Map<String, Object> removeUserFromArrayMap = new HashMap<>();
+        removeUserFromArrayMap.put("education", FieldValue.arrayRemove(userId));
+        mFirestore.collection("customers").document(mAuth.getUid()).
+                collection("profile").document("education" + mAuth.getUid()).update(removeUserFromArrayMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                hide();
+            }
+        });
+    }
+
+    @OnClick(R.id.iv_edit_name)
+    public void onViewClicked() {
+        initDialog();
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        tvDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                show();
+                if (edt.getText() != null) {
+                    String getSummary = edt.getText().toString();
+                    HashMap<String, Object> educationMap = new HashMap<>();
+                    educationMap.put("name", getSummary);
+                    mFirestore.collection("customers").document(mAuth.getUid()).update(educationMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            etName.setText(getSummary);
+                            edt.setText(null);
+                            hide();
+                        }
+                    });
+                }
+            }
+        });
     }
 }

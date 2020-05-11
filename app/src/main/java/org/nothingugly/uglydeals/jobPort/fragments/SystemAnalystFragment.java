@@ -166,15 +166,17 @@ public class SystemAnalystFragment extends Fragment {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
+                                            String msg = "job description: " + commonJobsModel.getDescription() + System.getProperty("line.separator") +
+                                                    "job info:- " + commonJobsModel.getTitle() + System.getProperty("line.separator") +
+                                                    "user profile:- " + userName + System.getProperty("line.separator") + contact + System.getProperty("line.separator") + emailId + System.getProperty("line.separator") +
+                                                    "user info:- " + degree + System.getProperty("line.separator") + occupation + System.getProperty("line.separator") +
+                                                    "company info:- " + commonJobsModel.getCompanyId() + System.getProperty("line.separator") +
+                                                    "signature," + System.getProperty("line.separator") +
+                                                    "ugly deals job";
                                             HashMap<String, Object> map = new HashMap<>();
-                                            map.put("message", "Job description: " + commonJobsModel.getDescription() + System.getProperty("line.separator") +
-                                                    "Job info:- " + commonJobsModel.getTitle() + System.getProperty("line.separator") +
-                                                    "User Profile:- " + userName + System.getProperty("line.separator") + contact + System.getProperty("line.separator") + emailId + System.getProperty("line.separator") +
-                                                    "User info:- " + degree + System.getProperty("line.separator") + occupation + System.getProperty("line.separator") +
-                                                    "Company info:- " + commonJobsModel.getCompanyId() + System.getProperty("line.separator") +
-                                                    "Signature," + System.getProperty("line.separator") +
-                                                    "Ugly Deals Job");
+                                            map.put("message", msg);
                                             map.put("to", "info@uglydeals.co");
+//                                            map.put("to", "gunjanmalviyaa@gmail.com");
                                             mFirestore.collection("mail").add(map).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentReference> task) {

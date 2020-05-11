@@ -183,4 +183,14 @@ public class SavedJobsFragment extends Fragment implements RemoveItemInterfaces 
                     }
                 });
     }
+
+    @Override
+    public void remove(int pos) {
+
+    }
+
+    @Override
+    public void addItem() {
+
+    }
 }
