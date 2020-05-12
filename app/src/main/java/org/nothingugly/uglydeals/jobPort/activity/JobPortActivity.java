@@ -81,6 +81,7 @@ public class JobPortActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     //if home button clicked, replace fragment with home
                     case (R.id.jobBottomNavigationHome):
+                        toolbar.setVisibility(View.VISIBLE);
                         setTitle("Job Portal");
                         btnDeals.setVisibility(View.VISIBLE);
                         jobHomeFragment = new JobHomeFragment();
@@ -88,13 +89,13 @@ public class JobPortActivity extends AppCompatActivity {
                         return true;
                     //if Search button clicked, replace fragment with search
                     case (R.id.jobBottomNavigationNotificationApplication):
-                        setTitle("Saved");
-                        btnDeals.setVisibility(View.GONE);
+                        toolbar.setVisibility(View.GONE);
                         ViewPagerFragment savedJobsFragment = new ViewPagerFragment();
                         replaceFragment(savedJobsFragment, "");
                         return true;
                     //if account button clicked, replace fragment with account
                     case (R.id.jobBottomNavigationSearch):
+                        toolbar.setVisibility(View.VISIBLE);
                         setTitle("Search");
                         btnDeals.setVisibility(View.GONE);
                         SearchFragment searchFragment = new SearchFragment();
@@ -102,6 +103,7 @@ public class JobPortActivity extends AppCompatActivity {
                         return true;
                     //If Flashdeal logo is clicked replace fragment with flasdeal
                     case (R.id.jobBottomNavigationProfile):
+                        toolbar.setVisibility(View.VISIBLE);
                         setTitle("Profile");
                         btnDeals.setVisibility(View.GONE);
                         ProfileFragment profileFragment = new ProfileFragment();
@@ -155,12 +157,10 @@ public class JobPortActivity extends AppCompatActivity {
                 || f instanceof AppliedFragment || f instanceof ProfileFragment || f instanceof SearchFragment) {
             btnDeals.setVisibility(View.GONE);
         }
-        /*if (f instanceof AppliedFragment) {
+       /* if (f instanceof ViewPagerFragment) {
             setTitle("Job Portal");
+            toolbar.setVisibility(View.VISIBLE);
             btnDeals.setVisibility(View.VISIBLE);
-            ivBack.setVisibility(View.GONE);
-            jobHomeFragment = new JobHomeFragment();
-            replaceFragment(jobHomeFragment, "Job Portal");
         }*/
     }
 
@@ -178,5 +178,9 @@ public class JobPortActivity extends AppCompatActivity {
 
     public void disableView() {
         btnDeals.setVisibility(View.GONE);
+    }
+
+    public void setToolBar() {
+        toolbar.setVisibility(View.VISIBLE);
     }
 }

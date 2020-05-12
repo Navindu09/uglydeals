@@ -46,7 +46,7 @@ public class RvEducationAdapter extends RecyclerView.Adapter<RvEducationAdapter.
             public void onClick(View view) {
                 if (removeEducationInterface != null) {
                     removeEducationInterface.removeItem(educationList.get(0).getEducation().get(position));
-                    removeEducationInterface.addItem();
+                    removeEducationInterface.addItem(educationList.get(0).getEducation().get(position));
                 }
             }
         });

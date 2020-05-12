@@ -12,10 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +34,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.nothingugly.uglydeals.Deal;
 import org.nothingugly.uglydeals.R;
 import org.nothingugly.uglydeals.jobPort.activity.Constants;
 import org.nothingugly.uglydeals.jobPort.activity.JobPortActivity;
@@ -39,8 +42,6 @@ import org.nothingugly.uglydeals.jobPort.interfaces.RemoveItemInterfaces;
 import org.nothingugly.uglydeals.jobPort.models.CommonJobsModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +57,10 @@ public class SavedJobsFragment extends Fragment implements RemoveItemInterfaces 
     Unbinder unbinder;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.tvToolbarTitle)
+    TextView tvToolbarTitle;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     private ArrayList<CommonJobsModel> jobsModelArrayList;
     private SavedJobsAdapter savedJobsAdapter;
     private Paint p = new Paint();
@@ -68,17 +73,15 @@ public class SavedJobsFragment extends Fragment implements RemoveItemInterfaces 
         // Required empty public constructor
     }
 
-    public SavedJobsFragment(String where) {
-        fromWhere = where;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_saved_jobs, container, false);
         unbinder = ButterKnife.bind(this, view);
-        ((JobPortActivity) getActivity()).setTitle("Saved");
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        tvToolbarTitle.setText("Saved");
         Constants.show(progressBar, getActivity());
         jobsModelArrayList = new ArrayList<>();
         jobIds = new ArrayList<>();
@@ -202,7 +205,23 @@ public class SavedJobsFragment extends Fragment implements RemoveItemInterfaces 
     }
 
     @Override
-    public void addItem() {
+    public void addItem(String name) {
 
+    }
+
+    @Override
+    public void itemClick(CommonJobsModel commonJobsModel) {
+        commonJobsModel.setSaved(true);
+        SystemAnalystFragment systemAnalystFragment = new SystemAnalystFragment(commonJobsModel);
+        replaceFragment(systemAnalystFragment, commonJobsModel.getTitle());
+    }
+
+    public void replaceFragment(Fragment fragment, String title) {
+        ((JobPortActivity) getActivity()).setToolBar();
+        ((JobPortActivity) getActivity()).disableView();
+        ((JobPortActivity) getActivity()).setTitle(title);
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.job_container, fragment);
+        fragmentTransaction.commit();
     }
 }

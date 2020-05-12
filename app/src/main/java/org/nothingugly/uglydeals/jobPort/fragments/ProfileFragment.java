@@ -47,6 +47,7 @@ import org.nothingugly.uglydeals.R;
 import org.nothingugly.uglydeals.jobPort.activity.Constants;
 import org.nothingugly.uglydeals.jobPort.adapters.RvEducationAdapter;
 import org.nothingugly.uglydeals.jobPort.interfaces.RemoveItemInterfaces;
+import org.nothingugly.uglydeals.jobPort.models.CommonJobsModel;
 import org.nothingugly.uglydeals.jobPort.models.EducationModel;
 
 import java.util.ArrayList;
@@ -208,9 +209,9 @@ public class ProfileFragment extends Fragment implements RemoveItemInterfaces {
 
     private void setEducationAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvEducation.setLayoutManager(linearLayoutManager);
         rvEducationAdapter = new RvEducationAdapter(getActivity(), educationList);
         rvEducation.setAdapter(rvEducationAdapter);
+        rvEducation.setLayoutManager(linearLayoutManager);
         rvEducationAdapter.setListener(this);
     }
 
@@ -298,31 +299,11 @@ public class ProfileFragment extends Fragment implements RemoveItemInterfaces {
     @OnClick({R.id.iv_education_one, R.id.iv_education_two, R.id.iv_skills, R.id.iv_summary, R.id.et_name, R.id.iv_profile, R.id.et_summary, R.id.iv_add_education, R.id.et_skills})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_education_one:
-                show();
-                mFirestore.collection("customers").document(mAuth.getUid()).
-                        collection("profile").document("profileId" + mAuth.getUid())
-                        .update("educationOne", "").addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        hide();
-                    }
-                });
-                break;
-            case R.id.iv_education_two:
-                show();
-                mFirestore.collection("customers").document(mAuth.getUid()).
-                        collection("profile").document("profileId" + mAuth.getUid())
-                        .update("educationTwo", "").addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        hide();
-                    }
-                });
-
-                break;
             case R.id.iv_skills:
                 initDialog();
+                if (etSkills.getText().toString() != null) {
+                    edt.setText(etSkills.getText().toString());
+                }
                 tvCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -360,6 +341,9 @@ public class ProfileFragment extends Fragment implements RemoveItemInterfaces {
                 break;
             case R.id.iv_summary:
                 initDialog();
+                if (etSummary.getText().toString() != null) {
+                    edt.setText(etSummary.getText().toString());
+                }
                 tvCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -443,6 +427,7 @@ public class ProfileFragment extends Fragment implements RemoveItemInterfaces {
                                         educationList.get(0).getEducation().remove(0);
                                         rvEducationAdapter.notifyDataSetChanged();
                                         hide();
+                                        edt.setText(null);
                                     } else {
                                         hide();
                                     }
@@ -572,8 +557,70 @@ public class ProfileFragment extends Fragment implements RemoveItemInterfaces {
     }
 
     @Override
-    public void addItem() {
-        addEducation();
+    public void addItem(String name) {
+        initDialog();
+        edt.setText(name);
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        tvDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                show();
+                edt.setText(name + "");
+                if (edt.getText() != null) {
+                    String getSummary = edt.getText().toString();
+                    int id = educationList.get(0).getEducation().size();
+                    HashMap<String, Object> educationMap = new HashMap<>();
+                    educationMap.put("educationId", FieldValue.arrayUnion(id + ""));
+                    educationMap.put("education", FieldValue.arrayUnion(getSummary));
+                    mFirestore.collection("customers").document(mAuth.getUid()).
+                            collection("profile").document("education" + mAuth.getUid()).update(educationMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            mFirestore.collection("customers").document(mAuth.getUid()).collection("profile")
+                                    .document("education" + mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot documentSnapshot1 = task.getResult();
+                                        //Convert the particular document into a Deal object
+                                        EducationModel educationModel = documentSnapshot1.toObject(EducationModel.class);
+                                        ArrayList<EducationModel> list = new ArrayList<>();
+                                        list.add(educationModel);
+                                        educationList.clear();
+                                        educationList.addAll(list);
+                                        rvEducationAdapter.notifyDataSetChanged();
+                                        hide();
+                                        edt.setText(null);
+                                    } else {
+                                        hide();
+                                        edt.setText(null);
+                                    }
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            hide();
+                            dialog.dismiss();
+                            edt.setText(null);
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
+    @Override
+    public void itemClick(CommonJobsModel commonJobsModel) {
+
     }
 
     @Override
@@ -600,6 +647,9 @@ public class ProfileFragment extends Fragment implements RemoveItemInterfaces {
     @OnClick(R.id.iv_edit_name)
     public void onViewClicked() {
         initDialog();
+        if (etName.getText().toString() != null) {
+            edt.setText(etName.getText().toString());
+        }
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

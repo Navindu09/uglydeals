@@ -12,9 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,9 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.nothingugly.uglydeals.R;
 import org.nothingugly.uglydeals.jobPort.activity.Constants;
-import org.nothingugly.uglydeals.jobPort.activity.JobPortActivity;
 import org.nothingugly.uglydeals.jobPort.adapters.AppliedJobsAdapter;
-import org.nothingugly.uglydeals.jobPort.adapters.SavedJobsAdapter;
 import org.nothingugly.uglydeals.jobPort.interfaces.RemoveItemInterfaces;
 import org.nothingugly.uglydeals.jobPort.models.CommonJobsModel;
 
@@ -51,6 +52,10 @@ public class AppliedJobsFragment extends Fragment implements RemoveItemInterface
     Unbinder unbinder;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.tvToolbarTitle)
+    TextView tvToolbarTitle;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     private ArrayList<CommonJobsModel> jobsModelArrayList;
     private AppliedJobsAdapter savedJobsAdapter;
     private Paint p = new Paint();
@@ -73,7 +78,9 @@ public class AppliedJobsFragment extends Fragment implements RemoveItemInterface
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_saved_jobs, container, false);
         unbinder = ButterKnife.bind(this, view);
-        ((JobPortActivity) getActivity()).setTitle("Applied");
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        tvToolbarTitle.setText("Applied");
         Constants.show(progressBar, getActivity());
         jobsModelArrayList = new ArrayList<>();
         jobIds = new ArrayList<>();
@@ -196,7 +203,12 @@ public class AppliedJobsFragment extends Fragment implements RemoveItemInterface
     }
 
     @Override
-    public void addItem() {
+    public void addItem(String name) {
+
+    }
+
+    @Override
+    public void itemClick(CommonJobsModel commonJobsModel) {
 
     }
 }

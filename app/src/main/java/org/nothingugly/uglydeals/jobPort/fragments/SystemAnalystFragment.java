@@ -83,10 +83,6 @@ public class SystemAnalystFragment extends Fragment {
         this.commonJobsModel = jobsModels;
     }
 
-    public SystemAnalystFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -99,11 +95,13 @@ public class SystemAnalystFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
         if (commonJobsModel.getSaved()) {
-            btnSave.setText("Saved");
+            btnSave.setText("Unsaved");
+        } else {
+            btnSave.setText("Save");
         }
         tvLevel.setText(commonJobsModel.getLevel() + "");
-        tvDescription.setText(commonJobsModel.getDescription());
-        tvRequirements.setText(commonJobsModel.getEducationRequirement());
+        tvDescription.setText(commonJobsModel.getDescription() + "");
+        tvRequirements.setText(commonJobsModel.getEducationRequirement() + "");
         tvLocation.setText("Location: " + commonJobsModel.getLocation());
         tvType.setText("" + commonJobsModel.getType());
         tvPaid.setText("Paid: Tk 10,000");
@@ -135,6 +133,28 @@ public class SystemAnalystFragment extends Fragment {
                                     btnSave.setText("Saved");
                                     Constants.hide(progressBar, getActivity());
                                     Constants.showToast(getActivity(), "Job has been added to saved jobs");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Constants.hide(progressBar, getActivity());
+                                    Constants.showToast(getActivity(), "Something went wrong...");
+                                    Log.w("Saved", "Error writing document", e);
+                                }
+                            });
+                } else {
+                    Constants.show(progressBar, getActivity());
+                    mFirestore = FirebaseFirestore.getInstance();
+                    String userId = mAuth.getUid();
+                    mFirestore.collection("customers").document(userId).
+                            collection("savedJobs").document(commonJobsModel.getId()).delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    btnSave.setText("Save");
+                                    Constants.hide(progressBar, getActivity());
+                                    Constants.showToast(getActivity(), "Job has been removed from saved jobs");
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -178,10 +198,11 @@ public class SystemAnalystFragment extends Fragment {
                                                     "company info:- " + commonJobsModel.getCompanyId() + System.getProperty("line.separator") +
                                                     "signature," + System.getProperty("line.separator") +
                                                     "ugly deals job";
-                                            sendMailFunction(msg, subject);
+                                            sendMailFunction(msg, subject, userName, contact, emailId);
                                             Constants.hide(progressBar, getActivity());
                                             AppliedFragment appliedFragment = new AppliedFragment();
                                             replaceFragment(appliedFragment);
+
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -207,13 +228,19 @@ public class SystemAnalystFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void sendMailFunction(String msg, String subject) {
+    private void sendMailFunction(String msg, String subject, String userName, String contact, String email) {
         OkHttpClient httpClient = new OkHttpClient();
         HttpUrl.Builder httpBuider =
                 HttpUrl.parse(FIREBASE_CLOUD_FUNCTION_URL).newBuilder();
-        httpBuider.addQueryParameter("dest", "gunjanmalviyaa@gmail.com");
+        httpBuider.addQueryParameter("dest", "gunjanmalviya03@gmail.com");
         httpBuider.addQueryParameter("subject", subject);
         httpBuider.addQueryParameter("message", msg);
+        httpBuider.addQueryParameter("jobDescription", commonJobsModel.getDescription() + "");
+        httpBuider.addQueryParameter("jobInfo", commonJobsModel.getTitle());
+        httpBuider.addQueryParameter("userName", userName);
+        httpBuider.addQueryParameter("userEmail", contact);
+        httpBuider.addQueryParameter("userContact", email);
+        httpBuider.addQueryParameter("companyId", commonJobsModel.getCompanyId() + "");
         Request request = new Request.Builder().
                 url(httpBuider.build()).build();
         httpClient.newCall(request).enqueue(new Callback() {

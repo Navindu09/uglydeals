@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,14 @@ public class SavedJobsAdapter extends RecyclerView.Adapter<SavedJobsAdapter.View
         holder.tvRemote.setText(modelArrayList.get(position).getLocation() + "");
         holder.tvPaid.setText("UnPaid");
         holder.tvExperience.setText(modelArrayList.get(position).getLevel() + "");
+        holder.rlMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (removeItemInterfaces != null) {
+                    removeItemInterfaces.itemClick(modelArrayList.get(position));
+                }
+            }
+        });
     }
 
     @Override
@@ -67,6 +76,8 @@ public class SavedJobsAdapter extends RecyclerView.Adapter<SavedJobsAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.rl_main)
+        RelativeLayout rlMain;
         @BindView(R.id.iv_profile)
         ImageView ivProfile;
         @BindView(R.id.tv_job_title)

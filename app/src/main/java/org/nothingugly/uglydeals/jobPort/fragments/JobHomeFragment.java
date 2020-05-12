@@ -166,6 +166,7 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
 
     @Override
     public void onItemClick(CommonJobsModel jobsModels) {
+        jobsModels.setSaved(false);
         SystemAnalystFragment systemAnalystFragment = new SystemAnalystFragment(jobsModels);
         replaceFragment(systemAnalystFragment, jobsModels.getTitle());
     }
