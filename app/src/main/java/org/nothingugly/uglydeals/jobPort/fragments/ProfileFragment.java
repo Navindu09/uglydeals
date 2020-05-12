@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -161,6 +162,7 @@ public class ProfileFragment extends Fragment implements RemoveItemInterfaces {
                                         String emailId = (String) documentSnapshot.get("email");
                                         if (!userName.equalsIgnoreCase("")) {
                                             etName.setText(userName);
+                                            etName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
                                         }
                                         if (!emailId.equalsIgnoreCase("")) {
                                             tvEmail.setText(emailId);
@@ -235,6 +237,7 @@ public class ProfileFragment extends Fragment implements RemoveItemInterfaces {
                         String emailId = (String) documentSnapshot.get("email");
                         if (!userName.equalsIgnoreCase("")) {
                             etName.setText(userName);
+                            etName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
                         }
                         if (!emailId.equalsIgnoreCase("")) {
                             tvEmail.setText(emailId);
@@ -616,6 +619,7 @@ public class ProfileFragment extends Fragment implements RemoveItemInterfaces {
                         @Override
                         public void onSuccess(Void aVoid) {
                             etName.setText(getSummary);
+                            etName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
                             edt.setText(null);
                             hide();
                         }

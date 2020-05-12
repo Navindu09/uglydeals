@@ -30,26 +30,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.nothingugly.uglydeals.Deal;
 import org.nothingugly.uglydeals.R;
 import org.nothingugly.uglydeals.jobPort.activity.Constants;
 import org.nothingugly.uglydeals.jobPort.activity.JobPortActivity;
+import org.nothingugly.uglydeals.jobPort.adapters.AppliedJobsAdapter;
 import org.nothingugly.uglydeals.jobPort.adapters.SavedJobsAdapter;
 import org.nothingugly.uglydeals.jobPort.interfaces.RemoveItemInterfaces;
 import org.nothingugly.uglydeals.jobPort.models.CommonJobsModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class SavedJobsFragment extends Fragment implements RemoveItemInterfaces {
+public class AppliedJobsFragment extends Fragment implements RemoveItemInterfaces {
 
     @BindView(R.id.rv_saved_jobs)
     RecyclerView rvSavedJobs;
@@ -57,18 +52,18 @@ public class SavedJobsFragment extends Fragment implements RemoveItemInterfaces 
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
     private ArrayList<CommonJobsModel> jobsModelArrayList;
-    private SavedJobsAdapter savedJobsAdapter;
+    private AppliedJobsAdapter savedJobsAdapter;
     private Paint p = new Paint();
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
     private ArrayList<String> jobIds;
     private String fromWhere;
 
-    public SavedJobsFragment() {
+    public AppliedJobsFragment() {
         // Required empty public constructor
     }
 
-    public SavedJobsFragment(String where) {
+    public AppliedJobsFragment(String where) {
         fromWhere = where;
     }
 
@@ -78,54 +73,53 @@ public class SavedJobsFragment extends Fragment implements RemoveItemInterfaces 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_saved_jobs, container, false);
         unbinder = ButterKnife.bind(this, view);
-        ((JobPortActivity) getActivity()).setTitle("Saved");
+        ((JobPortActivity) getActivity()).setTitle("Applied");
         Constants.show(progressBar, getActivity());
         jobsModelArrayList = new ArrayList<>();
         jobIds = new ArrayList<>();
         setAdapter();
-        getFromFireBase();
+        getAppliedJobFromFireBase();
         return view;
     }
 
-    private void getFromFireBase() {
+    private void getAppliedJobFromFireBase() {
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
         String userId = mAuth.getUid();
         mFirestore.collection("customers").document(userId).
-                collection("savedJobs").get().addOnCompleteListener(
-                new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isComplete()) {
-                            for (QueryDocumentSnapshot item : task.getResult()) {
-                                // Convert the whole Query Snapshot to a list
-                                // of objects directly! No need to fetch each
-                                // document.
-                                String id = (String) item.get("id");
-                                mFirestore.collection("jobs").document(id).get()
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                DocumentSnapshot dealDocument = task.getResult();
-                                                //Convert the particular document into a Deal object
-                                                CommonJobsModel commonJobsModel = dealDocument.toObject(CommonJobsModel.class);
-                                                jobsModelArrayList.add(commonJobsModel);
-                                                savedJobsAdapter.notifyDataSetChanged();
-                                            }
-                                        });
-                            }
-                            Constants.hide(progressBar, getActivity());
-                        } else {
-                            Constants.hide(progressBar, getActivity());
-                        }
+                collection("appliedJobs").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isComplete()) {
+                    for (QueryDocumentSnapshot item : task.getResult()) {
+                        // Convert the whole Query Snapshot to a list
+                        // of objects directly! No need to fetch each
+                        // document.
+                        String id = (String) item.get("id");
+                        mFirestore.collection("jobs").document(id).get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        DocumentSnapshot dealDocument = task.getResult();
+                                        //Convert the particular document into a Deal object
+                                        CommonJobsModel commonJobsModel = dealDocument.toObject(CommonJobsModel.class);
+                                        jobsModelArrayList.add(commonJobsModel);
+                                        savedJobsAdapter.notifyDataSetChanged();
+                                    }
+                                });
                     }
-                });
+                    Constants.hide(progressBar, getActivity());
+                } else {
+                    Constants.hide(progressBar, getActivity());
+                }
+            }
+        });
     }
 
     private void setAdapter() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvSavedJobs.setLayoutManager(layoutManager);
-        savedJobsAdapter = new SavedJobsAdapter(getActivity(), jobsModelArrayList);
+        savedJobsAdapter = new AppliedJobsAdapter(getActivity(), jobsModelArrayList);
         rvSavedJobs.setAdapter(savedJobsAdapter);
         savedJobsAdapter.setListener(this);
         initSwipe();
@@ -178,7 +172,7 @@ public class SavedJobsFragment extends Fragment implements RemoveItemInterfaces 
         Constants.show(progressBar, getActivity());
         mFirestore = FirebaseFirestore.getInstance();
         String uId = mAuth.getUid();
-        mFirestore.collection("customers").document(uId).collection("savedJobs")
+        mFirestore.collection("customers").document(uId).collection("appliedJobs")
                 .document(userId).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

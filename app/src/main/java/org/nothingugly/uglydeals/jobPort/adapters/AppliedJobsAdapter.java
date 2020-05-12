@@ -8,13 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import org.nothingugly.uglydeals.R;
-import org.nothingugly.uglydeals.jobPort.fragments.SavedJobsFragment;
 import org.nothingugly.uglydeals.jobPort.interfaces.RemoveItemInterfaces;
 import org.nothingugly.uglydeals.jobPort.models.CommonJobsModel;
 
@@ -23,12 +21,12 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SavedJobsAdapter extends RecyclerView.Adapter<SavedJobsAdapter.ViewHolder> {
+public class AppliedJobsAdapter extends RecyclerView.Adapter<AppliedJobsAdapter.ViewHolder> {
     private ArrayList<CommonJobsModel> modelArrayList;
     private RemoveItemInterfaces removeItemInterfaces;
     private Context context;
 
-    public SavedJobsAdapter(Context activity, ArrayList<CommonJobsModel> jobsModels) {
+    public AppliedJobsAdapter(Context activity, ArrayList<CommonJobsModel> jobsModels) {
         this.modelArrayList = jobsModels;
         this.context = activity;
     }

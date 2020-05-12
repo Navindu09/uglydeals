@@ -5,19 +5,37 @@ import java.util.Date;
 public class CommonJobsModel {
     String companyId;
     private String description;
-    private String educationRequirements;
+    private String educationExperience;
     private Date endDate;
     private String experienceRequirements;
     private boolean paid;
     private boolean remote;
     private int reward;
-    private String skills;
+    private String skillsExperience;
     private Date startDate;
     private String title;
     private String location;
     private String type;
     private String id;
     private boolean saved;
+    private String level;
+    private String dealPhoto;
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getDealPhoto() {
+        return dealPhoto;
+    }
+
+    public void setDealPhoto(String dealPhoto) {
+        this.dealPhoto = dealPhoto;
+    }
 
     public String getCompanyId() {
         return companyId;
@@ -68,11 +86,11 @@ public class CommonJobsModel {
     }
 
     public String getEducationRequirement() {
-        return educationRequirements;
+        return educationExperience;
     }
 
     public void setEducationRequirement(String educationRequirement) {
-        this.educationRequirements = educationRequirement;
+        this.educationExperience = educationRequirement;
     }
 
     public Date getEndDate() {
@@ -116,11 +134,11 @@ public class CommonJobsModel {
     }
 
     public String getSkills() {
-        return skills;
+        return skillsExperience;
     }
 
     public void setSkills(String skills) {
-        this.skills = skills;
+        this.skillsExperience = skills;
     }
 
     public Date getStartDate() {

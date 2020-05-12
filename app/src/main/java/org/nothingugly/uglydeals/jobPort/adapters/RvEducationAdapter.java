@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.nothingugly.uglydeals.R;
+import org.nothingugly.uglydeals.jobPort.activity.Constants;
 import org.nothingugly.uglydeals.jobPort.interfaces.RemoveItemInterfaces;
 import org.nothingugly.uglydeals.jobPort.models.EducationModel;
 
@@ -39,7 +40,7 @@ public class RvEducationAdapter extends RecyclerView.Adapter<RvEducationAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.tvEducation.setText(educationList.get(0).getEducation().get(position));
+        holder.tvEducation.setText(Constants.getString(educationList.get(0).getEducation().get(position)));
         holder.ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

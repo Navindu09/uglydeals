@@ -108,8 +108,8 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
                         jobsModelArrayList.add(commonJobsModel);
                         rvAllJobAdapter.notifyDataSetChanged();
                         rvRecommendedJobAdapter.notifyDataSetChanged();
-                        hide();
                     }
+                    hide();
                 } else {
                     hide();
                 }
@@ -162,8 +162,6 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
     @Override
     public void onResume() {
         super.onResume();
-        /*JobPortActivity jobPortActivity = new JobPortActivity();
-        jobPortActivity.setTvToolbarTitle("Job Port");*/
     }
 
     @Override
@@ -173,6 +171,7 @@ public class JobHomeFragment extends Fragment implements RvClickInterface {
     }
 
     public void replaceFragment(Fragment fragment, String title) {
+        ((JobPortActivity) getActivity()).disableView();
         ((JobPortActivity) getActivity()).setTitle(title);
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.job_container, fragment).addToBackStack(null);

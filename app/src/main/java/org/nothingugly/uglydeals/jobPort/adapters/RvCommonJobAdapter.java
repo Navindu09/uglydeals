@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import org.nothingugly.uglydeals.R;
 import org.nothingugly.uglydeals.jobPort.fragments.JobHomeFragment;
 import org.nothingugly.uglydeals.jobPort.interfaces.RvClickInterface;
@@ -42,6 +44,7 @@ public class RvCommonJobAdapter extends RecyclerView.Adapter<RvCommonJobAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull JobHoler jobHoler, int i) {
+        Glide.with(context).load(jobsModelArrayList.get(i).getDealPhoto()).into(jobHoler.itemImage);
         jobHoler.textViewItemName.setText(jobsModelArrayList.get(i).getTitle());
         jobHoler.textViewItemRestaurantName.setText(jobsModelArrayList.get(i).getLocation());
         jobHoler.itemCardView.setOnClickListener(new View.OnClickListener() {
