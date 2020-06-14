@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="value_25dp">25dp</dimen>
-    <string name="app_name">MultiSelectionSpinner</string>
-</resources>

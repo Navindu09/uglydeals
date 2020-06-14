@@ -31,7 +31,7 @@
 
                 <Button
                     android:id="@+id/btn_save"
-                    android:layout_width="80dp"
+                    android:layout_width="70dp"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="10dp"
@@ -39,10 +39,8 @@
                     android:background="@drawable/btn_round"
                     android:clickable="true"
                     android:focusable="true"
-                    android:singleLine="true"
-                    android:text="saved"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:text="@string/save"
+                    android:textColor="@color/white" />
             </RelativeLayout>
 
             <androidx.cardview.widget.CardView
@@ -79,7 +77,6 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/tv_level"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -198,6 +195,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
+        android:layout_marginTop="20dp"
         android:background="@color/buttonColor"
         android:clickable="true"
         android:focusable="true"

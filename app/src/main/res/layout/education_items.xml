@@ -13,8 +13,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/poppins"
-        android:textColor="@color/Black"
-        android:textSize="14sp" />
+        android:textColor="@color/Black" />
 
     <ImageView
         android:id="@+id/iv_delete"
@@ -22,9 +21,8 @@
         android:layout_height="20dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/iv_remove"
-        android:backgroundTint="@color/Red" />
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/iv_remove" />
 
     <ImageView
         android:id="@+id/iv_edit"
@@ -33,7 +31,6 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
         android:layout_toLeftOf="@id/iv_delete"
-        android:background="@drawable/ic_create"
-        android:backgroundTint="@color/DodgerBlue" />
+        android:src="@drawable/ic_create" />
 
 </RelativeLayout>

@@ -19,7 +19,6 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_marginTop="10dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:divider="@android:color/transparent"
@@ -34,32 +33,29 @@
 
                     <EditText
                         android:id="@+id/et_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="200dp"
+                        android:layout_height="30dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="15dp"
                         android:background="@null"
                         android:enabled="false"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="@font/poppins_light"
                         android:gravity="center_vertical"
                         android:hint="@string/name_id_contact"
-                        android:inputType="textCapWords"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:textAllCaps="true"
                         android:textColor="@color/Black"
-                        android:textSize="14sp" />
+                        android:textStyle="normal" />
 
                     <ImageView
                         android:id="@+id/iv_edit_name"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_toRightOf="@id/et_name"
-                        android:background="@drawable/ic_create"
-                        android:backgroundTint="@color/DodgerBlue" />
+                        android:src="@drawable/ic_create" />
 
                     <TextView
                         android:id="@+id/tv_email"
@@ -68,9 +64,8 @@
                         android:layout_below="@id/et_name"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="@font/poppins_light"
                         android:text="Email"
-                        android:textColor="@color/Black"
                         android:textSize="14sp" />
 
                     <TextView
@@ -80,9 +75,8 @@
                         android:layout_below="@id/tv_email"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="@font/poppins_light"
                         android:text="Summary"
-                        android:textColor="@color/Black"
                         android:textSize="14sp" />
 
 
@@ -97,6 +91,7 @@
                         android:src="@drawable/ic_job" />
 
                 </RelativeLayout>
+
 
             </androidx.cardview.widget.CardView>
 
@@ -121,22 +116,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="@font/poppins_light"
                         android:text="Summary"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:textSize="17sp" />
 
                     <ImageView
                         android:id="@+id/iv_summary"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentRight="true"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/ic_create"
-                        android:backgroundTint="@color/DodgerBlue" />
+                        android:src="@drawable/ic_create" />
 
                     <EditText
                         android:id="@+id/et_summary"
@@ -148,12 +140,11 @@
                         android:layout_marginBottom="10dp"
                         android:background="@null"
                         android:enabled="false"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="@font/poppins_light"
                         android:hint="Type here..."
-                        android:inputType="textCapWords"
                         android:maxLines="4"
                         android:textColor="@color/Black"
-                        android:textSize="14sp" />
+                        android:textStyle="normal" />
 
                 </RelativeLayout>
 
@@ -181,12 +172,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="@font/poppins_light"
                         android:text="Education"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:textSize="17sp" />
 
                     <ImageView
                         android:id="@+id/iv_add_education"
@@ -195,14 +184,15 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/iv_adddd"
-                        android:backgroundTint="@color/DodgerBlue" />
+                        android:background="@drawable/iv_adddd" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_education"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_education" />
+                        android:layout_below="@id/tv_education"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp" />
 
                     <RelativeLayout
                         android:id="@+id/rl_one"
@@ -223,7 +213,8 @@
                             android:fontFamily="@font/poppins_light"
                             android:hint="Type here..."
                             android:maxLines="4"
-                            android:textColor="@color/Black" />
+                            android:textColor="@color/Black"
+                            android:textStyle="normal" />
 
                         <ImageView
                             android:id="@+id/iv_education_one"
@@ -254,7 +245,8 @@
                             android:fontFamily="@font/poppins_light"
                             android:hint="Type here..."
                             android:maxLines="4"
-                            android:textColor="@color/Black" />
+                            android:textColor="@color/Black"
+                            android:textStyle="normal" />
 
                         <ImageView
                             android:id="@+id/iv_education_two"
@@ -292,22 +284,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="@font/poppins_light"
                         android:text="@string/professional_skills"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:textSize="17sp" />
 
                     <ImageView
                         android:id="@+id/iv_skills"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentRight="true"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/ic_create"
-                        android:backgroundTint="@color/DodgerBlue" />
+                        android:src="@drawable/ic_create" />
 
                     <EditText
                         android:id="@+id/et_skills"
@@ -315,17 +304,14 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_skills"
                         android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@null"
                         android:enabled="false"
-                        android:fontFamily="@font/poppins"
-                        android:inputType="textMultiLine"
-                        android:maxLines="20"
-                        android:minLines="1"
-                        android:scrollbars="vertical"
+                        android:fontFamily="@font/poppins_light"
                         android:textColor="@color/Black"
-                        android:textSize="14sp" />
+                        android:textStyle="normal" />
 
                 </RelativeLayout>
 

@@ -20,6 +20,6 @@
     <string name="similar_job">Similar Jobs</string>
     <string name="paid">Paid</string>
     <string name="location">Location</string>
-    <string name="name_id_contact">Name</string>
+    <string name="name_id_contact">Name"\n"Email"\n"Contact</string>
     <string name="professional_skills">Professional Skills</string>
 </resources>

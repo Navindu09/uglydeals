@@ -1,18 +1,13 @@
 package org.nothingugly.uglydeals.jobPort.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 
 import org.nothingugly.uglydeals.R;
 import org.nothingugly.uglydeals.jobPort.fragments.SavedJobsFragment;
@@ -27,11 +22,9 @@ import butterknife.ButterKnife;
 public class SavedJobsAdapter extends RecyclerView.Adapter<SavedJobsAdapter.ViewHolder> {
     private ArrayList<CommonJobsModel> modelArrayList;
     private RemoveItemInterfaces removeItemInterfaces;
-    private Context context;
 
-    public SavedJobsAdapter(Context activity, ArrayList<CommonJobsModel> jobsModels) {
+    public SavedJobsAdapter(ArrayList<CommonJobsModel> jobsModels) {
         this.modelArrayList = jobsModels;
-        this.context = activity;
     }
 
     @Override
@@ -42,25 +35,21 @@ public class SavedJobsAdapter extends RecyclerView.Adapter<SavedJobsAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(context).load(modelArrayList.get(position).getDealPhoto()).into(holder.ivProfile);
         holder.tvJobTitle.setText(modelArrayList.get(position).getTitle());
         holder.tvRemote.setText(modelArrayList.get(position).getLocation() + "");
         holder.tvPaid.setText("UnPaid");
-        holder.tvExperience.setText(modelArrayList.get(position).getLevel() + "");
-        holder.rlMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (removeItemInterfaces != null) {
-                    removeItemInterfaces.itemClick(modelArrayList.get(position));
-                }
-            }
-        });
+        holder.tvExperience.setText("Beginner");
     }
 
     @Override
     public int getItemCount() {
         return modelArrayList.size();
     }
+
+    /*public void addItem(String country) {
+        modelArrayList.add(country);
+        notifyItemInserted(modelArrayList.size());
+    }*/
 
     public void removeItem(int position) {
         if (removeItemInterfaces != null) {
@@ -76,8 +65,6 @@ public class SavedJobsAdapter extends RecyclerView.Adapter<SavedJobsAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.rl_main)
-        RelativeLayout rlMain;
         @BindView(R.id.iv_profile)
         ImageView ivProfile;
         @BindView(R.id.tv_job_title)

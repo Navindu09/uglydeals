@@ -26,13 +26,10 @@ import org.nothingugly.uglydeals.LogInActivity;
 import org.nothingugly.uglydeals.MainActivity;
 import org.nothingugly.uglydeals.R;
 import org.nothingugly.uglydeals.SearchFragment;
-import org.nothingugly.uglydeals.jobPort.fragments.AppliedFragment;
-import org.nothingugly.uglydeals.jobPort.fragments.AppliedJobsFragment;
 import org.nothingugly.uglydeals.jobPort.fragments.JobHomeFragment;
 import org.nothingugly.uglydeals.jobPort.fragments.ProfileFragment;
 import org.nothingugly.uglydeals.jobPort.fragments.SavedJobsFragment;
 import org.nothingugly.uglydeals.jobPort.fragments.SystemAnalystFragment;
-import org.nothingugly.uglydeals.jobPort.fragments.ViewPagerFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,31 +78,25 @@ public class JobPortActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     //if home button clicked, replace fragment with home
                     case (R.id.jobBottomNavigationHome):
-                        toolbar.setVisibility(View.VISIBLE);
                         setTitle("Job Portal");
-                        btnDeals.setVisibility(View.VISIBLE);
                         jobHomeFragment = new JobHomeFragment();
                         replaceFragment(jobHomeFragment, "");
                         return true;
                     //if Search button clicked, replace fragment with search
                     case (R.id.jobBottomNavigationNotificationApplication):
-                        toolbar.setVisibility(View.GONE);
-                        ViewPagerFragment savedJobsFragment = new ViewPagerFragment();
+                        setTitle("Saved");
+                        SavedJobsFragment savedJobsFragment = new SavedJobsFragment();
                         replaceFragment(savedJobsFragment, "");
                         return true;
                     //if account button clicked, replace fragment with account
                     case (R.id.jobBottomNavigationSearch):
-                        toolbar.setVisibility(View.VISIBLE);
                         setTitle("Search");
-                        btnDeals.setVisibility(View.GONE);
                         SearchFragment searchFragment = new SearchFragment();
                         replaceFragment(searchFragment, "");
                         return true;
                     //If Flashdeal logo is clicked replace fragment with flasdeal
                     case (R.id.jobBottomNavigationProfile):
-                        toolbar.setVisibility(View.VISIBLE);
                         setTitle("Profile");
-                        btnDeals.setVisibility(View.GONE);
                         ProfileFragment profileFragment = new ProfileFragment();
                         replaceFragment(profileFragment, "");
                         return true;
@@ -115,6 +106,15 @@ public class JobPortActivity extends AppCompatActivity {
             }
         });
     }
+/*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentByTag(childTag);
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, intent);
+        }
+    }*/
 
     @Override
     protected void onStart() {
@@ -151,17 +151,14 @@ public class JobPortActivity extends AppCompatActivity {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.job_container);
         if (f instanceof JobHomeFragment) {
             setTitle("Job Portal");
-            btnDeals.setVisibility(View.VISIBLE);
             ivBack.setVisibility(View.GONE);
-        } else if (f instanceof SystemAnalystFragment || f instanceof ViewPagerFragment
-                || f instanceof AppliedFragment || f instanceof ProfileFragment || f instanceof SearchFragment) {
-            btnDeals.setVisibility(View.GONE);
+        } else if (f instanceof SystemAnalystFragment) {
+//            setTitle("System Analyst");
+//            ivBack.setVisibility(View.VISIBLE);
+        } else if (f instanceof SavedJobsFragment) {
+            setTitle("Saved");
+//            ivBack.setVisibility(View.VISIBLE);
         }
-       /* if (f instanceof ViewPagerFragment) {
-            setTitle("Job Portal");
-            toolbar.setVisibility(View.VISIBLE);
-            btnDeals.setVisibility(View.VISIBLE);
-        }*/
     }
 
     @OnClick(R.id.iv_back)
@@ -174,13 +171,5 @@ public class JobPortActivity extends AppCompatActivity {
         Intent loginintent = new Intent(this, MainActivity.class);
         startActivity(loginintent);
         finish();
-    }
-
-    public void disableView() {
-        btnDeals.setVisibility(View.GONE);
-    }
-
-    public void setToolBar() {
-        toolbar.setVisibility(View.VISIBLE);
     }
 }
